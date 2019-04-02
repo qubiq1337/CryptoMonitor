@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.cryptomonitor.HomeFragment;
+import com.example.cryptomonitor.fragment.HomeFragment;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.fragment.NavigationBarFragment;
 

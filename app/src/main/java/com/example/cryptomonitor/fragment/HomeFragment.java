@@ -1,4 +1,4 @@
-package com.example.cryptomonitor;
+package com.example.cryptomonitor.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.example.cryptomonitor.adapters.CoinAdapterHome;
 import com.example.cryptomonitor.model.CoinCryptoCompare;
 import com.example.cryptomonitor.network_api.Network;
+import com.example.cryptomonitor.R;
 
 import retrofit2.Call;
 import retrofit2.Callback;
