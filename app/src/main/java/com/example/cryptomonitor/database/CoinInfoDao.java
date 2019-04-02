@@ -1,4 +1,4 @@
-package com.example.cryptomonitor;
+package com.example.cryptomonitor.database;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;

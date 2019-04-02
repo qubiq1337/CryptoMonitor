@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.cryptomonitor.adapters.CoinAdapterHome;
 import com.example.cryptomonitor.model.CoinCryptoCompare;
 import com.example.cryptomonitor.network_api.Network;
 

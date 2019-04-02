@@ -8,7 +8,7 @@ public class Network {
     private final String BASE_URL = "https://min-api.cryptocompare.com";
     private Retrofit mRetrofit;
 
-    private Network(){
+    private Network() {
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -22,7 +22,7 @@ public class Network {
         return mInstance;
     }
 
-    public ApiCryptoCompare getApiCryptoCompare(){
+    public ApiCryptoCompare getApiCryptoCompare() {
         return mRetrofit.create(ApiCryptoCompare.class);
     }
 }
