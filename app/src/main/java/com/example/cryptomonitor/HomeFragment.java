@@ -1,6 +1,5 @@
 package com.example.cryptomonitor;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,7 +20,7 @@ import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
 
-    private CoinCryptoCompare mCoinCryptoCompare;
+    private CoinCryptoCompare mCoinCryptoCompare = new CoinCryptoCompare();
     private RecyclerView recyclerView;
     private CoinAdapterHome coinAdapterHome;
 
@@ -29,7 +28,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment_layout, container, false);
-        recyclerView=view.findViewById(R.id.rv_coin_itemlist);
+        recyclerView = view.findViewById(R.id.rv_coin_itemlist);
         startConnectionApi();
         return view;
     }
@@ -43,9 +42,8 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onResponse(Call<CoinCryptoCompare> call, Response<CoinCryptoCompare> response) {
                         mCoinCryptoCompare = response.body();
-
                         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        coinAdapterHome=new CoinAdapterHome(mCoinCryptoCompare,getActivity());
+                        coinAdapterHome = new CoinAdapterHome(mCoinCryptoCompare, getActivity());
                         recyclerView.setAdapter(coinAdapterHome);
                     }
 
