@@ -14,7 +14,7 @@ public class App extends Application {
                 .build();
     }
 
-    public AppDatabase getDatabase() {
+    public static AppDatabase getDatabase() {
         return database;
     }
 }

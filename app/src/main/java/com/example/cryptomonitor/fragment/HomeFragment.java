@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.CoinAdapterHome;
@@ -23,14 +25,14 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     private CoinCryptoCompare mCoinCryptoCompare = new CoinCryptoCompare();
-    private RecyclerView recyclerView;
-    private CoinAdapterHome coinAdapterHome;
+    private RecyclerView mRecyclerView;
+    private CoinAdapterHome mCoinAdapterHome;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment_layout, container, false);
-        recyclerView = view.findViewById(R.id.rv_coin_itemlist);
+        mRecyclerView = view.findViewById(R.id.rv_coin_itemlist);
         startConnectionApi();
         return view;
     }
@@ -44,9 +46,11 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onResponse(@NonNull Call<CoinCryptoCompare> call, @NonNull Response<CoinCryptoCompare> response) {
                         mCoinCryptoCompare = response.body();
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                        coinAdapterHome = new CoinAdapterHome(mCoinCryptoCompare, getContext());
-                        recyclerView.setAdapter(coinAdapterHome);
+                        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        mCoinAdapterHome = new CoinAdapterHome(mCoinCryptoCompare, getContext());
+                        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_fall_down);
+                        mRecyclerView.setLayoutAnimation(animation);
+                        mRecyclerView.setAdapter(mCoinAdapterHome);
                     }
 
                     @Override

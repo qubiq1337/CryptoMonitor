@@ -17,7 +17,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
 
     private CoinCryptoCompare mCoinCryptoCompare;
     private Context mContext;
-    private final String URL = "https://www.cryptocompare.com";
+    private static final String URL = "https://www.cryptocompare.com";
 
     public CoinAdapterHome(CoinCryptoCompare coinCryptoCompare, Context context) {
         mCoinCryptoCompare = coinCryptoCompare;
@@ -51,7 +51,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         private TextView textViewName;
         private ImageView imageViewIcon;
 
-        public CoinViewHolder(@NonNull View itemView) {
+        CoinViewHolder(@NonNull View itemView) {
             super(itemView);
 
             textViewFullName = itemView.findViewById(R.id.rv_coin_layout_fullname);
