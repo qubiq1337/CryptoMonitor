@@ -15,7 +15,7 @@ public class Network {
                 .build();
     }
 
-    public static Network getmInstance() {
+    public static Network getInstance() {
         if (mInstance == null) {
             mInstance = new Network();
         }

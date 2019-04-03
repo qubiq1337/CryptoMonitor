@@ -11,10 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.CoinAdapterHome;
 import com.example.cryptomonitor.model.CoinCryptoCompare;
 import com.example.cryptomonitor.network_api.Network;
-import com.example.cryptomonitor.R;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,20 +37,20 @@ public class HomeFragment extends Fragment {
 
     public void startConnectionApi() {
 
-        Network.getmInstance()
+        Network.getInstance()
                 .getApiCryptoCompare()
                 .getTopListData(100, 0, "USD")
                 .enqueue(new Callback<CoinCryptoCompare>() {
                     @Override
-                    public void onResponse(Call<CoinCryptoCompare> call, Response<CoinCryptoCompare> response) {
+                    public void onResponse(@NonNull Call<CoinCryptoCompare> call, @NonNull Response<CoinCryptoCompare> response) {
                         mCoinCryptoCompare = response.body();
-                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                        coinAdapterHome = new CoinAdapterHome(mCoinCryptoCompare, getActivity());
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        coinAdapterHome = new CoinAdapterHome(mCoinCryptoCompare, getContext());
                         recyclerView.setAdapter(coinAdapterHome);
                     }
 
                     @Override
-                    public void onFailure(Call<CoinCryptoCompare> call, Throwable t) {
+                    public void onFailure(@NonNull Call<CoinCryptoCompare> call, @NonNull Throwable t) {
                         Log.e("ERROR", t.toString());
                     }
                 });
