@@ -37,14 +37,15 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.home_fragment_layout, container, false);
         mRecyclerView = view.findViewById(R.id.rv_coin_itemlist);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mCoinAdapterHome = new CoinAdapterHome(getContext());
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_fall_down);
         mRecyclerView.setLayoutAnimation(animation);
-        Log.d("MyLogs", "onCreateView: " + Thread.currentThread().getId());
+        mCoinAdapterHome = new CoinAdapterHome(getContext());
         mRecyclerView.setAdapter(mCoinAdapterHome);
         startConnectionApi();
         return view;
     }
+
+    // TODO: network executor on other thread
 
     public void startConnectionApi() {
         Network.getInstance()
@@ -55,13 +56,12 @@ public class HomeFragment extends Fragment {
                     public void onResponse(@NonNull Call<CoinCryptoCompare> call, @NonNull Response<CoinCryptoCompare> response) {
                         mCoinCryptoCompare = response.body();
                         ArrayList<CoinInfo> coinInfoList = new ArrayList<>();
-                        Log.d("MyLogs", "onResponse: " + Thread.currentThread().getId());
                         if (mCoinCryptoCompare != null)
-                            coinInfoList = new ArrayList<>();
+                            coinInfoList = getCoinInfoList(mCoinCryptoCompare);
                         ((CoinAdapterHome) mRecyclerView.getAdapter()).setCoinData(coinInfoList);
                     }
 
-                   /* private ArrayList<CoinInfo> getCoinInfoList(CoinCryptoCompare mCoinCryptoCompare) {
+                    private ArrayList<CoinInfo> getCoinInfoList(CoinCryptoCompare mCoinCryptoCompare) {
                         ArrayList<CoinInfo> coinInfoArrayList = new ArrayList<>();
                         CoinInfo coinInfo;
                         for (int i = 0; i < mCoinCryptoCompare.getData().size(); i++) {
@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
                             coinInfoArrayList.add(coinInfo);
                         }
                         return coinInfoArrayList;
-                    }*/
+                    }
 
                     @Override
                     public void onFailure(@NonNull Call<CoinCryptoCompare> call, @NonNull Throwable t) {

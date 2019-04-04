@@ -13,7 +13,7 @@ public class CoinInfo {
     private String imageURL;
     private String price;
 
-    public CoinInfo(String fullName, String shortName, String imageURL, String price) {
+    public CoinInfo(String fullName, String shortName, String price, String imageURL) {
         this.fullName = fullName;
         this.shortName = shortName;
         this.imageURL = imageURL;
