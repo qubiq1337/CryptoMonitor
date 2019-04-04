@@ -10,39 +10,45 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cryptomonitor.R;
-import com.example.cryptomonitor.model.CoinCryptoCompare;
+import com.example.cryptomonitor.database.CoinInfo;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinViewHolder> {
 
-    private CoinCryptoCompare mCoinCryptoCompare;
+    private ArrayList<CoinInfo> coinData;
     private Context mContext;
     private static final String URL = "https://www.cryptocompare.com";
 
-    public CoinAdapterHome(CoinCryptoCompare coinCryptoCompare, Context context) {
-        mCoinCryptoCompare = coinCryptoCompare;
+    public CoinAdapterHome(Context context) {
         mContext = context;
+        coinData = new ArrayList<>();
+    }
+
+    public void setCoinData(ArrayList<CoinInfo> coinData) {
+        this.coinData = coinData;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public CoinViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.rv_coin_layuot, viewGroup, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.rv_coin_layuot, viewGroup, false);
         return new CoinViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CoinViewHolder coinViewHolder, int i) {
-        coinViewHolder.textViewFullName.setText(mCoinCryptoCompare.getData().get(i).getCoinInfo().getFullName());
-        coinViewHolder.textViewName.setText(mCoinCryptoCompare.getData().get(i).getCoinInfo().getName());
-        coinViewHolder.textViewPrice.setText(mCoinCryptoCompare.getData().get(i).getDISPLAY().getUSD().getPRICE());
-        Picasso.with(mContext).load(URL + mCoinCryptoCompare.getData().get(i).getCoinInfo().getImageUrl()).into(coinViewHolder.imageViewIcon);
+        coinViewHolder.textViewFullName.setText(coinData.get(i).getFullName());
+        coinViewHolder.textViewName.setText(coinData.get(i).getShortName());
+        coinViewHolder.textViewPrice.setText(coinData.get(i).getPrice());
+        Picasso.with(mContext).load(URL + coinData.get(i).getImageURL()).into(coinViewHolder.imageViewIcon);
     }
 
     @Override
     public int getItemCount() {
-        return mCoinCryptoCompare.getData().size();
+        return coinData.size();
     }
 
     class CoinViewHolder extends RecyclerView.ViewHolder {
@@ -53,7 +59,6 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
 
         CoinViewHolder(@NonNull View itemView) {
             super(itemView);
-
             textViewFullName = itemView.findViewById(R.id.rv_coin_layout_fullname);
             textViewName = itemView.findViewById(R.id.rv_coin_layout_name);
             textViewPrice = itemView.findViewById(R.id.rv_coin_layout_price);

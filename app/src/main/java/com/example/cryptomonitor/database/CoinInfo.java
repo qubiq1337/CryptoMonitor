@@ -10,37 +10,53 @@ public class CoinInfo {
     private long coinId;
     private String fullName;
     private String shortName;
-    private String wayToIcon;
+    private String imageURL;
+    private String price;
 
-    String getFullName() {
+    public CoinInfo(String fullName, String shortName, String imageURL, String price) {
+        this.fullName = fullName;
+        this.shortName = shortName;
+        this.imageURL = imageURL;
+        this.price = price;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getFullName() {
         return fullName;
     }
 
-    void setFullName(String fullName) {
+    public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
-    String getShortName() {
+    public String getShortName() {
         return shortName;
     }
 
-    void setShortName(String shortName) {
+    public void setShortName(String shortName) {
         this.shortName = shortName;
     }
 
-    String getWayToIcon() {
-        return wayToIcon;
+    public String getImageURL() {
+        return imageURL;
     }
 
-    void setWayToIcon(String wayToIcon) {
-        this.wayToIcon = wayToIcon;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
-    long getCoinId() {
+    public long getCoinId() {
         return coinId;
     }
 
-    void setCoinId(long coinId) {
+    public void setCoinId(long coinId) {
         this.coinId = coinId;
     }
 }
