@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -35,19 +36,22 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener {
+public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private CoinCryptoCompare mCoinCryptoCompare = new CoinCryptoCompare();
     private RecyclerView mRecyclerView;
     private CoinAdapterHome mCoinAdapterHome;
+    private SwipeRefreshLayout mSwipeRefresh;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment_layout, container, false);
         mRecyclerView = view.findViewById(R.id.rv_coin_itemlist);
+        mSwipeRefresh = view.findViewById(R.id.refresh);
+        mSwipeRefresh.setOnRefreshListener(this);
+        mSwipeRefresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_fall_down);
         mRecyclerView.setLayoutAnimation(animation);
 
@@ -80,6 +84,12 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
                             List<CoinInfo> coinInfoList = getCoinInfoList(mCoinCryptoCompare);
                             updateDatabase(coinInfoList);
                         }
+                        mRecyclerView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mSwipeRefresh.setRefreshing(false);
+                            }
+                        });
                     }
 
                     @Override
@@ -137,5 +147,10 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         Observable.fromCallable(new UpdateOperation(clickedCoinInfo))
                 .subscribeOn(Schedulers.io())
                 .subscribe();
+    }
+
+    @Override
+    public void onRefresh() {
+        startConnectionApi();
     }
 }
