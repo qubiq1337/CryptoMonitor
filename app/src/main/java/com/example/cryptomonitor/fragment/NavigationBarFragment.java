@@ -1,6 +1,6 @@
 package com.example.cryptomonitor.fragment;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -46,9 +46,9 @@ public class NavigationBarFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        NavigationBarListener = (NavigationBarListener) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        NavigationBarListener = (NavigationBarListener) context;
     }
 
     public interface NavigationBarListener {
