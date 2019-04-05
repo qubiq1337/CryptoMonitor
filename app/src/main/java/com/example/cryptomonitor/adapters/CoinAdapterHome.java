@@ -20,6 +20,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
 
     private List<CoinInfo> coinData;
     private Context mContext;
+    private OnStarClickListener onStarClickListener;
     private static final String URL = "https://www.cryptocompare.com";
 
     public CoinAdapterHome(Context context) {
@@ -32,10 +33,18 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         notifyDataSetChanged();
     }
 
+    public List<CoinInfo> getCoinData() {
+        return coinData;
+    }
+
+    public void setOnStarClickListener(OnStarClickListener onStarClickListener) {
+        this.onStarClickListener = onStarClickListener;
+    }
+
     @NonNull
     @Override
     public CoinViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.rv_coin_layuot, viewGroup, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.rv_coin_layout, viewGroup, false);
         return new CoinViewHolder(view);
     }
 
@@ -44,6 +53,10 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         coinViewHolder.textViewFullName.setText(coinData.get(i).getFullName());
         coinViewHolder.textViewName.setText(coinData.get(i).getShortName());
         coinViewHolder.textViewPrice.setText(coinData.get(i).getPrice());
+        if (coinData.get(i).isFavorite())
+            coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.is_favorite_star));
+        else
+            coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.not_favorite_star));
         Picasso.with(mContext).load(URL + coinData.get(i).getImageURL()).into(coinViewHolder.imageViewIcon);
     }
 
@@ -52,11 +65,16 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         return coinData.size();
     }
 
+    public interface OnStarClickListener {
+        void onStarClick(int position);
+    }
+
     class CoinViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewPrice;
         private TextView textViewFullName;
         private TextView textViewName;
         private ImageView imageViewIcon;
+        private ImageView isFavoriteImage;
 
         CoinViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,6 +82,13 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             textViewName = itemView.findViewById(R.id.rv_coin_layout_name);
             textViewPrice = itemView.findViewById(R.id.rv_coin_layout_price);
             imageViewIcon = itemView.findViewById(R.id.rv_coin_layout_icon);
+            isFavoriteImage = itemView.findViewById(R.id.rv_coin_favorite_image);
+            isFavoriteImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onStarClickListener.onStarClick(getAdapterPosition());
+                }
+            });
         }
     }
 

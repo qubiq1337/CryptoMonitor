@@ -67,7 +67,7 @@
             tools:text="6000.25" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/rv_coin_graphic"
             android:layout_width="0dp"
             android:layout_height="90dp"
             android:layout_marginStart="95dp"
@@ -78,6 +78,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/download" />
+
+        <ImageView
+            android:id="@+id/rv_coin_favorite_image"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/not_favorite_star" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>

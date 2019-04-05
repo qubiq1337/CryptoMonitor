@@ -18,6 +18,7 @@ import com.example.cryptomonitor.adapters.CoinAdapterHome;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.CoinInfo;
 import com.example.cryptomonitor.database.CoinInfoDao;
+import com.example.cryptomonitor.database.UpdateOperation;
 import com.example.cryptomonitor.model.CoinCryptoCompare;
 import com.example.cryptomonitor.model.Datum;
 import com.example.cryptomonitor.network_api.Network;
@@ -25,6 +26,8 @@ import com.example.cryptomonitor.network_api.Network;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -32,11 +35,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener {
 
     private CoinCryptoCompare mCoinCryptoCompare = new CoinCryptoCompare();
     private RecyclerView mRecyclerView;
-    CoinAdapterHome mCoinAdapterHome;
+    private CoinAdapterHome mCoinAdapterHome;
 
     @Nullable
     @Override
@@ -44,22 +47,21 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.home_fragment_layout, container, false);
         mRecyclerView = view.findViewById(R.id.rv_coin_itemlist);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_fall_down);
         mRecyclerView.setLayoutAnimation(animation);
+
         mCoinAdapterHome = new CoinAdapterHome(getContext());
+        mCoinAdapterHome.setOnStarClickListener(this);
         mRecyclerView.setAdapter(mCoinAdapterHome);
         Disposable getDataFromDB = App.getDatabase().coinInfoDao()
                 .getAll()
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<CoinInfo>>() {
                     @Override
                     public void accept(final List<CoinInfo> coinInfoList) {
-                        mRecyclerView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mCoinAdapterHome.setCoinData(coinInfoList);
-                            }
-                        });
+                        mCoinAdapterHome.setCoinData(coinInfoList);
                     }
                 });
         startConnectionApi();
@@ -103,18 +105,19 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * к базе данных следует обращаться из другого потока, здесь я могу этого не делать,
-     * потому что метод вызывается network api, а он работает уже в другом потоке*/
+     * к базе данных следует обращаться из другого потока, здесь мы можем этого не делать,
+     * потому что метод вызывается в network api, а он работает уже в другом потоке
+     */
     private void updateDatabase(List<CoinInfo> newCoinInfoList) {
         CoinInfoDao coinInfoDao = App.getDatabase().coinInfoDao();
         List<CoinInfo> insertList = new ArrayList<>();
         List<CoinInfo> updateList = new ArrayList<>();
         for (CoinInfo coinInfo : newCoinInfoList) {
-            List<CoinInfo> dbInfoList = coinInfoDao.getByFullName(coinInfo.getFullName());    //п олучаем список, чтобы если нет записи,
+            List<CoinInfo> dbInfoList = coinInfoDao.getByFullName(coinInfo.getFullName());    // получаем список, чтобы если нет записи,
             if (dbInfoList.isEmpty()) {                                            // пришел хотя бы пустой список, это значит что ее надо добавить
                 insertList.add(coinInfo);
             } else {
-                CoinInfo dbCoinInfo = dbInfoList.get(0);                                    //если список не пустой там одна запись по нужному id
+                CoinInfo dbCoinInfo = dbInfoList.get(0);                                    //если список не пустой, там одна запись по нужному id
                 coinInfo.setCoinId(dbCoinInfo.getCoinId());
                 coinInfo.setFavorite(dbCoinInfo.isFavorite());
                 updateList.add(coinInfo);
@@ -122,5 +125,17 @@ public class HomeFragment extends Fragment {
         }
         coinInfoDao.insert(insertList);
         coinInfoDao.update(updateList);
+    }
+
+    @Override
+    public void onStarClick(int position) {
+        CoinInfo clickedCoinInfo = mCoinAdapterHome.getCoinData().get(position);
+        if (clickedCoinInfo.isFavorite())
+            clickedCoinInfo.setFavorite(false);
+        else
+            clickedCoinInfo.setFavorite(true);
+        Observable.fromCallable(new UpdateOperation(clickedCoinInfo))
+                .subscribeOn(Schedulers.io())
+                .subscribe();
     }
 }

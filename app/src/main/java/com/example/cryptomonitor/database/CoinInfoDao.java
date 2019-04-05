@@ -9,7 +9,6 @@ import android.arch.persistence.room.Update;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.Single;
 
 @Dao
 public interface CoinInfoDao {
@@ -23,6 +22,9 @@ public interface CoinInfoDao {
     @Query("select * from coininfo where fullName=:fullName")
     List<CoinInfo> getByFullName(String fullName);
 
+    @Query("select * from coininfo where isFavorite = 1 ")
+    Flowable<List<CoinInfo>> getFavoriteCoins();
+
     @Insert
     void insert(List<CoinInfo> coinInfoList);
 
@@ -30,12 +32,11 @@ public interface CoinInfoDao {
     void insert(CoinInfo coinInfo);
 
     @Update
-    void update(CoinInfo coinInfo);
+    int update(CoinInfo coinInfo);
 
     @Update
-    void update(List<CoinInfo> coinInfoList);
+    int update(List<CoinInfo> coinInfoList);
 
     @Delete
-    void delete(CoinInfo coinInfo);
-
+    int delete(CoinInfo coinInfo);
 }
