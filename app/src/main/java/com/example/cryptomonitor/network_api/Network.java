@@ -1,7 +1,5 @@
 package com.example.cryptomonitor.network_api;
 
-import android.os.Handler;
-
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -17,8 +15,8 @@ public class Network {
     private Network() {
         mNetworkExecutor = Executors.newSingleThreadExecutor();
         mRetrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
                 .callbackExecutor(mNetworkExecutor)
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

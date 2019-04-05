@@ -17,7 +17,9 @@ import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.CoinAdapterHome;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.CoinInfo;
+import com.example.cryptomonitor.database.CoinInfoDao;
 import com.example.cryptomonitor.model.CoinCryptoCompare;
+import com.example.cryptomonitor.model.Datum;
 import com.example.cryptomonitor.network_api.Network;
 
 import java.util.ArrayList;
@@ -51,8 +53,7 @@ public class HomeFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<List<CoinInfo>>() {
                     @Override
-                    public void accept(List<CoinInfo> coinInfos) {
-                        final ArrayList<CoinInfo> coinInfoList = new ArrayList<>(coinInfos);
+                    public void accept(final List<CoinInfo> coinInfoList) {
                         mRecyclerView.post(new Runnable() {
                             @Override
                             public void run() {
@@ -74,11 +75,10 @@ public class HomeFragment extends Fragment {
                     public void onResponse(@NonNull Call<CoinCryptoCompare> call, @NonNull Response<CoinCryptoCompare> response) {
                         mCoinCryptoCompare = response.body();
                         if (mCoinCryptoCompare != null) {
-                            ArrayList<CoinInfo> coinInfoList = getCoinInfoList(mCoinCryptoCompare);
-                            App.getDatabase().coinInfoDao().insert(coinInfoList);
+                            List<CoinInfo> coinInfoList = getCoinInfoList(mCoinCryptoCompare);
+                            updateDatabase(coinInfoList);
                         }
                     }
-
 
                     @Override
                     public void onFailure(@NonNull Call<CoinCryptoCompare> call, @NonNull Throwable t) {
@@ -87,18 +87,40 @@ public class HomeFragment extends Fragment {
                 });
     }
 
-    private ArrayList<CoinInfo> getCoinInfoList(CoinCryptoCompare mCoinCryptoCompare) {
-        ArrayList<CoinInfo> coinInfoArrayList = new ArrayList<>();
+    private List<CoinInfo> getCoinInfoList(CoinCryptoCompare mCoinCryptoCompare) {
+        List<CoinInfo> coinInfoArrayList = new ArrayList<>();
+        List<Datum> coinCryptoCompareData = mCoinCryptoCompare.getData();
         CoinInfo coinInfo;
-        for (int i = 0; i < mCoinCryptoCompare.getData().size(); i++) {
-            String fullName = mCoinCryptoCompare.getData().get(i).getCoinInfo().getFullName();
-            String shortName = mCoinCryptoCompare.getData().get(i).getCoinInfo().getName();
-            String price = mCoinCryptoCompare.getData().get(i).getDISPLAY().getUSD().getPRICE();
-            String imageURL = mCoinCryptoCompare.getData().get(i).getCoinInfo().getImageUrl();
+        for (Datum coin : coinCryptoCompareData) {
+            String fullName = coin.getCoinInfo().getFullName();
+            String shortName = coin.getCoinInfo().getName();
+            String price = coin.getDISPLAY().getUSD().getPRICE();
+            String imageURL = coin.getCoinInfo().getImageUrl();
             coinInfo = new CoinInfo(fullName, shortName, price, imageURL);
             coinInfoArrayList.add(coinInfo);
         }
         return coinInfoArrayList;
     }
 
+    /**
+     * к базе данных следует обращаться из другого потока, здесь я могу этого не делать,
+     * потому что метод вызывается network api, а он работает уже в другом потоке*/
+    private void updateDatabase(List<CoinInfo> newCoinInfoList) {
+        CoinInfoDao coinInfoDao = App.getDatabase().coinInfoDao();
+        List<CoinInfo> insertList = new ArrayList<>();
+        List<CoinInfo> updateList = new ArrayList<>();
+        for (CoinInfo coinInfo : newCoinInfoList) {
+            List<CoinInfo> dbInfoList = coinInfoDao.getByFullName(coinInfo.getFullName());    //п олучаем список, чтобы если нет записи,
+            if (dbInfoList.isEmpty()) {                                            // пришел хотя бы пустой список, это значит что ее надо добавить
+                insertList.add(coinInfo);
+            } else {
+                CoinInfo dbCoinInfo = dbInfoList.get(0);                                    //если список не пустой там одна запись по нужному id
+                coinInfo.setCoinId(dbCoinInfo.getCoinId());
+                coinInfo.setFavorite(dbCoinInfo.isFavorite());
+                updateList.add(coinInfo);
+            }
+        }
+        coinInfoDao.insert(insertList);
+        coinInfoDao.update(updateList);
+    }
 }

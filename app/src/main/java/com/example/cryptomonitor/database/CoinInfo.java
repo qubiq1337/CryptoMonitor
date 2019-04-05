@@ -12,12 +12,14 @@ public class CoinInfo {
     private String shortName;
     private String imageURL;
     private String price;
+    private boolean isFavorite;
 
     public CoinInfo(String fullName, String shortName, String price, String imageURL) {
         this.fullName = fullName;
         this.shortName = shortName;
         this.imageURL = imageURL;
         this.price = price;
+        this.isFavorite = false;
     }
 
     public String getPrice() {
@@ -58,5 +60,13 @@ public class CoinInfo {
 
     public void setCoinId(long coinId) {
         this.coinId = coinId;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }

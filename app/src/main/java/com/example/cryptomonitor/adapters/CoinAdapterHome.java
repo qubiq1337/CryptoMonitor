@@ -14,10 +14,11 @@ import com.example.cryptomonitor.database.CoinInfo;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinViewHolder> {
 
-    private ArrayList<CoinInfo> coinData;
+    private List<CoinInfo> coinData;
     private Context mContext;
     private static final String URL = "https://www.cryptocompare.com";
 
@@ -26,7 +27,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         coinData = new ArrayList<>();
     }
 
-    public void setCoinData(ArrayList<CoinInfo> coinData) {
+    public void setCoinData(List<CoinInfo> coinData) {
         this.coinData = coinData;
         notifyDataSetChanged();
     }
