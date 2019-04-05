@@ -29,7 +29,6 @@ public class HomeFragment extends Fragment {
 
     private CoinCryptoCompare mCoinCryptoCompare = new CoinCryptoCompare();
     private RecyclerView mRecyclerView;
-    private CoinAdapterHome mCoinAdapterHome;
 
     @Nullable
     @Override
@@ -39,13 +38,11 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_fall_down);
         mRecyclerView.setLayoutAnimation(animation);
-        mCoinAdapterHome = new CoinAdapterHome(getContext());
+        CoinAdapterHome mCoinAdapterHome = new CoinAdapterHome(getContext());
         mRecyclerView.setAdapter(mCoinAdapterHome);
         startConnectionApi();
         return view;
     }
-
-    // TODO: network executor on other thread
 
     public void startConnectionApi() {
         Network.getInstance()
@@ -55,25 +52,19 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onResponse(@NonNull Call<CoinCryptoCompare> call, @NonNull Response<CoinCryptoCompare> response) {
                         mCoinCryptoCompare = response.body();
-                        ArrayList<CoinInfo> coinInfoList = new ArrayList<>();
+                        final ArrayList<CoinInfo> coinInfoList;
                         if (mCoinCryptoCompare != null)
                             coinInfoList = getCoinInfoList(mCoinCryptoCompare);
-                        ((CoinAdapterHome) mRecyclerView.getAdapter()).setCoinData(coinInfoList);
+                        else
+                            coinInfoList = new ArrayList<>();
+                        mRecyclerView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((CoinAdapterHome) mRecyclerView.getAdapter()).setCoinData(coinInfoList);
+                            }
+                        });
                     }
 
-                    private ArrayList<CoinInfo> getCoinInfoList(CoinCryptoCompare mCoinCryptoCompare) {
-                        ArrayList<CoinInfo> coinInfoArrayList = new ArrayList<>();
-                        CoinInfo coinInfo;
-                        for (int i = 0; i < mCoinCryptoCompare.getData().size(); i++) {
-                            String fullName = mCoinCryptoCompare.getData().get(i).getCoinInfo().getFullName();
-                            String shortName = mCoinCryptoCompare.getData().get(i).getCoinInfo().getName();
-                            String price = mCoinCryptoCompare.getData().get(i).getDISPLAY().getUSD().getPRICE();
-                            String imageURL = mCoinCryptoCompare.getData().get(i).getCoinInfo().getImageUrl();
-                            coinInfo = new CoinInfo(fullName, shortName, price, imageURL);
-                            coinInfoArrayList.add(coinInfo);
-                        }
-                        return coinInfoArrayList;
-                    }
 
                     @Override
                     public void onFailure(@NonNull Call<CoinCryptoCompare> call, @NonNull Throwable t) {
@@ -81,4 +72,19 @@ public class HomeFragment extends Fragment {
                     }
                 });
     }
+
+    private ArrayList<CoinInfo> getCoinInfoList(CoinCryptoCompare mCoinCryptoCompare) {
+        ArrayList<CoinInfo> coinInfoArrayList = new ArrayList<>();
+        CoinInfo coinInfo;
+        for (int i = 0; i < mCoinCryptoCompare.getData().size(); i++) {
+            String fullName = mCoinCryptoCompare.getData().get(i).getCoinInfo().getFullName();
+            String shortName = mCoinCryptoCompare.getData().get(i).getCoinInfo().getName();
+            String price = mCoinCryptoCompare.getData().get(i).getDISPLAY().getUSD().getPRICE();
+            String imageURL = mCoinCryptoCompare.getData().get(i).getCoinInfo().getImageUrl();
+            coinInfo = new CoinInfo(fullName, shortName, price, imageURL);
+            coinInfoArrayList.add(coinInfo);
+        }
+        return coinInfoArrayList;
+    }
+
 }
