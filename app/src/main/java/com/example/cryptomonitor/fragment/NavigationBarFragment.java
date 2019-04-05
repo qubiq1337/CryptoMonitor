@@ -17,6 +17,13 @@ import com.example.cryptomonitor.R;
 public class NavigationBarFragment extends Fragment {
     private NavigationBarListener NavigationBarListener;
 
+    private BottomNavigationView.OnNavigationItemReselectedListener mNavigationItemReselectedListener
+            = new BottomNavigationView.OnNavigationItemReselectedListener() {
+        @Override
+        public void onNavigationItemReselected(@NonNull MenuItem item) {
+        }
+    };
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -42,6 +49,7 @@ public class NavigationBarFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_navigation_bar, container, false);
         BottomNavigationView navigation = rootView.findViewById(R.id.navigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setOnNavigationItemReselectedListener(mNavigationItemReselectedListener);
         return rootView;
     }
 
