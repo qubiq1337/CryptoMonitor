@@ -1,11 +1,11 @@
 package com.example.cryptomonitor.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,26 +15,21 @@ import com.example.cryptomonitor.R;
 
 
 public class NavigationBarFragment extends Fragment {
+    private NavigationBarListener NavigationBarListener;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    HomeFragment homeFragment = new HomeFragment();
-                    fragmentTransaction.replace(R.id.top_container, homeFragment);
-                    fragmentTransaction.commit();
+                    NavigationBarListener.changeFragment(R.id.top_container, HomeFragment.class.getName());
                     return true;
                 case R.id.navigation_favorites:
-                    FavoritesFragment favoritesFragment = new FavoritesFragment();
-                    fragmentTransaction.replace(R.id.top_container, favoritesFragment);
-                    fragmentTransaction.commit();
+                    NavigationBarListener.changeFragment(R.id.top_container, FavoritesFragment.class.getName());
                     return true;
                 case R.id.navigation_history:
-                    HistoryFragment historyFragment = new HistoryFragment();
-                    fragmentTransaction.replace(R.id.top_container, historyFragment);
-                    fragmentTransaction.commit();
+                    NavigationBarListener.changeFragment(R.id.top_container, HistoryFragment.class.getName());
                     return true;
             }
             return false;
@@ -49,6 +44,18 @@ public class NavigationBarFragment extends Fragment {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         return rootView;
     }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        NavigationBarListener = (NavigationBarListener) activity;
+    }
+
+    public interface NavigationBarListener {
+        void changeFragment(int container, String fragment);
+    }
+
+
 }
 
 

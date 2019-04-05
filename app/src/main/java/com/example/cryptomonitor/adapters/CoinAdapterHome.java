@@ -18,23 +18,23 @@ import java.util.List;
 
 public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinViewHolder> {
 
+    private static final String URL = "https://www.cryptocompare.com";
     private List<CoinInfo> coinData;
     private Context mContext;
     private OnStarClickListener onStarClickListener;
-    private static final String URL = "https://www.cryptocompare.com";
 
     public CoinAdapterHome(Context context) {
         mContext = context;
         coinData = new ArrayList<>();
     }
 
+    public List<CoinInfo> getCoinData() {
+        return coinData;
+    }
+
     public void setCoinData(List<CoinInfo> coinData) {
         this.coinData = coinData;
         notifyDataSetChanged();
-    }
-
-    public List<CoinInfo> getCoinData() {
-        return coinData;
     }
 
     public void setOnStarClickListener(OnStarClickListener onStarClickListener) {

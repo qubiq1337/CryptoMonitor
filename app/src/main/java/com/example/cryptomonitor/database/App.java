@@ -7,14 +7,14 @@ public class App extends Application {
 
     private static AppDatabase database;
 
+    public static AppDatabase getDatabase() {
+        return database;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         database = Room.databaseBuilder(this, AppDatabase.class, "database")
                 .build();
-    }
-
-    public static AppDatabase getDatabase() {
-        return database;
     }
 }

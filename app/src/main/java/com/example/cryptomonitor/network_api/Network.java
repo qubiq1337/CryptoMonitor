@@ -8,8 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Network {
     private static Network mInstance;
-    private Executor mNetworkExecutor;
     private final String BASE_URL = "https://min-api.cryptocompare.com";
+    private Executor mNetworkExecutor;
     private Retrofit mRetrofit;
 
     private Network() {
