@@ -95,6 +95,12 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
                     @Override
                     public void onFailure(@NonNull Call<CoinCryptoCompare> call, @NonNull Throwable t) {
                         Log.e("ERROR", t.toString());
+                        mRecyclerView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mSwipeRefresh.setRefreshing(false);
+                            }
+                        });
                     }
                 });
     }
