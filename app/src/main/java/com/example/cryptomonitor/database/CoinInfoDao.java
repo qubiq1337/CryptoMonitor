@@ -6,13 +6,16 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Flowable;
 
 @Dao
 public interface CoinInfoDao {
 
     @Query("select * from coininfo")
-    List<CoinInfo> getAll();
+    Flowable<List<CoinInfo>> getAll();
 
     @Query("select * from coininfo where coinId=:id")
     CoinInfo getById(long id);

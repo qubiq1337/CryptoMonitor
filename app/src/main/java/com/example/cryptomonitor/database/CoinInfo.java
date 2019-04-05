@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity
 public class CoinInfo {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private long coinId;
     private String fullName;
     private String shortName;

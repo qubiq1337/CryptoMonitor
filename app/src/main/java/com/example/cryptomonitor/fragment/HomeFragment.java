@@ -15,12 +15,17 @@ import android.view.animation.LayoutAnimationController;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.CoinAdapterHome;
+import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.CoinInfo;
 import com.example.cryptomonitor.model.CoinCryptoCompare;
 import com.example.cryptomonitor.network_api.Network;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,6 +34,7 @@ public class HomeFragment extends Fragment {
 
     private CoinCryptoCompare mCoinCryptoCompare = new CoinCryptoCompare();
     private RecyclerView mRecyclerView;
+    CoinAdapterHome mCoinAdapterHome;
 
     @Nullable
     @Override
@@ -38,8 +44,23 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_fall_down);
         mRecyclerView.setLayoutAnimation(animation);
-        CoinAdapterHome mCoinAdapterHome = new CoinAdapterHome(getContext());
+        mCoinAdapterHome = new CoinAdapterHome(getContext());
         mRecyclerView.setAdapter(mCoinAdapterHome);
+        Disposable getDataFromDB = App.getDatabase().coinInfoDao()
+                .getAll()
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Consumer<List<CoinInfo>>() {
+                    @Override
+                    public void accept(List<CoinInfo> coinInfos) {
+                        final ArrayList<CoinInfo> coinInfoList = new ArrayList<>(coinInfos);
+                        mRecyclerView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mCoinAdapterHome.setCoinData(coinInfoList);
+                            }
+                        });
+                    }
+                });
         startConnectionApi();
         return view;
     }
@@ -52,17 +73,10 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onResponse(@NonNull Call<CoinCryptoCompare> call, @NonNull Response<CoinCryptoCompare> response) {
                         mCoinCryptoCompare = response.body();
-                        final ArrayList<CoinInfo> coinInfoList;
-                        if (mCoinCryptoCompare != null)
-                            coinInfoList = getCoinInfoList(mCoinCryptoCompare);
-                        else
-                            coinInfoList = new ArrayList<>();
-                        mRecyclerView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                ((CoinAdapterHome) mRecyclerView.getAdapter()).setCoinData(coinInfoList);
-                            }
-                        });
+                        if (mCoinCryptoCompare != null) {
+                            ArrayList<CoinInfo> coinInfoList = getCoinInfoList(mCoinCryptoCompare);
+                            App.getDatabase().coinInfoDao().insert(coinInfoList);
+                        }
                     }
 
 
