@@ -73,6 +73,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     }
 
     public void startConnectionApi() {
+        mSwipeRefresh.setRefreshing(true);
         Network.getInstance()
                 .getApiCryptoCompare()
                 .getTopListData(100, 0, "USD")
