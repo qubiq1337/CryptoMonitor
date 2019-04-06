@@ -21,6 +21,7 @@ public class NavigationBarFragment extends Fragment {
             = new BottomNavigationView.OnNavigationItemReselectedListener() {
         @Override
         public void onNavigationItemReselected(@NonNull MenuItem item) {
+            //ignore
         }
     };
 

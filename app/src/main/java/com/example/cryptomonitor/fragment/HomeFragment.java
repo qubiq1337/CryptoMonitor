@@ -19,6 +19,7 @@ import com.example.cryptomonitor.adapters.CoinAdapterHome;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.CoinInfo;
 import com.example.cryptomonitor.database.CoinInfoDao;
+import com.example.cryptomonitor.database.DBHelper;
 import com.example.cryptomonitor.database.UpdateOperation;
 import com.example.cryptomonitor.model.CoinCryptoCompare;
 import com.example.cryptomonitor.model.Datum;
@@ -83,7 +84,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
                         mCoinCryptoCompare = response.body();
                         if (mCoinCryptoCompare != null) {
                             List<CoinInfo> coinInfoList = getCoinInfoList(mCoinCryptoCompare);
-                            updateDatabase(coinInfoList);
+                            DBHelper.updateDatabase(coinInfoList);
                         }
                         mRecyclerView.post(new Runnable() {
                             @Override
@@ -121,28 +122,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         return coinInfoArrayList;
     }
 
-    /**
-     * к базе данных следует обращаться из другого потока, здесь мы можем этого не делать,
-     * потому что метод вызывается в network api, а он работает уже в другом потоке
-     */
-    private void updateDatabase(List<CoinInfo> newCoinInfoList) {
-        CoinInfoDao coinInfoDao = App.getDatabase().coinInfoDao();
-        List<CoinInfo> insertList = new ArrayList<>();
-        List<CoinInfo> updateList = new ArrayList<>();
-        for (CoinInfo coinInfo : newCoinInfoList) {
-            List<CoinInfo> dbInfoList = coinInfoDao.getByFullName(coinInfo.getFullName());    // получаем список, чтобы если нет записи,
-            if (dbInfoList.isEmpty()) {                                            // пришел хотя бы пустой список, это значит что ее надо добавить
-                insertList.add(coinInfo);
-            } else {
-                CoinInfo dbCoinInfo = dbInfoList.get(0);                                    //если список не пустой, там одна запись по нужному id
-                coinInfo.setCoinId(dbCoinInfo.getCoinId());
-                coinInfo.setFavorite(dbCoinInfo.isFavorite());
-                updateList.add(coinInfo);
-            }
-        }
-        coinInfoDao.insert(insertList);
-        coinInfoDao.update(updateList);
-    }
 
     @Override
     public void onStarClick(int position) {
@@ -151,9 +130,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
             clickedCoinInfo.setFavorite(false);
         else
             clickedCoinInfo.setFavorite(true);
-        Observable.fromCallable(new UpdateOperation(clickedCoinInfo))
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+        DBHelper.updateCoin(clickedCoinInfo);
     }
 
     @Override
