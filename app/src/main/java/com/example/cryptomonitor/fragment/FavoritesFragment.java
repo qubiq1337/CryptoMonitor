@@ -38,8 +38,7 @@ public class FavoritesFragment extends Fragment implements CoinAdapterHome.OnSta
 
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_fall_down);
         mRecyclerView.setLayoutAnimation(animation);
-
-        mCoinAdapterHome = new CoinAdapterHome(getContext());
+        mCoinAdapterHome = new CoinAdapterHome(getContext(), mRecyclerView);
         mCoinAdapterHome.setOnStarClickListener(this);
         mRecyclerView.setAdapter(mCoinAdapterHome);
         Disposable getDataFromDB = App.getDatabase().coinInfoDao()

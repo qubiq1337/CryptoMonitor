@@ -2,11 +2,13 @@ package com.example.cryptomonitor.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.cryptomonitor.R;
@@ -23,9 +25,31 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     private Context mContext;
     private OnStarClickListener onStarClickListener;
 
-    public CoinAdapterHome(Context context) {
+    public void setOnLoadListener(OnLoadListener onLoadListener) {
+        this.onLoadListener = onLoadListener;
+    }
+
+    private OnLoadListener onLoadListener;
+
+    public CoinAdapterHome(Context context, RecyclerView recyclerView) {
         mContext = context;
         coinData = new ArrayList<>();
+
+        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+
+                super.onScrolled(recyclerView, dx, dy);
+                int zapas = 30;
+                int totalSize = linearLayoutManager.getItemCount();
+                int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
+                if (totalSize == (lastVisibleItemPosition + zapas)) {
+                    int page = totalSize;
+                    onLoadListener.loadMore(page - 1);
+                }
+            }
+        });
     }
 
     public List<CoinInfo> getCoinData() {
@@ -91,5 +115,10 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             });
         }
     }
+
+    public interface OnLoadListener {
+        void loadMore(int page);
+    }
+
 
 }

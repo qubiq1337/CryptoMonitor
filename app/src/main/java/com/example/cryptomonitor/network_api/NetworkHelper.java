@@ -18,7 +18,6 @@ import retrofit2.Response;
 
 public class NetworkHelper {
 
-    private CoinCryptoCompare coinCryptoCompare = new CoinCryptoCompare();
     private final int start_limit = 100;
     private final int statr_page = 0;
     private boolean refreshing = true;
@@ -39,6 +38,7 @@ public class NetworkHelper {
                             refreshing = false;
                         }
                     }
+
                     @Override
                     public void onFailure(Call<CoinCryptoCompare> call, Throwable t) {
                         Log.e("LOAD_COINs", t.toString());
@@ -61,6 +61,7 @@ public class NetworkHelper {
         }
         return coinInfoArrayList;
     }
+
     /**
      * к базе данных следует обращаться из другого потока, здесь мы можем этого не делать,
      * потому что метод вызывается в network api, а он работает уже в другом потоке
@@ -83,7 +84,12 @@ public class NetworkHelper {
         coinInfoDao.insert(insertList);
         coinInfoDao.update(updateList);
     }
+
     public boolean isRefreshing() {
         return refreshing;
+    }
+
+    public void loadNextCoin(int page,String curency){
+        loadCoins(start_limit,page,curency);
     }
 }

@@ -1,5 +1,7 @@
 package com.example.cryptomonitor.network_api;
 
+import com.example.cryptomonitor.model.CoinCryptoCompare;
+
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 

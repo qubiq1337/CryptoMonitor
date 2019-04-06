@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.Toast;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.CoinAdapterHome;
@@ -23,6 +24,7 @@ import com.example.cryptomonitor.database.UpdateOperation;
 import com.example.cryptomonitor.model.CoinCryptoCompare;
 import com.example.cryptomonitor.model.Datum;
 import com.example.cryptomonitor.network_api.Network;
+import com.example.cryptomonitor.network_api.NetworkHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +38,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener, SwipeRefreshLayout.OnRefreshListener, CoinAdapterHome.OnLoadListener {
 
     private CoinCryptoCompare mCoinCryptoCompare = new CoinCryptoCompare();
     private RecyclerView mRecyclerView;
     private CoinAdapterHome mCoinAdapterHome;
     private SwipeRefreshLayout mSwipeRefresh;
+    private NetworkHelper networkHelper = new NetworkHelper();
 
     @Nullable
     @Override
@@ -54,8 +57,8 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_fall_down);
         mRecyclerView.setLayoutAnimation(animation);
-
-        mCoinAdapterHome = new CoinAdapterHome(getContext());
+        mCoinAdapterHome = new CoinAdapterHome(getContext(), mRecyclerView);
+        mCoinAdapterHome.setOnLoadListener(this);
         mCoinAdapterHome.setOnStarClickListener(this);
         mRecyclerView.setAdapter(mCoinAdapterHome);
         Disposable getDataFromDB = App.getDatabase().coinInfoDao()
@@ -68,80 +71,8 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
                         mCoinAdapterHome.setCoinData(coinInfoList);
                     }
                 });
-        startConnectionApi();
+        networkHelper.start("USD");
         return view;
-    }
-
-    public void startConnectionApi() {
-        mSwipeRefresh.setRefreshing(true);
-        Network.getInstance()
-                .getApiCryptoCompare()
-                .getTopListData(100, 0, "USD")
-                .enqueue(new Callback<CoinCryptoCompare>() {
-                    @Override
-                    public void onResponse(@NonNull Call<CoinCryptoCompare> call, @NonNull Response<CoinCryptoCompare> response) {
-                        mCoinCryptoCompare = response.body();
-                        if (mCoinCryptoCompare != null) {
-                            List<CoinInfo> coinInfoList = getCoinInfoList(mCoinCryptoCompare);
-                            updateDatabase(coinInfoList);
-                        }
-                        mRecyclerView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mSwipeRefresh.setRefreshing(false);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<CoinCryptoCompare> call, @NonNull Throwable t) {
-                        Log.e("ERROR", t.toString());
-                        mRecyclerView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mSwipeRefresh.setRefreshing(false);
-                            }
-                        });
-                    }
-                });
-    }
-
-    private List<CoinInfo> getCoinInfoList(CoinCryptoCompare mCoinCryptoCompare) {
-        List<CoinInfo> coinInfoArrayList = new ArrayList<>();
-        List<Datum> coinCryptoCompareData = mCoinCryptoCompare.getData();
-        CoinInfo coinInfo;
-        for (Datum coin : coinCryptoCompareData) {
-            String fullName = coin.getCoinInfo().getFullName();
-            String shortName = coin.getCoinInfo().getName();
-            String price = coin.getDISPLAY().getUSD().getPRICE();
-            String imageURL = coin.getCoinInfo().getImageUrl();
-            coinInfo = new CoinInfo(fullName, shortName, price, imageURL);
-            coinInfoArrayList.add(coinInfo);
-        }
-        return coinInfoArrayList;
-    }
-
-    /**
-     * к базе данных следует обращаться из другого потока, здесь мы можем этого не делать,
-     * потому что метод вызывается в network api, а он работает уже в другом потоке
-     */
-    private void updateDatabase(List<CoinInfo> newCoinInfoList) {
-        CoinInfoDao coinInfoDao = App.getDatabase().coinInfoDao();
-        List<CoinInfo> insertList = new ArrayList<>();
-        List<CoinInfo> updateList = new ArrayList<>();
-        for (CoinInfo coinInfo : newCoinInfoList) {
-            List<CoinInfo> dbInfoList = coinInfoDao.getByFullName(coinInfo.getFullName());    // получаем список, чтобы если нет записи,
-            if (dbInfoList.isEmpty()) {                                            // пришел хотя бы пустой список, это значит что ее надо добавить
-                insertList.add(coinInfo);
-            } else {
-                CoinInfo dbCoinInfo = dbInfoList.get(0);                                    //если список не пустой, там одна запись по нужному id
-                coinInfo.setCoinId(dbCoinInfo.getCoinId());
-                coinInfo.setFavorite(dbCoinInfo.isFavorite());
-                updateList.add(coinInfo);
-            }
-        }
-        coinInfoDao.insert(insertList);
-        coinInfoDao.update(updateList);
     }
 
     @Override
@@ -158,6 +89,16 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
 
     @Override
     public void onRefresh() {
-        startConnectionApi();
+        networkHelper.start("USD");
+        if (networkHelper.isRefreshing() == false) {
+            mSwipeRefresh.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void loadMore(int page) {
+        //networkHelper.loadNextCoin(page,"USD");
+        Toast.makeText(getActivity(), "page ", Toast.LENGTH_SHORT).show();
+
     }
 }
