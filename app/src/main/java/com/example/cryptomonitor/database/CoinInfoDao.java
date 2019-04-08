@@ -29,6 +29,9 @@ public interface CoinInfoDao {
     @Query("select count(*) from coininfo")
     Single<Integer> getDatabaseSize();
 
+    @Query("delete from coininfo")
+    void deleteAll();
+
     @Insert
     void insert(List<CoinInfo> coinInfoList);
 

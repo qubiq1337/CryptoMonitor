@@ -2,13 +2,15 @@ package com.example.cryptomonitor.database;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class DBHelper {
+
+    private static ExecutorService executorService = Executors.newFixedThreadPool(2);
+
     public static void updateDatabase(final List<CoinInfo> newCoinInfoList) {
-        new Thread(new Runnable() {
+        executorService.execute(new Runnable() {
             @Override
             public void run() {
                 CoinInfoDao coinInfoDao = App.getDatabase().coinInfoDao();
@@ -28,13 +30,24 @@ public class DBHelper {
                 coinInfoDao.insert(insertList);
                 coinInfoDao.update(updateList);
             }
-        }).start();
-
+        });
     }
 
-    public static void updateCoin(CoinInfo clickedCoinInfo) {
-        Observable.fromCallable(new UpdateOperation(clickedCoinInfo))
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+    public static void updateCoin(final CoinInfo clickedCoinInfo) {
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                App.getDatabase().coinInfoDao().update(clickedCoinInfo);
+            }
+        });
+    }
+
+    public static void deleteAllCoins(){
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                App.getDatabase().coinInfoDao().deleteAll();
+            }
+        });
     }
 }
