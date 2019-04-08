@@ -3,4 +3,5 @@
     <string name="history">History</string>
     <string name="favorites">Favorites</string>
     <string name="home">Home</string>
+    <string name="exit_phrase">Press Back once again to exit</string>
 </resources>

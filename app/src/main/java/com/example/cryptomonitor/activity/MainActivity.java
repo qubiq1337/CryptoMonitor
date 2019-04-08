@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.cryptomonitor.ExitClass;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.fragment.FavoritesFragment;
 import com.example.cryptomonitor.fragment.HistoryFragment;
@@ -41,6 +42,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(container, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        ExitClass.onBackPressed(this);
     }
 }
 
