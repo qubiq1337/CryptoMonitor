@@ -7,7 +7,7 @@ import java.util.concurrent.Executors;
 
 public class DBHelper {
 
-    private static ExecutorService executorService = Executors.newFixedThreadPool(2);
+    private static ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public static void updateDatabase(final List<CoinInfo> newCoinInfoList) {
         executorService.execute(new Runnable() {
