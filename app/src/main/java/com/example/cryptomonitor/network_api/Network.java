@@ -1,7 +1,5 @@
 package com.example.cryptomonitor.network_api;
 
-import com.example.cryptomonitor.model.CoinCryptoCompare;
-
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -10,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Network {
     private static Network mInstance;
-    private final String BASE_URL = "https://min-api.cryptocompare.com";
+    private final String BASE_URL = "https://pro-api.coinmarketcap.com";
     private Executor mNetworkExecutor;
     private Retrofit mRetrofit;
 
@@ -30,7 +28,7 @@ public class Network {
         return mInstance;
     }
 
-    public ApiCryptoCompare getApiCryptoCompare() {
-        return mRetrofit.create(ApiCryptoCompare.class);
+    public ApiCoinMarketCup getApiCoinMarketCup() {
+        return mRetrofit.create(ApiCoinMarketCup.class);
     }
 }
