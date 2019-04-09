@@ -7,40 +7,29 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.widget.Toast;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.CoinAdapterHome;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.CoinInfo;
-import com.example.cryptomonitor.database.CoinInfoDao;
-import com.example.cryptomonitor.database.UpdateOperation;
-import com.example.cryptomonitor.model.CoinCryptoCompare;
-import com.example.cryptomonitor.model.Datum;
-import com.example.cryptomonitor.network_api.Network;
+import com.example.cryptomonitor.database.DBHelper;
 import com.example.cryptomonitor.network_api.NetworkHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener, SwipeRefreshLayout.OnRefreshListener, CoinAdapterHome.OnLoadListener {
 
-    private CoinCryptoCompare mCoinCryptoCompare = new CoinCryptoCompare();
+public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener, SwipeRefreshLayout.OnRefreshListener, NetworkHelper.OnChangeRefreshingListener {
+
     private RecyclerView mRecyclerView;
     private CoinAdapterHome mCoinAdapterHome;
     private SwipeRefreshLayout mSwipeRefresh;
@@ -50,17 +39,23 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_fragment_layout, container, false);
+
         mRecyclerView = view.findViewById(R.id.rv_coin_itemlist);
         mSwipeRefresh = view.findViewById(R.id.refresh);
+
         mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_fall_down);
         mRecyclerView.setLayoutAnimation(animation);
-        mCoinAdapterHome = new CoinAdapterHome(getContext(), mRecyclerView);
-        mCoinAdapterHome.setOnLoadListener(this);
+
+        mCoinAdapterHome = new CoinAdapterHome(getContext());
         mCoinAdapterHome.setOnStarClickListener(this);
         mRecyclerView.setAdapter(mCoinAdapterHome);
+
+        networkHelper.setOnChangeRefreshingListener(this);
+
         Disposable getDataFromDB = App.getDatabase().coinInfoDao()
                 .getAll()
                 .subscribeOn(Schedulers.io())
@@ -71,6 +66,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
                         mCoinAdapterHome.setCoinData(coinInfoList);
                     }
                 });
+
         networkHelper.start("USD");
         return view;
     }
@@ -82,23 +78,17 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
             clickedCoinInfo.setFavorite(false);
         else
             clickedCoinInfo.setFavorite(true);
-        Observable.fromCallable(new UpdateOperation(clickedCoinInfo))
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+        DBHelper.updateCoin(clickedCoinInfo);
     }
 
     @Override
     public void onRefresh() {
+        mSwipeRefresh.setRefreshing(true);
         networkHelper.start("USD");
-        if (networkHelper.isRefreshing() == false) {
-            mSwipeRefresh.setRefreshing(false);
-        }
     }
 
     @Override
-    public void loadMore(int page) {
-        //networkHelper.loadNextCoin(page,"USD");
-        Toast.makeText(getActivity(), "page ", Toast.LENGTH_SHORT).show();
-
+    public void stopRefreshing() {
+        mSwipeRefresh.setRefreshing(false);
     }
 }

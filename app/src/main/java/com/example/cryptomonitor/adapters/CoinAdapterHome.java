@@ -4,52 +4,34 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.CoinInfo;
+import com.example.cryptomonitor.network_api.NetworkHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.cryptomonitor.network_api.NetworkHelper.connection_failed;
+
 public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinViewHolder> {
 
-    private static final String URL = "https://www.cryptocompare.com";
+
     private List<CoinInfo> coinData;
     private Context mContext;
     private OnStarClickListener onStarClickListener;
-
-    public void setOnLoadListener(OnLoadListener onLoadListener) {
-        this.onLoadListener = onLoadListener;
-    }
-
-    private OnLoadListener onLoadListener;
-
-    public CoinAdapterHome(Context context, RecyclerView recyclerView) {
+    public CoinAdapterHome(Context context) {
         mContext = context;
         coinData = new ArrayList<>();
 
-        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-
-                super.onScrolled(recyclerView, dx, dy);
-                int zapas = 30;
-                int totalSize = linearLayoutManager.getItemCount();
-                int lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition();
-                if (totalSize == (lastVisibleItemPosition + zapas)) {
-                    int page = totalSize;
-                    onLoadListener.loadMore(page - 1);
-                }
-            }
-        });
     }
 
     public List<CoinInfo> getCoinData() {
@@ -81,7 +63,6 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.is_favorite_star));
         else
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.not_favorite_star));
-        Picasso.with(mContext).load(URL + coinData.get(i).getImageURL()).into(coinViewHolder.imageViewIcon);
     }
 
     @Override
@@ -115,10 +96,4 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             });
         }
     }
-
-    public interface OnLoadListener {
-        void loadMore(int page);
-    }
-
-
 }

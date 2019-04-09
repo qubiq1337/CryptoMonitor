@@ -9,6 +9,7 @@ import android.arch.persistence.room.Update;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 @Dao
 public interface CoinInfoDao {
@@ -24,6 +25,12 @@ public interface CoinInfoDao {
 
     @Query("select * from coininfo where isFavorite = 1 ")
     Flowable<List<CoinInfo>> getFavoriteCoins();
+
+    @Query("select count(*) from coininfo")
+    Single<Integer> getDatabaseSize();
+
+    @Query("delete from coininfo")
+    void deleteAll();
 
     @Insert
     void insert(List<CoinInfo> coinInfoList);
