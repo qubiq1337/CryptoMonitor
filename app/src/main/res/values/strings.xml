@@ -3,4 +3,14 @@
     <string name="history">History</string>
     <string name="favorites">Favorites</string>
     <string name="home">Home</string>
+    <string name="exit_phrase">Press Back once again to exit</string>
+    <string-array name="spinner">
+        <item>Понедельник</item>
+        <item>Вторник</item>
+        <item>Среда</item>
+        <item>Четверг</item>
+        <item>Котопятница</item>
+        <item>Субкота</item>
+        <item>Воскресенье</item>
+    </string-array>
 </resources>
