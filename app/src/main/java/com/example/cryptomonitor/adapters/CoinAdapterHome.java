@@ -60,9 +60,8 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         coinViewHolder.textViewName.setText(coinData.get(i).getShortName());
         coinViewHolder.textViewPrice.setText(coinData.get(i).getPrice());
         if (coinData.get(i).isFavorite())
-            coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.is_favorite_star));
         else
-            coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.not_favorite_star));
+            coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_not_favorite_star));
     }
 
     @Override

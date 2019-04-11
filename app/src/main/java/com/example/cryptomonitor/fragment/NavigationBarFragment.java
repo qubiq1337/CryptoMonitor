@@ -39,6 +39,9 @@ public class NavigationBarFragment extends Fragment {
                 case R.id.navigation_history:
                     NavigationBarListener.changeFragment(R.id.top_container, HistoryFragment.class.getName());
                     return true;
+                case R.id.navigation_briefcase:
+                    NavigationBarListener.changeFragment(R.id.top_container, BriefcaseFragment.class.getName());
+                    return true;
             }
             return false;
         }

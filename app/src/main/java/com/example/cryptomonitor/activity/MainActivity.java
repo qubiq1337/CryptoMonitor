@@ -5,8 +5,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
+import com.example.cryptomonitor.ExitClass;
 import com.example.cryptomonitor.R;
+import com.example.cryptomonitor.fragment.BriefcaseFragment;
 import com.example.cryptomonitor.fragment.FavoritesFragment;
 import com.example.cryptomonitor.fragment.HistoryFragment;
 import com.example.cryptomonitor.fragment.HomeFragment;
@@ -34,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             fragment = new HistoryFragment();
         } else if (fragmentName.equals(NavigationBarFragment.class.getName())) {
             fragment = new NavigationBarFragment();
+        } else if (fragmentName.equals(BriefcaseFragment.class.getName())) {
+            fragment = new BriefcaseFragment();
         } else {
             Log.e("ERROR", "No such fragment: " + fragmentName);
             return;
@@ -41,6 +49,26 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(container, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        ExitClass.onBackPressed(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.spinner_layout, menu);
+
+        MenuItem spinnerItem = menu.findItem(R.id.action_bar_spinner);
+        Spinner spinner = (Spinner) spinnerItem.getActionView();
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.spinner, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+        return true;
     }
 }
 
