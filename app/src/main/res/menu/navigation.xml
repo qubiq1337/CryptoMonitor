@@ -15,5 +15,9 @@
         android:id="@+id/navigation_history"
         android:icon="@drawable/ic_history"
         android:title="@string/history" />
+    <item
+        android:id="@+id/navigation_briefcase"
+        android:icon="@drawable/ic_briefcase"
+        android:title="@string/briefcase" />
 
 </menu>

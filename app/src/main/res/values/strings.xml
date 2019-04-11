@@ -5,12 +5,11 @@
     <string name="home">Home</string>
     <string name="exit_phrase">Press Back once again to exit</string>
     <string-array name="spinner">
-        <item>Понедельник</item>
-        <item>Вторник</item>
-        <item>Среда</item>
-        <item>Четверг</item>
-        <item>Котопятница</item>
-        <item>Субкота</item>
-        <item>Воскресенье</item>
+        <item>USD</item>
+        <item>RUB</item>
+        <item>BTC</item>
+        <item>EUR</item>
     </string-array>
+    <string name="briefcase">Briefcase</string>
+    <string name="find">Find</string>
 </resources>

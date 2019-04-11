@@ -12,6 +12,7 @@ import android.widget.Spinner;
 
 import com.example.cryptomonitor.ExitClass;
 import com.example.cryptomonitor.R;
+import com.example.cryptomonitor.fragment.BriefcaseFragment;
 import com.example.cryptomonitor.fragment.FavoritesFragment;
 import com.example.cryptomonitor.fragment.HistoryFragment;
 import com.example.cryptomonitor.fragment.HomeFragment;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             fragment = new HistoryFragment();
         } else if (fragmentName.equals(NavigationBarFragment.class.getName())) {
             fragment = new NavigationBarFragment();
+        } else if (fragmentName.equals(BriefcaseFragment.class.getName())) {
+            fragment = new BriefcaseFragment();
         } else {
             Log.e("ERROR", "No such fragment: " + fragmentName);
             return;

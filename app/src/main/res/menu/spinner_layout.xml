@@ -4,15 +4,16 @@
     android:layout_width="0dp"
     android:layout_height="0dp"
     tools:context=".activity.MainActivity">
-    <item
-        android:id="@+id/search_button"
-        android:orderInCategory="10"
-        android:title="asdadasd"
-        app:showAsAction="never" />
+
+
     <item
         android:id="@+id/action_bar_spinner"
         android:title="Action Bar Spinner"
         app:actionViewClass="android.widget.Spinner"
-        app:showAsAction="always">
-    </item>
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/search_button"
+        android:title="@string/find"
+        app:showAsAction="always" />
 </menu>

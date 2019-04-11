@@ -18,9 +18,7 @@ import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.CoinAdapterHome;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.CoinInfo;
-import com.example.cryptomonitor.database.CoinInfoDao;
 import com.example.cryptomonitor.database.DBHelper;
-import com.example.cryptomonitor.database.UpdateOperation;
 import com.example.cryptomonitor.model.CoinCryptoCompare;
 import com.example.cryptomonitor.model.Datum;
 import com.example.cryptomonitor.network_api.Network;
@@ -28,7 +26,6 @@ import com.example.cryptomonitor.network_api.Network;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -47,7 +44,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.home_fragment_layout, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
         mRecyclerView = view.findViewById(R.id.rv_coin_itemlist);
         mSwipeRefresh = view.findViewById(R.id.refresh);
         mSwipeRefresh.setOnRefreshListener(this);
