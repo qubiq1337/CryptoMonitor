@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.home_fragment_layout, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         mRecyclerView = view.findViewById(R.id.rv_coin_itemlist);
         mSwipeRefresh = view.findViewById(R.id.refresh);
