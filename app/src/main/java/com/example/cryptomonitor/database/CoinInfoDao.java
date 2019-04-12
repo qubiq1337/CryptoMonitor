@@ -1,5 +1,6 @@
 package com.example.cryptomonitor.database;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -8,14 +9,11 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
-import io.reactivex.Single;
-
 @Dao
 public interface CoinInfoDao {
 
     @Query("select * from coininfo")
-    Flowable<List<CoinInfo>> getAll();
+    LiveData<List<CoinInfo>> getAll();
 
     @Query("select * from coininfo where coinId=:id")
     CoinInfo getById(long id);
@@ -24,10 +22,10 @@ public interface CoinInfoDao {
     List<CoinInfo> getByFullName(String fullName);
 
     @Query("select * from coininfo where isFavorite = 1 ")
-    Flowable<List<CoinInfo>> getFavoriteCoins();
+    LiveData<List<CoinInfo>> getFavoriteCoins();
 
     @Query("select count(*) from coininfo")
-    Single<Integer> getDatabaseSize();
+    int getDatabaseSize();
 
     @Query("delete from coininfo")
     void deleteAll();

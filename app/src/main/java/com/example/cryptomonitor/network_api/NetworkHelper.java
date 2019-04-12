@@ -29,7 +29,7 @@ public class NetworkHelper {
     private void loadCoins(String curency) {
         Network.getInstance()
                 .getApiCoinMarketCup()
-                .getAllCoinData(start_page,start_limit,curency)
+                .getAllCoinData(start_page, start_limit, curency)
                 .enqueue(new Callback<CoinMarketCup>() {
                     @Override
                     public void onResponse(Call<CoinMarketCup> call, Response<CoinMarketCup> response) {

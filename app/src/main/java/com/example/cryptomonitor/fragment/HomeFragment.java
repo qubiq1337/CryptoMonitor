@@ -1,5 +1,7 @@
 package com.example.cryptomonitor.fragment;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,17 +17,12 @@ import android.view.animation.LayoutAnimationController;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.CoinAdapterHome;
-import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.CoinInfo;
 import com.example.cryptomonitor.database.DBHelper;
+import com.example.cryptomonitor.database.DBViewModel;
 import com.example.cryptomonitor.network_api.NetworkHelper;
 
 import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 
 public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener,
@@ -58,16 +55,13 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
 
         mNetworkHelper.setOnChangeRefreshingListener(this);
 
-        Disposable getDataFromDB = App.getDatabase().coinInfoDao()
-                .getAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<CoinInfo>>() {
-                    @Override
-                    public void accept(final List<CoinInfo> coinInfoList) {
-                        mCoinAdapterHome.setCoinData(coinInfoList);
-                    }
-                });
+        DBViewModel viewModel = ViewModelProviders.of(this).get(DBViewModel.class);
+        viewModel.getAllCoinsLiveData().observe(this, new Observer<List<CoinInfo>>() {
+            @Override
+            public void onChanged(@Nullable List<CoinInfo> coinInfoList) {
+                mCoinAdapterHome.setCoinData(coinInfoList);
+            }
+        });
 
         mNetworkHelper.start("USD");
         return view;

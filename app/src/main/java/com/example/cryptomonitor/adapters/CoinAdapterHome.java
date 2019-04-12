@@ -21,6 +21,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     private List<CoinInfo> coinData;
     private Context mContext;
     private OnStarClickListener onStarClickListener;
+
     public CoinAdapterHome(Context context) {
         mContext = context;
         coinData = new ArrayList<>();
