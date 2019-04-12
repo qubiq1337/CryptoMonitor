@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/action_bar_spinner"
-        android:title="Action Bar Spinner"
+        android:title="@string/action_bar_spinner"
         app:actionViewClass="android.widget.Spinner"
         app:showAsAction="always" />
 

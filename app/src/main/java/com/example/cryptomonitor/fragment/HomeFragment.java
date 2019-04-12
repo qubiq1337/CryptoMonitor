@@ -28,12 +28,14 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener, SwipeRefreshLayout.OnRefreshListener, NetworkHelper.OnChangeRefreshingListener {
+public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener,
+        SwipeRefreshLayout.OnRefreshListener,
+        NetworkHelper.OnChangeRefreshingListener {
 
     private RecyclerView mRecyclerView;
     private CoinAdapterHome mCoinAdapterHome;
     private SwipeRefreshLayout mSwipeRefresh;
-    private NetworkHelper networkHelper = new NetworkHelper();
+    private NetworkHelper mNetworkHelper = new NetworkHelper();
 
     @Nullable
     @Override
@@ -54,7 +56,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         mCoinAdapterHome.setOnStarClickListener(this);
         mRecyclerView.setAdapter(mCoinAdapterHome);
 
-        networkHelper.setOnChangeRefreshingListener(this);
+        mNetworkHelper.setOnChangeRefreshingListener(this);
 
         Disposable getDataFromDB = App.getDatabase().coinInfoDao()
                 .getAll()
@@ -67,7 +69,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
                     }
                 });
 
-        networkHelper.start("USD");
+        mNetworkHelper.start("USD");
         return view;
     }
 
@@ -84,11 +86,16 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     @Override
     public void onRefresh() {
         mSwipeRefresh.setRefreshing(true);
-        networkHelper.start("USD");
+        mNetworkHelper.start("USD");
     }
 
     @Override
     public void stopRefreshing() {
-        mSwipeRefresh.setRefreshing(false);
+        mSwipeRefresh.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefresh.setRefreshing(false);
+            }
+        });
     }
 }

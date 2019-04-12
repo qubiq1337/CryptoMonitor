@@ -66,8 +66,6 @@ public class NavigationBarFragment extends Fragment {
     public interface NavigationBarListener {
         void changeFragment(int container, String fragment);
     }
-
-
 }
 
 
