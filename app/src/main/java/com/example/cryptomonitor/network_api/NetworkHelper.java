@@ -20,31 +20,32 @@ public class NetworkHelper {
     private final int start_limit = 5000;
     private final int start_page = 1;
     private OnChangeRefreshingListener refreshingListener;
-    public static boolean connection_failed;
 
-    public void start(String curency) {
+    public void refreshCoins (String curency) {
         loadCoins(curency);
     }
 
     private void loadCoins(String curency) {
         Network.getInstance()
                 .getApiCoinMarketCup()
-                .getAllCoinData(start_page,start_limit,curency)
+                .getAllCoinData(start_page, start_limit, curency)
                 .enqueue(new Callback<CoinMarketCup>() {
                     @Override
                     public void onResponse(Call<CoinMarketCup> call, Response<CoinMarketCup> response) {
                         if (response.body() != null) {
                             DBHelper.updateDatabase(getCoinInfoList(response.body()));
-                            refreshingListener.stopRefreshing();
-                            connection_failed = false;
                         }
+                            if (refreshingListener != null) {
+                                refreshingListener.stopRefreshing();
+                            }
                     }
 
                     @Override
                     public void onFailure(Call<CoinMarketCup> call, Throwable t) {
-                        Log.e("ERROR LOAD_COINS", t.toString());
-                        refreshingListener.stopRefreshing();
-                        connection_failed = true;
+                        Log.e("LOAD_COINS", t.toString());
+                        if (refreshingListener != null) {
+                            refreshingListener.stopRefreshing();
+                        }
                     }
                 });
     }
