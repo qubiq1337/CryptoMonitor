@@ -16,9 +16,9 @@ import android.view.animation.LayoutAnimationController;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.CoinAdapterHome;
-import com.example.cryptomonitor.database.CoinInfo;
+import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.database.DBHelper;
-import com.example.cryptomonitor.database.DBViewModel;
+import com.example.cryptomonitor.view_models.FavoriteViewModel;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class FavoritesFragment extends Fragment implements CoinAdapterHome.OnSta
         mCoinAdapterHome.setOnStarClickListener(this);
         mRecyclerView.setAdapter(mCoinAdapterHome);
 
-        DBViewModel viewModel = ViewModelProviders.of(this).get(DBViewModel.class);
+        FavoriteViewModel viewModel = ViewModelProviders.of(this).get(FavoriteViewModel.class);
         viewModel.getFavoriteCoinsLiveData().observe(this, new Observer<List<CoinInfo>>() {
             @Override
             public void onChanged(@Nullable List<CoinInfo> coinInfoList) {

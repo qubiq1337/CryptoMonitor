@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cryptomonitor.R;
-import com.example.cryptomonitor.database.CoinInfo;
+import com.example.cryptomonitor.database.entities.CoinInfo;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,6 +2,9 @@ package com.example.cryptomonitor.database;
 
 import android.util.Log;
 
+import com.example.cryptomonitor.database.dao.CoinInfoDao;
+import com.example.cryptomonitor.database.entities.CoinInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -32,7 +35,7 @@ public class DBHelper {
                 }
                 coinInfoDao.insert(insertList);
                 coinInfoDao.update(updateList);
-                Log.e("DbHelprer", "isLoaded ");
+                Log.e("DbHelper", "isLoaded ");
             }
         });
     }

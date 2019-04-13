@@ -1,19 +1,15 @@
-package com.example.cryptomonitor.database;
+package com.example.cryptomonitor.view_models;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.example.cryptomonitor.database.App;
+import com.example.cryptomonitor.database.entities.CoinInfo;
+
 import java.util.List;
 
-public class DBViewModel extends ViewModel {
-    private LiveData<List<CoinInfo>> mAllCoinsLiveData;
+public class FavoriteViewModel extends ViewModel {
     private LiveData<List<CoinInfo>> mFavoriteCoinsLiveData;
-
-    public LiveData<List<CoinInfo>> getAllCoinsLiveData() {
-        if (mAllCoinsLiveData == null)
-            mAllCoinsLiveData = App.getDatabase().coinInfoDao().getAll();
-        return mAllCoinsLiveData;
-    }
 
     public LiveData<List<CoinInfo>> getFavoriteCoinsLiveData() {
         if (mFavoriteCoinsLiveData == null)

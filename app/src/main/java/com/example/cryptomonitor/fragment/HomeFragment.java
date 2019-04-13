@@ -17,10 +17,10 @@ import android.view.animation.LayoutAnimationController;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.CoinAdapterHome;
-import com.example.cryptomonitor.database.CoinInfo;
+import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.database.DBHelper;
-import com.example.cryptomonitor.database.DBViewModel;
 import com.example.cryptomonitor.network_api.NetworkHelper;
+import com.example.cryptomonitor.view_models.HomeViewModel;
 
 import java.util.List;
 
@@ -46,16 +46,14 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         mSwipeRefresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_fall_down);
-        mRecyclerView.setLayoutAnimation(animation);
 
         mCoinAdapterHome = new CoinAdapterHome(getContext());
         mCoinAdapterHome.setOnStarClickListener(this);
         mRecyclerView.setAdapter(mCoinAdapterHome);
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_fall_down);
+        mRecyclerView.setLayoutAnimation(animation);
 
-        mNetworkHelper.setOnChangeRefreshingListener(this);
-
-        DBViewModel viewModel = ViewModelProviders.of(this).get(DBViewModel.class);
+        HomeViewModel viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         viewModel.getAllCoinsLiveData().observe(this, new Observer<List<CoinInfo>>() {
             @Override
             public void onChanged(@Nullable List<CoinInfo> coinInfoList) {
@@ -63,6 +61,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
             }
         });
 
+        mNetworkHelper.setOnChangeRefreshingListener(this);
         mNetworkHelper.start("USD");
         return view;
     }
@@ -78,13 +77,23 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     }
 
     @Override
+    public void startRefreshing() {
+        mSwipeRefresh.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefresh.setRefreshing(true);
+            }
+        });
+    }
+
+    @Override
     public void onRefresh() {
         mSwipeRefresh.setRefreshing(true);
         mNetworkHelper.start("USD");
     }
 
     @Override
-    public void stopRefreshing() {
+    public void stopRefreshing(boolean isSuccess) {
         mSwipeRefresh.post(new Runnable() {
             @Override
             public void run() {
