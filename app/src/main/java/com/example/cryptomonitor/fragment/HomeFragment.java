@@ -11,15 +11,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ArrayAdapter;
@@ -33,17 +27,16 @@ import com.example.cryptomonitor.network_api.NetworkHelper;
 import com.example.cryptomonitor.view_models.HomeViewModel;
 import com.example.cryptomonitor.view_models.SearchViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener,
         SwipeRefreshLayout.OnRefreshListener,
-        NetworkHelper.OnChangeRefreshingListener, 
+        NetworkHelper.OnChangeRefreshingListener,
         SearchView.OnQueryTextListener, View.OnClickListener, SearchView.OnCloseListener {
 
     public static final String TAG = "MyLogs";
-    private Observer <List<CoinInfo>> listObserver = new Observer<List<CoinInfo>>() {
+    private Observer<List<CoinInfo>> listObserver = new Observer<List<CoinInfo>>() {
         @Override
         public void onChanged(@Nullable List<CoinInfo> coinInfos) {
             mCoinAdapterHome.setCoinData(coinInfos);
@@ -58,6 +51,8 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     private NetworkHelper mNetworkHelper = new NetworkHelper();
     private SearchView mSearchView;
     private Spinner mSpinner;
+
+    private enum MODE {Search, Default}
 
     @Nullable
     @Override
