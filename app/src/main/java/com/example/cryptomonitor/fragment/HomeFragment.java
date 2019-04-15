@@ -1,5 +1,7 @@
 package com.example.cryptomonitor.fragment;
 
+import android.app.ActionBar;
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,8 +31,6 @@ import java.util.List;
 
 
 public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener,
-        SwipeRefreshLayout.OnRefreshListener,
-        NetworkHelper.OnChangeRefreshingListener,
         SearchView.OnQueryTextListener, View.OnClickListener, SearchView.OnCloseListener {
 
     public static final String TAG = "MyLogs";
@@ -42,38 +42,20 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     };
     private HomeViewModel mHomeViewModel;
     private SearchViewModel mSearchViewModel;
-    private Toolbar mToolbar;
+    private ActionBar mToolbar;
     private RecyclerView mRecyclerView;
     private CoinAdapterHome mCoinAdapterHome;
-    private SwipeRefreshLayout mSwipeRefresh;
-    private NetworkHelper mNetworkHelper = new NetworkHelper();
     private SearchView mSearchView;
-    private Spinner mSpinner;
 
     private enum MODE {Search, Default}
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
         mRecyclerView = view.findViewById(R.id.rv_coin_itemlist);
-        mSwipeRefresh = view.findViewById(R.id.refresh);
-        mToolbar = getActivity().findViewById(R.id.toolbar);
-
-        mSearchView = mToolbar.findViewById(R.id.search_bar);
-        mSpinner = mToolbar.findViewById(R.id.action_bar_spinner);
-        mSearchView.setOnQueryTextListener(this);
-        mSearchView.setOnSearchClickListener(this);
-        mSearchView.setOnCloseListener(this);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.spinner, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        mSpinner.setAdapter(adapter);
-
-        mSwipeRefresh.setOnRefreshListener(this);
-        mSwipeRefresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+        mToolbar = getActivity().getActionBar();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -84,20 +66,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_fall_down);
         mRecyclerView.setLayoutAnimation(animation);
 
-        networkHelper.setOnChangeRefreshingListener(this);
-
-        Disposable getDataFromDB = App.getDatabase().coinInfoDao()
-                .getAll()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<CoinInfo>>() {
-                    @Override
-                    public void accept(final List<CoinInfo> coinInfoList) {
-                        mCoinAdapterHome.setCoinData(coinInfoList);
-                    }
-                });
-
-        networkHelper.start("USD");
         return view;
     }
 
@@ -112,15 +80,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     }
 
 
-    @Override
-    public void stopRefreshing(boolean isSuccess) {
-        mSwipeRefresh.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefresh.setRefreshing(false);
-            }
-        });
-    }
 
     @Override
     public boolean onQueryTextSubmit(String s) {

@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,11 +23,15 @@ import com.example.cryptomonitor.fragment.HomeFragment;
 import com.example.cryptomonitor.fragment.NavigationBarFragment;
 import com.example.cryptomonitor.network_api.NetworkHelper;
 
-public class MainActivity extends AppCompatActivity implements NavigationBarFragment.NavigationBarListener, SwipeRefreshLayout.OnRefreshListener,NetworkHelper.OnChangeRefreshingListener {
+public class MainActivity extends AppCompatActivity implements NavigationBarFragment.NavigationBarListener,
+        SwipeRefreshLayout.OnRefreshListener,
+        NetworkHelper.OnChangeRefreshingListener {
 
-   private String mCurrency;
-   private SwipeRefreshLayout mSwipeRefresh;
-   private NetworkHelper networkHelper=new NetworkHelper();
+    private String mCurrency;
+    private SwipeRefreshLayout mSwipeRefresh;
+    private NetworkHelper networkHelper = new NetworkHelper(this);
+    private Fragment mCurrentFragment;
+    private SearchView mSearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(container, fragment);
         fragmentTransaction.commit();
+        if (mSearchView != null) {
+            mSearchView.setOnQueryTextListener((SearchView.OnQueryTextListener) fragment);
+            mSearchView.setOnSearchClickListener((View.OnClickListener) fragment);
+            mSearchView.setOnCloseListener((SearchView.OnCloseListener) fragment);
+        }
     }
 
     @Override
@@ -71,15 +81,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.spinner_layout, menu);
-
         MenuItem spinnerItem = menu.findItem(R.id.action_bar_spinner);
-
         Spinner spinner = (Spinner) spinnerItem.getActionView();
-
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         spinner.setAdapter(adapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -95,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
 
             }
         });
-
+        mSearchView = (SearchView) menu.findItem(R.id.search).getActionView();
         return true;
     }
 
@@ -106,8 +112,13 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     }
 
     @Override
-    public void stopRefreshing() {
+    public void stopRefreshing(boolean isSuccessful) {
         mSwipeRefresh.setRefreshing(false);
+    }
+
+    @Override
+    public void startRefreshing() {
+
     }
 }
 

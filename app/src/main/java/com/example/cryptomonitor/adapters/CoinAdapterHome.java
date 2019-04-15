@@ -2,20 +2,15 @@ package com.example.cryptomonitor.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.cryptomonitor.R;
-import com.example.cryptomonitor.database.CoinInfo;
-import com.example.cryptomonitor.network_api.NetworkHelper;
-import com.squareup.picasso.Picasso;
+import com.example.cryptomonitor.database.entities.CoinInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +22,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     private List<CoinInfo> coinData;
     private Context mContext;
     private OnStarClickListener onStarClickListener;
+
     public CoinAdapterHome(Context context) {
         mContext = context;
         coinData = new ArrayList<>();

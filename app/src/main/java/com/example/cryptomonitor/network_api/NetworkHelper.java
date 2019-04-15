@@ -21,8 +21,12 @@ public class NetworkHelper {
     private final int START_PAGE = 1;
     private OnChangeRefreshingListener mRefreshingListener;
 
+    public NetworkHelper(OnChangeRefreshingListener mRefreshingListener) {
+        this.mRefreshingListener = mRefreshingListener;
+    }
+
     public void refreshCoins (String currency) {
-        loadCoins(curency);
+        loadCoins(currency);
     }
 
     private void loadCoins(String currency) {
@@ -34,8 +38,8 @@ public class NetworkHelper {
                     public void onResponse(Call<CoinMarketCup> call, Response<CoinMarketCup> response) {
                         if (response.body() != null) {
                             DBHelper.updateDatabase(getCoinInfoList(response.body()));
-                            mRefreshingListener.stopRefreshing(true);
                         }
+                        mRefreshingListener.stopRefreshing(true);
                     }
 
                     @Override
