@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     @Override
     public boolean onClose() {
         isSearchViewExpanded = false;
+        mSpinner.setVisibility(View.VISIBLE);
         if (mToolbarInteractor != null)
             mToolbarInteractor.onClose();
         return false;
@@ -163,7 +164,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         switch (v.getId()) {
             case R.id.search:
                 isSearchViewExpanded = true;
-                mToolbarInteractor.onClick(v);
+                mSpinner.setVisibility(View.GONE);
+                if (mToolbarInteractor != null)
+                    mToolbarInteractor.onClick(v);
                 break;
         }
     }
