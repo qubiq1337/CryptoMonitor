@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +17,14 @@ import android.view.animation.LayoutAnimationController;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.CoinAdapterHome;
-import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.database.DBHelper;
+import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.view_models.FavoriteViewModel;
 
 import java.util.List;
 
 
-public class FavoritesFragment extends Fragment implements CoinAdapterHome.OnStarClickListener {
+public class FavoritesFragment extends Fragment implements CoinAdapterHome.OnStarClickListener{
 
     private RecyclerView mRecyclerView;
     private CoinAdapterHome mCoinAdapterHome;

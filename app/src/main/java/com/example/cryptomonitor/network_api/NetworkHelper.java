@@ -30,6 +30,7 @@ public class NetworkHelper {
     }
 
     private void loadCoins(String currency) {
+        mRefreshingListener.startRefreshing();
         Network.getInstance()
                 .getApiCoinMarketCup()
                 .getAllCoinData(START_PAGE, START_LIMIT, currency)
