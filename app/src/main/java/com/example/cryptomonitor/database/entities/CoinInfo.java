@@ -1,4 +1,4 @@
-package com.example.cryptomonitor.database;
+package com.example.cryptomonitor.database.entities;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;

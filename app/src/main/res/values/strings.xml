@@ -13,4 +13,7 @@
     </string-array>
     <string name="briefcase">Briefcase</string>
     <string name="find">Find</string>
+    <string name="action_bar_spinner">Action Bar Spinner</string>
+    <string name="search_line">Search</string>
+    <string name="close">Close</string>
 </resources>

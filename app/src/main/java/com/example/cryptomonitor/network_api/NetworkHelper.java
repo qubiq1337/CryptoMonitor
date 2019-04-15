@@ -2,7 +2,7 @@ package com.example.cryptomonitor.network_api;
 
 import android.util.Log;
 
-import com.example.cryptomonitor.database.CoinInfo;
+import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.database.DBHelper;
 import com.example.cryptomonitor.model_coinmarket_cup.CoinMarketCup;
 import com.example.cryptomonitor.model_coinmarket_cup.Datum;
@@ -17,35 +17,31 @@ import retrofit2.Response;
 
 public class NetworkHelper {
 
-    private final int start_limit = 5000;
-    private final int start_page = 1;
-    private OnChangeRefreshingListener refreshingListener;
+    private final int START_LIMIT = 5000;
+    private final int START_PAGE = 1;
+    private OnChangeRefreshingListener mRefreshingListener;
 
-    public void refreshCoins (String curency) {
+    public void refreshCoins (String currency) {
         loadCoins(curency);
     }
 
-    private void loadCoins(String curency) {
+    private void loadCoins(String currency) {
         Network.getInstance()
                 .getApiCoinMarketCup()
-                .getAllCoinData(start_page, start_limit, curency)
+                .getAllCoinData(START_PAGE, START_LIMIT, currency)
                 .enqueue(new Callback<CoinMarketCup>() {
                     @Override
                     public void onResponse(Call<CoinMarketCup> call, Response<CoinMarketCup> response) {
                         if (response.body() != null) {
                             DBHelper.updateDatabase(getCoinInfoList(response.body()));
+                            mRefreshingListener.stopRefreshing(true);
                         }
-                            if (refreshingListener != null) {
-                                refreshingListener.stopRefreshing();
-                            }
                     }
 
                     @Override
                     public void onFailure(Call<CoinMarketCup> call, Throwable t) {
-                        Log.e("LOAD_COINS", t.toString());
-                        if (refreshingListener != null) {
-                            refreshingListener.stopRefreshing();
-                        }
+                        Log.e("ERROR LOAD_COINS", t.toString());
+                        mRefreshingListener.stopRefreshing(false);
                     }
                 });
     }
@@ -66,10 +62,11 @@ public class NetworkHelper {
 
 
     public interface OnChangeRefreshingListener {
-        void stopRefreshing();
+        void startRefreshing();
+        void stopRefreshing(boolean isSuccess);
     }
 
     public void setOnChangeRefreshingListener(OnChangeRefreshingListener refreshingListener) {
-        this.refreshingListener = refreshingListener;
+        this.mRefreshingListener = refreshingListener;
     }
 }

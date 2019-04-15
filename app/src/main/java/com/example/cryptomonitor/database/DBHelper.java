@@ -2,6 +2,9 @@ package com.example.cryptomonitor.database;
 
 import android.util.Log;
 
+import com.example.cryptomonitor.database.dao.CoinInfoDao;
+import com.example.cryptomonitor.database.entities.CoinInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -10,7 +13,7 @@ import java.util.concurrent.Executors;
 
 public class DBHelper {
 
-    private static ExecutorService executorService = Executors.newFixedThreadPool(2);
+    private static ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     public static void updateDatabase(final List<CoinInfo> newCoinInfoList) {
         executorService.execute(new Runnable() {
@@ -32,7 +35,7 @@ public class DBHelper {
                 }
                 coinInfoDao.insert(insertList);
                 coinInfoDao.update(updateList);
-                Log.e("DbHelprer", "isLoaded ");
+                Log.e("DbHelper", "isLoaded ");
             }
         });
     }

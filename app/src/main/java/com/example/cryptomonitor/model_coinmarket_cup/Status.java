@@ -1,4 +1,3 @@
-
 package com.example.cryptomonitor.model_coinmarket_cup;
 
 import com.google.gson.annotations.Expose;
