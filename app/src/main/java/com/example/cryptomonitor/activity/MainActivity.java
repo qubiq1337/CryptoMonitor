@@ -29,13 +29,26 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         NetworkHelper.OnChangeRefreshingListener,
         ToolbarInteractor {
 
+    private static final String SEARCH_TEXT_KEY = "searchKey";
     private String mCurrency;
+    private String savedText;
     private SwipeRefreshLayout mSwipeRefresh;
     private NetworkHelper networkHelper = new NetworkHelper(this);
     private SearchView mSearchView;
     private Spinner mSpinner;
     private ToolbarInteractor mToolbarInteractor;
     private boolean isSearchViewExpanded;
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null && savedInstanceState.containsKey(SEARCH_TEXT_KEY)) {
+            isSearchViewExpanded = true;
+            savedText = savedInstanceState.getString(SEARCH_TEXT_KEY, "");
+        } else {
+            isSearchViewExpanded = false;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +89,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
 
     @Override
     public void onBackPressed() {
-        if (isSearchViewExpanded)
+        if (isSearchViewExpanded) {
             mSearchView.setIconified(true); //сворачивает searchView
-        else
+        } else
             ExitClass.onBackPressed(this);
     }
 
@@ -107,6 +120,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         mSearchView.setOnQueryTextListener(this);
         mSearchView.setOnSearchClickListener(this);
         mSearchView.setOnCloseListener(this);
+        if (isSearchViewExpanded) {
+            mSearchView.setIconified(false);
+            mSearchView.setQuery(savedText, false);
+        }
         return true;
     }
 
@@ -138,8 +155,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
 
     @Override
     public boolean onClose() {
-        isSearchViewExpanded = false;
-        mSpinner.setVisibility(View.VISIBLE);
+        onClosedSearch();
         if (mToolbarInteractor != null)
             mToolbarInteractor.onClose();
         return false;
@@ -163,12 +179,31 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.search:
-                isSearchViewExpanded = true;
-                mSpinner.setVisibility(View.GONE);
+                onExpandSearch();
                 if (mToolbarInteractor != null)
                     mToolbarInteractor.onClick(v);
                 break;
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (isSearchViewExpanded) {
+            outState.putString(SEARCH_TEXT_KEY, mSearchView.getQuery().toString());
+        }
+    }
+
+    private void onExpandSearch() {
+        isSearchViewExpanded = true;
+        mSpinner.setVisibility(View.GONE);
+        getSupportActionBar().setTitle("");
+    }
+
+    private void onClosedSearch() {
+        isSearchViewExpanded = false;
+        mSpinner.setVisibility(View.VISIBLE);
+        getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
     }
 }
 

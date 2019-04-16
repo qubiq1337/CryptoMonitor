@@ -27,7 +27,7 @@ public interface CoinInfoDao {
     LiveData<List<CoinInfo>> getFavoriteCoins();
 
     @Query("select * from coininfo where fullName like '%' || :search || '%'")
-    List<CoinInfo> getSearchCoins(String search);
+    LiveData<List<CoinInfo>> getSearchCoins(String search);
 
     @Query("select count(*) from coininfo")
     int getDatabaseSize();
