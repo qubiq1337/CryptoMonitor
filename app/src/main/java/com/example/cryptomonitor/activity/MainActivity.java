@@ -205,6 +205,15 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         mSpinner.setVisibility(View.VISIBLE);
         getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
     }
+
+    @Override
+    protected void onDestroy() {
+        mSearchView = null;
+        mSpinner = null;
+        mToolbarInteractor = null;
+        mSwipeRefresh = null;
+        super.onDestroy();
+    }
 }
 
 

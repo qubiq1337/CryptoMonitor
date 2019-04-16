@@ -27,7 +27,6 @@ import java.util.List;
 
 public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener, ToolbarInteractor {
 
-    public static final String TAG = "MyLogs";
     private static final String SEARCH_MODE_KEY = "modeKey";
     private boolean isSearchViewExpanded;
 
@@ -110,6 +109,16 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         mHomeViewModel.getAllCoinsLiveData().observe(this, listObserver);
         isSearchViewExpanded = false;
         return false;
+    }
+
+    @Override
+    public void onDestroy() {
+        mSearchViewModel = null;
+        mHomeViewModel = null;
+        mCoinAdapterHome = null;
+        mRecyclerView = null;
+        listObserver = null;
+        super.onDestroy();
     }
 
     @Override
