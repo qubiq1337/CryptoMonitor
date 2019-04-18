@@ -17,7 +17,7 @@ public interface CoinInfoDao {
     @Query("select * from coininfo")
     LiveData<List<CoinInfo>> getAll();
 
-    @Query("select * from coininfo where coinId=:id")
+    @Query("select * from coininfo where id=:id")
     CoinInfo getById(long id);
 
     @Query("select * from coininfo where fullName=:fullName")

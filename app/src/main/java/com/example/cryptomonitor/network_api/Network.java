@@ -1,5 +1,7 @@
 package com.example.cryptomonitor.network_api;
 
+import com.example.cryptomonitor.AppExecutors;
+
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -12,7 +14,7 @@ class Network {
     private Retrofit mRetrofit;
 
     private Network() {
-        Executor networkExecutor = Executors.newSingleThreadExecutor();
+        Executor networkExecutor = AppExecutors.getInstance().getNetworkExecutor();
         mRetrofit = new Retrofit.Builder()
                 .callbackExecutor(networkExecutor)
                 .baseUrl(BASE_URL)

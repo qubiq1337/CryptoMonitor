@@ -16,4 +16,5 @@
     <string name="action_bar_spinner">Action Bar Spinner</string>
     <string name="search_line">Search</string>
     <string name="close">Close</string>
+    <string name="buy">Buy</string>
 </resources>

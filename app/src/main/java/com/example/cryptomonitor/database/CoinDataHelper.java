@@ -2,21 +2,21 @@ package com.example.cryptomonitor.database;
 
 import android.util.Log;
 
+import com.example.cryptomonitor.AppExecutors;
 import com.example.cryptomonitor.database.dao.CoinInfoDao;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.Executor;
 
 
-public class DBHelper {
+public class CoinDataHelper {
 
-    private static ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private static Executor dbExecutor = AppExecutors.getInstance().getDbExecutor();
 
     public static void updateDatabase(final List<CoinInfo> newCoinInfoList) {
-        executorService.execute(new Runnable() {
+        dbExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 CoinInfoDao coinInfoDao = App.getDatabase().coinInfoDao();
@@ -28,7 +28,7 @@ public class DBHelper {
                         insertList.add(coinInfo);
                     } else {
                         CoinInfo dbCoinInfo = dbInfoList.get(0);
-                        coinInfo.setCoinId(dbCoinInfo.getCoinId());
+                        coinInfo.setId(dbCoinInfo.getId());
                         coinInfo.setFavorite(dbCoinInfo.isFavorite());
                         updateList.add(coinInfo);
                     }
@@ -41,7 +41,7 @@ public class DBHelper {
     }
 
     public static void updateCoin(final CoinInfo clickedCoinInfo) {
-        executorService.execute(new Runnable() {
+        dbExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 App.getDatabase().coinInfoDao().update(clickedCoinInfo);
@@ -50,7 +50,7 @@ public class DBHelper {
     }
 
     public static void deleteAllCoins() {
-        executorService.execute(new Runnable() {
+        dbExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 App.getDatabase().coinInfoDao().deleteAll();

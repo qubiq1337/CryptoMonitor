@@ -7,7 +7,7 @@ import android.arch.persistence.room.PrimaryKey;
 public class CoinInfo {
 
     @PrimaryKey(autoGenerate = true)
-    private long coinId;
+    private long id;
     private String fullName;
     private String shortName;
     private String imageURL;
@@ -53,12 +53,12 @@ public class CoinInfo {
         this.imageURL = imageURL;
     }
 
-    public long getCoinId() {
-        return coinId;
+    public long getId() {
+        return id;
     }
 
-    public void setCoinId(long coinId) {
-        this.coinId = coinId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public boolean isFavorite() {
