@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface CoinInfoDao {
 
-    @Query("select * from coininfo")
+    @Query("select * from coininfo order by fullName")
     LiveData<List<CoinInfo>> getAll();
 
     @Query("select * from coininfo where id=:id")
@@ -23,10 +23,10 @@ public interface CoinInfoDao {
     @Query("select * from coininfo where fullName=:fullName")
     List<CoinInfo> getByFullName(String fullName);
 
-    @Query("select * from coininfo where isFavorite = 1 ")
+    @Query("select * from coininfo where isFavorite = 1 order by fullName")
     LiveData<List<CoinInfo>> getFavoriteCoins();
 
-    @Query("select * from coininfo where fullName like '%' || :search || '%'")
+    @Query("select * from coininfo where fullName like :search || '%' order by fullName")
     LiveData<List<CoinInfo>> getSearchCoins(String search);
 
     @Query("select count(*) from coininfo")

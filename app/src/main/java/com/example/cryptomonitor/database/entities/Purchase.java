@@ -43,8 +43,8 @@ public class Purchase {
 
     public String getDateStr() {
         return month < 10 ?
-                this.getDay() + ".0" + this.getMonth() + this.getYear()
-                : this.getDay() + "." + this.getMonth() + this.getYear();
+                this.getDay() + ".0" + this.getMonth() + "." + this.getYear()
+                : this.getDay() + "." + this.getMonth() + "." + this.getYear();
     }
 
     public long getId() {

@@ -17,4 +17,11 @@
     <string name="search_line">Search</string>
     <string name="close">Close</string>
     <string name="buy">Buy</string>
+    <string name="coin">Coin</string>
+    <string name="choose_coin">Choose coin...</string>
+    <string name="cost">Cost</string>
+    <string name="amount">Amount</string>
+    <string name="price_for_a_coin">Price for a coin</string>
+    <string name="start_input">Start input</string>
+    <string name="date">Date</string>
 </resources>

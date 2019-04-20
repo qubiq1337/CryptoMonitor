@@ -18,6 +18,9 @@ public class SearchViewModel extends ViewModel {
     }
 
     public LiveData<List<CoinInfo>> getCurrentSearchLiveData() {
-        return mSearchViewLiveData;
+        if (mSearchViewLiveData == null)
+            return getNewSearchLiveData("");
+        else
+            return mSearchViewLiveData;
     }
 }
