@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface CoinInfoDao {
 
-    @Query("select * from coininfo order by fullName")
+    @Query("select * from coininfo")
     LiveData<List<CoinInfo>> getAll();
 
     @Query("select * from coininfo where id=:id")

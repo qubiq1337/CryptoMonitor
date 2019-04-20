@@ -53,7 +53,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     public void onBindViewHolder(@NonNull CoinViewHolder coinViewHolder, int i) {
         coinViewHolder.textViewFullName.setText(coinData.get(i).getFullName());
         coinViewHolder.textViewName.setText(coinData.get(i).getShortName());
-        coinViewHolder.textViewPrice.setText(coinData.get(i).getPrice());
+        coinViewHolder.textViewPrice.setText(coinData.get(i).getPriceStr());
         if (coinData.get(i).isFavorite())
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_favorite_star));
         else

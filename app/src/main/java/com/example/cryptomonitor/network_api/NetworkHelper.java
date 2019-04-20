@@ -68,13 +68,13 @@ public class NetworkHelper {
         List<CoinInfo> coinInfoArrayList = new ArrayList<>();
         List<Datum> coinCoinMarketCupData = coinMarketCup.getData();
         CoinInfo coinInfo;
-        DecimalFormat format = new DecimalFormat("#.##");
-        format.setRoundingMode(RoundingMode.CEILING);
+
         for (Datum coin : coinCoinMarketCupData) {
             String fullName = coin.getName();
             String shortName = coin.getSymbol();
-            String price = String.valueOf(format.format(coin.getQuote().getUSD().getPrice())).concat(coinSymbols.get(currency));
-            coinInfo = new CoinInfo(fullName, shortName, price);
+            double price = coin.getQuote().getUSD().getPrice();
+            String symbol = coinSymbols.get(currency);
+            coinInfo = new CoinInfo(fullName, shortName, price, symbol);
             coinInfoArrayList.add(coinInfo);
         }
         return coinInfoArrayList;
