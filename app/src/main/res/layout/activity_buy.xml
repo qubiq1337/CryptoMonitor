@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Theme.Design.NoActionBar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.BuyActivity">
@@ -34,28 +33,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="250dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/coin_tv"
+                style="@style/TextViewAttributes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/coin" />
 
             <TextView
                 android:id="@+id/selected_item"
+                style="@style/TextViewAttributes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_action_close"
@@ -75,11 +73,11 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/cost_tv"
+                style="@style/TextViewAttributes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cost" />
@@ -90,16 +88,25 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/price_for_a_coin"
-                android:inputType="number" />
+                />
+
+            <TextView
+                android:id="@+id/symbol_tv"
+                style="@style/TextViewAttributes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                tools:text="%" />
+
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/amount_tv"
+                style="@style/TextViewAttributes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/amount" />
@@ -110,16 +117,16 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/amount"
-                android:inputType="number" />
+                />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/date_tv"
+                style="@style/TextViewAttributes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/date" />
@@ -128,29 +135,23 @@
                 android:id="@+id/date_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
                 android:background="@color/grey"
                 tools:text="10.09.2019" />
         </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
     </TableLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/search_rv"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="200dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:visibility="gone"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

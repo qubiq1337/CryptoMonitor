@@ -3,6 +3,9 @@ package com.example.cryptomonitor.database.entities;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 @Entity
 public class CoinInfo {
 
@@ -11,21 +14,23 @@ public class CoinInfo {
     private String fullName;
     private String shortName;
     private String imageURL;
-    private String price;
+    private double price;
+    private String symbol;
     private boolean isFavorite;
 
-    public CoinInfo(String fullName, String shortName, String price) {
+    public CoinInfo(String fullName, String shortName, double price, String symbol) {
         this.fullName = fullName;
         this.shortName = shortName;
         this.price = price;
+        this.symbol = symbol;
         this.isFavorite = false;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -67,5 +72,19 @@ public class CoinInfo {
 
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public String getPriceStr(){
+        DecimalFormat format = new DecimalFormat("#.##");
+        format.setRoundingMode(RoundingMode.CEILING);
+        return format.format(this.price).concat(this.symbol);
     }
 }

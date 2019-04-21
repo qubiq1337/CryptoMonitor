@@ -37,6 +37,7 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
     private EditText mNameEdit;
     private TextView mDateEdit;
     private TextView mSelectedCoinItem;
+    private TextView mSymbolText;
     private MinCoinAdapter mAdapter;
     private SearchViewModel mSearchViewModel;
     private Purchase mPurchase = new Purchase();
@@ -61,6 +62,7 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         mCloseButton = findViewById(R.id.close_image);
         mReadyButton = findViewById(R.id.ready_image);
         mDateEdit = findViewById(R.id.date_edit);
+        mSymbolText = findViewById(R.id.symbol_tv);
 
         mDateEdit.setOnClickListener(this);
         mReadyButton.setOnClickListener(this);
@@ -82,11 +84,11 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
     public void OnItemClick(CoinInfo coinInfo) {
         mSearchRv.setVisibility(View.GONE);
         mNameEdit.setVisibility(View.GONE);
-        mNameEdit.setText("");
         mSelectedCoinItem.setVisibility(View.VISIBLE);
         mSelectedCoinId = coinInfo.getId();
         mSelectedCoinItem.setText(coinInfo.getFullName());
-        mPriceEdit.setText(coinInfo.getPrice());
+        mPriceEdit.setText(String.valueOf(coinInfo.getPrice()));
+        mSymbolText.setText(coinInfo.getSymbol());
     }
 
     private TextWatcher searchTextWatcher = new TextWatcher() {
@@ -97,9 +99,13 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mSearchRv.setVisibility(View.VISIBLE);
-            mSearchViewModel.getCurrentSearchLiveData().removeObservers(BuyActivity.this);
-            mSearchViewModel.getNewSearchLiveData(s.toString()).observe(BuyActivity.this, observer);
+            if (s.toString().isEmpty())
+                mSearchRv.setVisibility(View.GONE);
+            else {
+                mSearchRv.setVisibility(View.VISIBLE);
+                mSearchViewModel.getCurrentSearchLiveData().removeObservers(BuyActivity.this);
+                mSearchViewModel.getNewSearchLiveData(s.toString()).observe(BuyActivity.this, observer);
+            }
         }
 
         @Override
@@ -114,6 +120,7 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
             case R.id.selected_item:
                 mSelectedCoinItem.setVisibility(View.GONE);
                 mNameEdit.setVisibility(View.VISIBLE);
+                mNameEdit.setText("");
                 break;
             case R.id.close_image:
                 finish();
@@ -121,7 +128,9 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
             case R.id.ready_image:
                 if (fieldsAreValid()) {
                     mPurchase.setAmount(Double.valueOf(mAmountEdit.getText().toString()));
+                    mPurchase.setCoinId(mSelectedCoinId);
                     PurchaseDataHelper.insert(mPurchase);
+                    finish();
                 }
                 break;
             case R.id.date_edit:
