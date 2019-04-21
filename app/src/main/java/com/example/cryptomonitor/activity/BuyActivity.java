@@ -16,8 +16,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.cryptomonitor.AppExecutors;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.MinCoinAdapter;
+import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.PurchaseDataHelper;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.database.entities.Purchase;
@@ -28,6 +30,12 @@ import java.util.Calendar;
 import java.util.List;
 
 public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnItemClickListener, View.OnClickListener, DatePickerDialog.OnDateSetListener {
+
+    private static final String SYMBOL_KEY = "symbolKey";
+    private static final String COIN_ID_KEY = "coinIdKey";
+    private static final String DAY_KEY = "dayKey";
+    private static final String MONTH_KEY = "monthKey";
+    private static final String YEAR_KEY = "yearKey";
 
     private RecyclerView mSearchRv;
     private ImageButton mCloseButton;
@@ -121,6 +129,7 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
                 mSelectedCoinItem.setVisibility(View.GONE);
                 mNameEdit.setVisibility(View.VISIBLE);
                 mNameEdit.setText("");
+                mSelectedCoinId = -1;
                 break;
             case R.id.close_image:
                 finish();
@@ -155,5 +164,45 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         mPurchase.setMonth(month + 1);
         mPurchase.setYear(year);
         mDateEdit.setText(mPurchase.getDateStr());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        final long coinId = savedInstanceState.getLong(COIN_ID_KEY);
+        AppExecutors.getInstance().getDbExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                final CoinInfo coinInfo = App.getDatabase().coinInfoDao().getById(coinId);
+                if (coinInfo != null)
+                    mSelectedCoinItem.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mSearchRv.setVisibility(View.GONE);
+                            mNameEdit.setVisibility(View.GONE);
+                            mSelectedCoinItem.setVisibility(View.VISIBLE);
+                            mSelectedCoinId = coinInfo.getId();
+                            mSelectedCoinItem.setText(coinInfo.getFullName());
+                            mPriceEdit.setText(String.valueOf(coinInfo.getPrice()));
+                            mSymbolText.setText(coinInfo.getSymbol());
+                        }
+                    });
+            }
+        });
+        int day = savedInstanceState.getInt(DAY_KEY);
+        int month = savedInstanceState.getInt(MONTH_KEY);
+        int year = savedInstanceState.getInt(YEAR_KEY);
+        onDateChanged(day, month, year);
+        mSymbolText.setText(savedInstanceState.getString(SYMBOL_KEY));
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(SYMBOL_KEY, mSymbolText.getText().toString());
+        outState.putLong(COIN_ID_KEY, mSelectedCoinId);
+        outState.putInt(DAY_KEY, mPurchase.getDay());
+        outState.putInt(MONTH_KEY, mPurchase.getMonth() - 1);
+        outState.putInt(YEAR_KEY, mPurchase.getYear());
+        super.onSaveInstanceState(outState);
     }
 }
