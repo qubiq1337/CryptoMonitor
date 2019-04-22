@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.entities.CoinInfo;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinViewHolder> {
 
 
+    private static final String ICONS_MASTER_64_X_64 = "https://raw.githubusercontent.com/MoneyConverter/cryptocurrencies-icons/master/64x64/";
     private List<CoinInfo> coinData;
     private Context mContext;
     private OnStarClickListener onStarClickListener;
@@ -54,6 +56,8 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         coinViewHolder.textViewFullName.setText(coinData.get(i).getFullName());
         coinViewHolder.textViewName.setText(coinData.get(i).getShortName());
         coinViewHolder.textViewPrice.setText(coinData.get(i).getPriceStr());
+        String URL = ICONS_MASTER_64_X_64 + coinData.get(i).getShortName().toLowerCase() + ".png";
+        Picasso.with(mContext).load(URL).into(coinViewHolder.imageViewIcon);
         if (coinData.get(i).isFavorite())
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_favorite_star));
         else
