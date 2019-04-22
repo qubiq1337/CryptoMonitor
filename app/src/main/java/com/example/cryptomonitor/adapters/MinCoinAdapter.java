@@ -11,12 +11,14 @@ import android.widget.TextView;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.entities.CoinInfo;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MinCoinAdapter extends RecyclerView.Adapter<MinCoinAdapter.MinCoinViewHolder> {
 
+    private static final String ICONS_MASTER_32_X_32 = "https://raw.githubusercontent.com/MoneyConverter/cryptocurrencies-icons/master/32x32/";
     private List<CoinInfo> mData;
     private Context mContext;
     private OnItemClickListener mOnClickListener;
@@ -41,6 +43,8 @@ public class MinCoinAdapter extends RecyclerView.Adapter<MinCoinAdapter.MinCoinV
     @Override
     public void onBindViewHolder(@NonNull MinCoinViewHolder minCoinViewHolder, int i) {
         final CoinInfo coinInfo = mData.get(i);
+        String URL = ICONS_MASTER_32_X_32 + mData.get(i).getShortName().toLowerCase() + ".png";
+        Picasso.with(mContext).load(URL).into(minCoinViewHolder.mIconImage);
         minCoinViewHolder.mCoinNameTv.setText(coinInfo.getFullName());
     }
 
@@ -56,10 +60,12 @@ public class MinCoinAdapter extends RecyclerView.Adapter<MinCoinAdapter.MinCoinV
 
     class MinCoinViewHolder extends RecyclerView.ViewHolder {
         private TextView mCoinNameTv;
+        private ImageView mIconImage;
 
         MinCoinViewHolder(@NonNull View itemView) {
             super(itemView);
             mCoinNameTv = itemView.findViewById(R.id.rv_item_name);
+            mIconImage = itemView.findViewById(R.id.item_icon);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
