@@ -86,8 +86,4 @@ public class NetworkHelper {
 
         void stopRefreshing(boolean isSuccess);
     }
-
-    public void setOnChangeRefreshingListener(OnChangeRefreshingListener refreshingListener) {
-        this.mRefreshingListener = refreshingListener;
-    }
 }

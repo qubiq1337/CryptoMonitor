@@ -56,8 +56,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         mRecyclerView = view.findViewById(R.id.rv_coin_itemlist);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         mCoinAdapterHome = new CoinAdapterHome(getContext());
         mCoinAdapterHome.setOnStarClickListener(this);
 
