@@ -205,4 +205,20 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         outState.putInt(YEAR_KEY, mPurchase.getYear());
         super.onSaveInstanceState(outState);
     }
+
+    @Override
+    protected void onDestroy() {
+        mSearchRv = null;
+        mCloseButton = null;
+        mReadyButton = null;
+        mPriceEdit = null;
+        mAmountEdit = null;
+        mNameEdit = null;
+        mDateEdit = null;
+        mSelectedCoinItem = null;
+        mSymbolText = null;
+        mAdapter = null;
+        mSearchViewModel = null;
+        super.onDestroy();
+    }
 }

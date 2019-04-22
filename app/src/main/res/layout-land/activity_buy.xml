@@ -144,7 +144,7 @@
         android:id="@+id/search_rv"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         app:layout_constraintStart_toEndOf="@+id/tableLayout"
         app:layout_constraintTop_toTopOf="@+id/tableLayout" />

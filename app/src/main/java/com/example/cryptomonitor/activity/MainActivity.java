@@ -2,6 +2,7 @@ package com.example.cryptomonitor.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -35,13 +36,25 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     private SwipeRefreshLayout mSwipeRefresh;
     private NetworkHelper networkHelper = new NetworkHelper(this);
     private SearchView mSearchView;
-    private Spinner mSpinner;
+    private MenuItem mSpinnerItem;
     private ToolbarInteractor mToolbarInteractor;
     private boolean isSearchViewExpanded;
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        if (savedInstanceState == null) {
+            changeFragment(R.id.top_container, HomeFragment.class.getName());
+            changeFragment(R.id.bottom_container, NavigationBarFragment.class.getName());
+        } else {
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.top_container);
+            if (fragment instanceof ToolbarInteractor)
+                mToolbarInteractor = (ToolbarInteractor) fragment;
+        }
+        mSwipeRefresh = findViewById(R.id.refresh);
+        mSwipeRefresh.setOnRefreshListener(this);
+        mSwipeRefresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
         if (savedInstanceState != null && savedInstanceState.containsKey(SEARCH_TEXT_KEY)) {
             isSearchViewExpanded = true;
             savedText = savedInstanceState.getString(SEARCH_TEXT_KEY, "");
@@ -49,19 +62,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             isSearchViewExpanded = false;
         }
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        changeFragment(R.id.top_container, HomeFragment.class.getName());
-        changeFragment(R.id.bottom_container, NavigationBarFragment.class.getName());
-        networkHelper.setOnChangeRefreshingListener(this);
-        mSwipeRefresh = findViewById(R.id.refresh);
-        mSwipeRefresh.setOnRefreshListener(this);
-        mSwipeRefresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
-    }
-
 
     @Override
     public void changeFragment(int container, String fragmentName) {
@@ -98,13 +98,13 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.spinner_layout, menu);
-        MenuItem spinnerItem = menu.findItem(R.id.action_bar_spinner);
-        mSpinner = (Spinner) spinnerItem.getActionView();
+        mSpinnerItem = menu.findItem(R.id.action_bar_spinner);
+        Spinner spinner = (Spinner) mSpinnerItem.getActionView();
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinner.setAdapter(adapter);
-        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] spinnerArray = getResources().getStringArray(R.array.spinner);
@@ -196,22 +196,23 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
 
     private void onExpandSearch() {
         isSearchViewExpanded = true;
-        mSpinner.setVisibility(View.GONE);
+        mSpinnerItem.setVisible(false);
         getSupportActionBar().setTitle("");
     }
 
     private void onClosedSearch() {
         isSearchViewExpanded = false;
-        mSpinner.setVisibility(View.VISIBLE);
+        mSpinnerItem.setVisible(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
     }
 
     @Override
     protected void onDestroy() {
         mSearchView = null;
-        mSpinner = null;
+        mSpinnerItem = null;
         mToolbarInteractor = null;
         mSwipeRefresh = null;
+        networkHelper = null;
         super.onDestroy();
     }
 }
