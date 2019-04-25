@@ -8,8 +8,6 @@ import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.model_coinmarket_cup.CoinMarketCup;
 import com.example.cryptomonitor.model_coinmarket_cup.Datum;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +21,7 @@ public class NetworkHelper {
 
     private final int START_LIMIT = 5000;
     private final int START_PAGE = 1;
+    private static final String ICONS_MASTER_64_X_64 = "https://raw.githubusercontent.com/MoneyConverter/cryptocurrencies-icons/master/64x64/";
     private OnChangeRefreshingListener mRefreshingListener;
     private static HashMap<String, String> coinSymbols = new HashMap<>();
 
@@ -74,7 +73,8 @@ public class NetworkHelper {
             String shortName = coin.getSymbol();
             double price = coin.getQuote().getUSD().getPrice();
             String symbol = coinSymbols.get(currency);
-            coinInfo = new CoinInfo(fullName, shortName, price, symbol);
+            String URL = ICONS_MASTER_64_X_64 + shortName.toLowerCase() + ".png";
+            coinInfo = new CoinInfo(fullName, shortName, URL, price, symbol);
             coinInfoArrayList.add(coinInfo);
         }
         return coinInfoArrayList;

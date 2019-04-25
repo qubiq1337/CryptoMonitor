@@ -1,7 +1,9 @@
 package com.example.cryptomonitor.adapters;
 
+import android.arch.paging.PagedListAdapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +15,9 @@ import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MinCoinAdapter extends RecyclerView.Adapter<MinCoinAdapter.MinCoinViewHolder> {
+public class MinCoinAdapter extends PagedListAdapter<CoinInfo, MinCoinAdapter.MinCoinViewHolder> {
 
     private static final String ICONS_MASTER_32_X_32 = "https://raw.githubusercontent.com/MoneyConverter/cryptocurrencies-icons/master/32x32/";
-    private List<CoinInfo> mData;
     private Context mContext;
     private OnItemClickListener mOnClickListener;
 
@@ -27,10 +25,10 @@ public class MinCoinAdapter extends RecyclerView.Adapter<MinCoinAdapter.MinCoinV
         void OnItemClick(CoinInfo coinInfo);
     }
 
-    public MinCoinAdapter(Context context, OnItemClickListener onItemClickListener) {
+    public MinCoinAdapter(DiffUtil.ItemCallback<CoinInfo> diffCallback, Context context, OnItemClickListener onItemClickListener) {
+        super(diffCallback);
         this.mContext = context;
         this.mOnClickListener = onItemClickListener;
-        mData = new ArrayList<>();
     }
 
     @NonNull
@@ -42,21 +40,17 @@ public class MinCoinAdapter extends RecyclerView.Adapter<MinCoinAdapter.MinCoinV
 
     @Override
     public void onBindViewHolder(@NonNull MinCoinViewHolder minCoinViewHolder, int i) {
-        final CoinInfo coinInfo = mData.get(i);
-        String URL = ICONS_MASTER_32_X_32 + mData.get(i).getShortName().toLowerCase() + ".png";
+        final CoinInfo coinInfo = getCurrentList().get(i);
+        String URL = ICONS_MASTER_32_X_32 + getCurrentList().get(i).getShortName().toLowerCase() + ".png";
         Picasso.with(mContext).load(URL).into(minCoinViewHolder.mIconImage);
         minCoinViewHolder.mCoinNameTv.setText(coinInfo.getFullName());
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return getCurrentList().size();
     }
 
-    public void setData(List<CoinInfo> list) {
-        mData = list;
-        notifyDataSetChanged();
-    }
 
     class MinCoinViewHolder extends RecyclerView.ViewHolder {
         private TextView mCoinNameTv;
@@ -69,7 +63,7 @@ public class MinCoinAdapter extends RecyclerView.Adapter<MinCoinAdapter.MinCoinV
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnClickListener.OnItemClick(mData.get(getAdapterPosition()));
+                    mOnClickListener.OnItemClick(getCurrentList().get(getAdapterPosition()));
                 }
             });
         }

@@ -18,9 +18,10 @@ public class CoinInfo {
     private String symbol;
     private boolean isFavorite;
 
-    public CoinInfo(String fullName, String shortName, double price, String symbol) {
+    public CoinInfo(String fullName, String shortName, String imageURL, double price, String symbol) {
         this.fullName = fullName;
         this.shortName = shortName;
+        this.imageURL = imageURL;
         this.price = price;
         this.symbol = symbol;
         this.isFavorite = false;
