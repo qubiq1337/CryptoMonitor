@@ -1,37 +1,39 @@
 package com.example.cryptomonitor.view_models;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.arch.paging.DataSource;
-import android.arch.paging.LivePagedListBuilder;
-import android.arch.paging.PagedList;
+import android.support.annotation.Nullable;
 
-import com.example.cryptomonitor.AppExecutors;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 
+import java.util.List;
+
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 public class SearchViewModel extends ViewModel {
 
-    private LiveData<PagedList<CoinInfo>> mSearchLiveData;
-
-    public LiveData<PagedList<CoinInfo>> getSearchLiveData(String currentText) {
-        if (mSearchLiveData == null) {
-            DataSource.Factory<Integer, CoinInfo> sourceFactory = App.getDatabase().coinInfoDao().getSearchCoins(currentText);
-            PagedList.Config config = new PagedList.Config.Builder()
-                    .setEnablePlaceholders(false)
-                    .setPageSize(10)
-                    .build();
-            mSearchLiveData = new LivePagedListBuilder<>(sourceFactory, config)
-                    .setFetchExecutor(AppExecutors.getInstance().getDbExecutor())
-                    .build();
+    private MutableLiveData<List<CoinInfo>> mSearchLiveData = new MutableLiveData<>();
+    private Disposable mDisposableSubscription;
+    private Consumer<List<CoinInfo>> mListConsumer = new Consumer<List<CoinInfo>>() {
+        @Override
+        public void accept(@Nullable List<CoinInfo> coinInfoList) {
+            mSearchLiveData.postValue(coinInfoList);
         }
-        return mSearchLiveData;
+    };
+
+    public void onTextChanged(final String currentText) {
+        if (mDisposableSubscription != null)
+            mDisposableSubscription.dispose();
+        mDisposableSubscription = App.getDatabase().coinInfoDao().getSearchCoins(currentText)
+                .subscribeOn(Schedulers.io())
+                .subscribe(mListConsumer);
     }
 
-    public LiveData<PagedList<CoinInfo>> getSearchLiveData() {
-        if (mSearchLiveData == null)
-            return getSearchLiveData("");
-        else return mSearchLiveData;
-
+    public LiveData<List<CoinInfo>> getSearchLiveData() {
+        return mSearchLiveData;
     }
 }

@@ -1,29 +1,45 @@
 package com.example.cryptomonitor.view_models;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.arch.paging.DataSource;
-import android.arch.paging.LivePagedListBuilder;
-import android.arch.paging.PagedList;
+import android.support.annotation.Nullable;
 
-import com.example.cryptomonitor.AppExecutors;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 
-public class HomeViewModel extends ViewModel {
-    private LiveData<PagedList<CoinInfo>> mAllCoinsLiveData;
+import java.util.List;
 
-    public LiveData<PagedList<CoinInfo>> getAllCoinsLiveData() {
-        if (mAllCoinsLiveData == null) {
-            DataSource.Factory<Integer, CoinInfo> sourceFactory = App.getDatabase().coinInfoDao().getAll();
-            PagedList.Config config = new PagedList.Config.Builder()
-                    .setEnablePlaceholders(false)
-                    .setPageSize(20)
-                    .build();
-            mAllCoinsLiveData = new LivePagedListBuilder<>(sourceFactory, config)
-                    .setFetchExecutor(AppExecutors.getInstance().getDbExecutor())
-                    .build();
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
+public class HomeViewModel extends ViewModel {
+
+    private MutableLiveData<List<CoinInfo>> mListMutableLiveData = new MutableLiveData<>();
+    private int lastIndex;
+    private final static int initialSize = 60;
+    private final static int loadSize = 20;
+    private Disposable mDisposableSubscription;
+    private Consumer<List<CoinInfo>> mListConsumer = new Consumer<List<CoinInfo>>() {
+        @Override
+        public void accept(@Nullable List<CoinInfo> coinInfoList) {
+            mListMutableLiveData.postValue(coinInfoList);
+            lastIndex = coinInfoList.size();
         }
-        return mAllCoinsLiveData;
+    };
+
+    public LiveData<List<CoinInfo>> getAllCoinsLiveData() {
+        mDisposableSubscription = App.getDatabase().coinInfoDao().getAllBefore(initialSize)
+                .subscribeOn(Schedulers.io())
+                .subscribe(mListConsumer);
+        return mListMutableLiveData;
+    }
+
+    public void onEndReached() {
+        mDisposableSubscription.dispose();
+        mDisposableSubscription = App.getDatabase().coinInfoDao().getAllBefore(lastIndex + loadSize)
+                .subscribeOn(Schedulers.io())
+                .subscribe(mListConsumer);
     }
 }

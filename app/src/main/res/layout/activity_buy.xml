@@ -53,14 +53,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/coin" />
 
-            <View
-                android:id="@+id/selected_item"
-                style="@style/TextViewAttributes"
+            <LinearLayout
+                android:id="@+id/coin_holder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_action_close"
-                android:visibility="gone"
-                tools:text="COIN NAME" />
+                android:orientation="horizontal"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/name_edit"

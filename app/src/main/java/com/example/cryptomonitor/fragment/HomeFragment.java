@@ -2,7 +2,6 @@ package com.example.cryptomonitor.fragment;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.arch.paging.PagedList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
-import com.example.cryptomonitor.CoinDiffUtilCallback;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.ToolbarInteractor;
 import com.example.cryptomonitor.adapters.CoinAdapterHome;
@@ -23,16 +21,19 @@ import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.view_models.HomeViewModel;
 import com.example.cryptomonitor.view_models.SearchViewModel;
 
+import java.util.List;
 
-public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener, ToolbarInteractor {
+
+public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener, ToolbarInteractor, CoinAdapterHome.OnEndReachListener {
 
     private static final String SEARCH_MODE_KEY = "modeKey";
+    public static final String TAG = "MyLogs";
     private boolean isSearchViewExpanded;
 
-    private Observer<PagedList<CoinInfo>> listObserver = new Observer<PagedList<CoinInfo>>() {
+    private Observer<List<CoinInfo>> listObserver = new Observer<List<CoinInfo>>() {
         @Override
-        public void onChanged(@Nullable PagedList<CoinInfo> coinInfos) {
-            mCoinAdapterHome.submitList(coinInfos);
+        public void onChanged(@Nullable List<CoinInfo> coinInfos) {
+            mCoinAdapterHome.setData(coinInfos);
         }
     };
     private HomeViewModel mHomeViewModel;
@@ -54,12 +55,12 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         mRecyclerView = view.findViewById(R.id.rv_coin_itemlist);
 
-        mCoinAdapterHome = new CoinAdapterHome(new CoinDiffUtilCallback(), getContext());
-        mCoinAdapterHome.setOnStarClickListener(this);
+        mCoinAdapterHome = new CoinAdapterHome(getContext());
+        mCoinAdapterHome.setup(this);
 
-        mRecyclerView.setAdapter(mCoinAdapterHome);
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_fall_down);
         mRecyclerView.setLayoutAnimation(animation);
+        mRecyclerView.setAdapter(mCoinAdapterHome);
 
         mSearchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
         mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
@@ -71,8 +72,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     }
 
     @Override
-    public void onStarClick(int position) {
-        CoinInfo clickedCoinInfo = mCoinAdapterHome.getCurrentList().get(position);
+    public void onStarClick(CoinInfo clickedCoinInfo) {
         if (clickedCoinInfo.isFavorite())
             clickedCoinInfo.setFavorite(false);
         else
@@ -88,8 +88,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
 
     @Override
     public boolean onQueryTextChange(String currentText) {
-        mSearchViewModel.getSearchLiveData().removeObservers(this);
-        mSearchViewModel.getSearchLiveData(currentText).observe(this, listObserver);
+        mSearchViewModel.onTextChanged(currentText);
         return false;
     }
 
@@ -122,5 +121,10 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(SEARCH_MODE_KEY, isSearchViewExpanded);
+    }
+
+    @Override
+    public void onEndReach() {
+        mHomeViewModel.onEndReached();
     }
 }
