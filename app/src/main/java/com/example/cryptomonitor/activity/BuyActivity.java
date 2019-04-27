@@ -10,10 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.cryptomonitor.AppExecutors;
@@ -25,11 +28,14 @@ import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.database.entities.Purchase;
 import com.example.cryptomonitor.fragment.DatePickerFragment;
 import com.example.cryptomonitor.view_models.SearchViewModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.List;
 
-public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnItemClickListener, View.OnClickListener, DatePickerDialog.OnDateSetListener {
+public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnItemClickListener,
+        View.OnClickListener,
+        DatePickerDialog.OnDateSetListener {
 
     private static final String SYMBOL_KEY = "symbolKey";
     private static final String COIN_ID_KEY = "coinIdKey";
@@ -44,7 +50,9 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
     private EditText mAmountEdit;
     private EditText mNameEdit;
     private TextView mDateEdit;
-    private TextView mSelectedCoinItem;
+    private TextView mSelectedCoinTv;
+    private ImageView mSelectedCoinIcon;
+    private LinearLayout mCoinHolder;
     private TextView mSymbolText;
     private MinCoinAdapter mAdapter;
     private SearchViewModel mSearchViewModel;
@@ -66,16 +74,19 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         mAmountEdit = findViewById(R.id.amount_edit);
         mPriceEdit = findViewById(R.id.price_edit);
         mSearchRv = findViewById(R.id.search_rv);
-        mSelectedCoinItem = findViewById(R.id.selected_item);
         mCloseButton = findViewById(R.id.close_image);
         mReadyButton = findViewById(R.id.ready_image);
         mDateEdit = findViewById(R.id.date_edit);
         mSymbolText = findViewById(R.id.symbol_tv);
+        mCoinHolder = findViewById(R.id.coin_holder);
+        LinearLayout layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.min_coin_item, mCoinHolder, true);
+        mSelectedCoinIcon = layout.findViewById(R.id.item_icon);
+        mSelectedCoinTv = layout.findViewById(R.id.item_name);
 
         mDateEdit.setOnClickListener(this);
         mReadyButton.setOnClickListener(this);
         mCloseButton.setOnClickListener(this);
-        mSelectedCoinItem.setOnClickListener(this);
+        mSelectedCoinTv.setOnClickListener(this);
 
         mNameEdit.addTextChangedListener(searchTextWatcher);
 
@@ -83,7 +94,7 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         mSearchRv.setAdapter(mAdapter);
 
         mSearchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
-        mSearchViewModel.getCurrentSearchLiveData().observe(this, observer);
+        mSearchViewModel.getSearchLiveData().observe(this, observer);
         final Calendar c = Calendar.getInstance();
         onDateChanged(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
     }
@@ -92,9 +103,10 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
     public void OnItemClick(CoinInfo coinInfo) {
         mSearchRv.setVisibility(View.GONE);
         mNameEdit.setVisibility(View.GONE);
-        mSelectedCoinItem.setVisibility(View.VISIBLE);
+        mCoinHolder.setVisibility(View.VISIBLE);
         mSelectedCoinId = coinInfo.getId();
-        mSelectedCoinItem.setText(coinInfo.getFullName());
+        mSelectedCoinTv.setText(coinInfo.getFullName());
+        Picasso.with(this).load(coinInfo.getImageURL()).into(mSelectedCoinIcon);
         mPriceEdit.setText(String.valueOf(coinInfo.getPrice()));
         mSymbolText.setText(coinInfo.getSymbol());
     }
@@ -111,8 +123,7 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
                 mSearchRv.setVisibility(View.GONE);
             else {
                 mSearchRv.setVisibility(View.VISIBLE);
-                mSearchViewModel.getCurrentSearchLiveData().removeObservers(BuyActivity.this);
-                mSearchViewModel.getNewSearchLiveData(s.toString()).observe(BuyActivity.this, observer);
+                mSearchViewModel.onTextChanged(s.toString());
             }
         }
 
@@ -126,7 +137,7 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.selected_item:
-                mSelectedCoinItem.setVisibility(View.GONE);
+                mCoinHolder.setVisibility(View.GONE);
                 mNameEdit.setVisibility(View.VISIBLE);
                 mNameEdit.setText("");
                 mSelectedCoinId = -1;
@@ -174,14 +185,14 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
             public void run() {
                 final CoinInfo coinInfo = App.getDatabase().coinInfoDao().getById(coinId);
                 if (coinInfo != null)
-                    mSelectedCoinItem.post(new Runnable() {
+                    mSelectedCoinTv.post(new Runnable() {
                         @Override
                         public void run() {
                             mSearchRv.setVisibility(View.GONE);
                             mNameEdit.setVisibility(View.GONE);
-                            mSelectedCoinItem.setVisibility(View.VISIBLE);
+                            mCoinHolder.setVisibility(View.VISIBLE);
                             mSelectedCoinId = coinInfo.getId();
-                            mSelectedCoinItem.setText(coinInfo.getFullName());
+                            mSelectedCoinTv.setText(coinInfo.getFullName());
                             mPriceEdit.setText(String.valueOf(coinInfo.getPrice()));
                             mSymbolText.setText(coinInfo.getSymbol());
                         }
@@ -215,7 +226,7 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         mAmountEdit = null;
         mNameEdit = null;
         mDateEdit = null;
-        mSelectedCoinItem = null;
+        mSelectedCoinTv = null;
         mSymbolText = null;
         mAdapter = null;
         mSearchViewModel = null;
