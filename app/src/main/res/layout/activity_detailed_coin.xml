@@ -16,7 +16,7 @@
         <ImageView
             android:id="@+id/detailed_back"
             android:layout_width="30dp"
-            android:layout_height="21dp"
+            android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="20dp"
             android:src="@drawable/arrow_left_29172"

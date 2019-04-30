@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -83,7 +84,8 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
         if (intent != null) {
             mIndex = intent.getStringExtra(EXTRA_INDEX_KEY);
             mCurrency = intent.getStringExtra(EXTRA_CURRENCY_KEY);
-            mRank = "#"+intent.getStringExtra(EXTRA_POSITION_KEY);
+            int position = 0;
+            mRank = "#"+intent.getIntExtra(EXTRA_POSITION_KEY,position);
             initViews();
             initChart();
         }
@@ -119,7 +121,7 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
             dataVal1.add(new Entry((float) i, data.getOpen().floatValue()));
             Date date = new Date();
             date.setTime(modelChart.getData().get(i).getTime().longValue() * 1000);
-            SimpleDateFormat sm = new SimpleDateFormat("MMM-dd");
+            SimpleDateFormat sm = new SimpleDateFormat("MMM-d", Locale.US);
             String strDate = sm.format(date);
             dateXvalues.add(strDate);
             i++;
