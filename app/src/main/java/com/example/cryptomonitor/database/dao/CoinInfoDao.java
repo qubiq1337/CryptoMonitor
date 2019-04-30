@@ -11,6 +11,9 @@ import com.example.cryptomonitor.database.entities.CoinInfo;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
+
 @Dao
 public interface CoinInfoDao {
 
@@ -19,6 +22,9 @@ public interface CoinInfoDao {
 
     @Query("select * from coininfo where id=:id")
     CoinInfo getById(long id);
+
+    @Query("select * from coininfo where shortName=:shortName")
+    Flowable<List<CoinInfo>> getByShortName(String shortName);
 
     @Query("select * from coininfo where fullName=:fullName")
     List<CoinInfo> getByFullName(String fullName);

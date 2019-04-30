@@ -41,21 +41,13 @@ public class CoinDataHelper {
     }
 
     public static void updateCoin(final CoinInfo clickedCoinInfo) {
-        dbExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                App.getDatabase().coinInfoDao().update(clickedCoinInfo);
-            }
-        });
+        dbExecutor.execute(() -> App.getDatabase().coinInfoDao().update(clickedCoinInfo));
     }
 
     public static void deleteAllCoins() {
-        dbExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                App.getDatabase().coinInfoDao().deleteAll();
-            }
-        });
+        dbExecutor.execute(() -> App.getDatabase().coinInfoDao().deleteAll());
     }
+
+
 }
 

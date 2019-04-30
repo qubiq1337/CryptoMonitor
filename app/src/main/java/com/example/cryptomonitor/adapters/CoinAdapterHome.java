@@ -55,9 +55,9 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     public void onBindViewHolder(@NonNull CoinViewHolder coinViewHolder, int i) {
         coinViewHolder.textViewFullName.setText(coinData.get(i).getFullName());
         coinViewHolder.textViewName.setText(coinData.get(i).getShortName());
-        coinViewHolder.textViewPrice.setText(coinData.get(i).getPriceStr());
+        coinViewHolder.textViewPrice.setText(coinData.get(i).getPriceDisplay());
         String URL = ICONS_MASTER_64_X_64 + coinData.get(i).getShortName().toLowerCase() + ".png";
-        Picasso.with(mContext).load(URL).into(coinViewHolder.imageViewIcon);
+        Picasso.with(mContext).load(coinData.get(i).getImageURL()).into(coinViewHolder.imageViewIcon);
         if (coinData.get(i).isFavorite())
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_favorite_star));
         else
@@ -87,12 +87,16 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             textViewPrice = itemView.findViewById(R.id.rv_coin_layout_price);
             imageViewIcon = itemView.findViewById(R.id.rv_coin_layout_icon);
             isFavoriteImage = itemView.findViewById(R.id.rv_coin_favorite_image);
-            isFavoriteImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onStarClickListener.onStarClick(getAdapterPosition());
-                }
+            isFavoriteImage.setOnClickListener(v -> onStarClickListener.onStarClick(getAdapterPosition()));
+            itemView.setOnClickListener(v -> {
+                OnCoinClickListener listener = (OnCoinClickListener) mContext;
+                if (listener != null)
+                    listener.goToDetailedCoin(coinData.get(getAdapterPosition()).getShortName(),getAdapterPosition());
             });
         }
+    }
+
+    public interface OnCoinClickListener{
+        void goToDetailedCoin(String index,int position);
     }
 }
