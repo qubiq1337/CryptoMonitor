@@ -29,13 +29,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
-
 import static com.example.cryptomonitor.activity.MainActivity.EXTRA_CURRENCY_KEY;
 import static com.example.cryptomonitor.activity.MainActivity.EXTRA_INDEX_KEY;
 import static com.example.cryptomonitor.activity.MainActivity.EXTRA_POSITION_KEY;
@@ -61,6 +57,7 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
     private ImageView backButton;
     private ImageView icon;
     private String mRank;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,8 +93,8 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
     private void initChart() {
         Log.e("Bundle", mCurrency + " " + mIndex);
         lineChart = findViewById(R.id.chart);
-        lineChart.setTouchEnabled(true);
-        lineChart.setDragEnabled(true);
+        lineChart.setTouchEnabled(false);
+        lineChart.setDragEnabled(false);
         lineChart.setScaleYEnabled(false);
         lineChart.setScaleXEnabled(true);
         lineChart.getLegend().setEnabled(false);
@@ -160,7 +157,6 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
     }
 
     private void initViews() {
-
         mCompositeDisposable.add(App.getDatabase()
                 .coinInfoDao()
                 .getByShortName(mIndex)
@@ -213,7 +209,6 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
     @Override
     protected void onDestroy() {
         lineChart = null;
-        dateXvalues = null;
         dateXvalues = null;
         mCompositeDisposable.dispose();
         super.onDestroy();

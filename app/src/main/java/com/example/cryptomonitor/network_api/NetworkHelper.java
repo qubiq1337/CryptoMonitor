@@ -40,6 +40,8 @@ public class NetworkHelper {
         testRxLoadCoins(currency);
     }
 
+    //Старый код
+
    /* private void loadCoins(final String currency) {
         mRefreshingListener.startRefreshing();
         Network.getInstance()
@@ -97,7 +99,7 @@ public class NetworkHelper {
                 .map(this::toCoinInfo)
                 .toList()
                 .subscribe(coinInfoList -> {
-                    Log.e("testRxLoadCoins", "coinInfoList size:"+ String.valueOf(coinInfoList.size()));
+                    Log.e("testRxLoadCoins", "coinInfoList size:"+ coinInfoList.size());
                     CoinDataHelper.updateDatabase(coinInfoList);
                     mRefreshingListener.stopRefreshing(true);
                 })

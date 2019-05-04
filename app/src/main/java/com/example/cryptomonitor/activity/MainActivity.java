@@ -218,8 +218,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         mSpinnerItem = null;
         mToolbarInteractor = null;
         mSwipeRefresh = null;
-        networkHelper = null;
         networkHelper.getCompositeDisposable().dispose();
+        networkHelper = null;
         super.onDestroy();
 
     }
