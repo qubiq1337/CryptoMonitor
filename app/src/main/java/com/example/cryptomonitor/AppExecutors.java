@@ -15,8 +15,8 @@ public class AppExecutors {
     private final Executor mMainThreadExecutor;
     private final int nThreads = 3;
 
-    public static AppExecutors getInstance(){
-        if (executors == null){
+    public static AppExecutors getInstance() {
+        if (executors == null) {
             executors = new AppExecutors();
         }
         return executors;
@@ -34,7 +34,7 @@ public class AppExecutors {
         return mMainThreadExecutor;
     }
 
-    private AppExecutors(){
+    private AppExecutors() {
         mMainThreadExecutor = new MainThreadExecutor();
         mDbExecutor = Executors.newSingleThreadExecutor();
         mNetworkExecutor = Executors.newFixedThreadPool(nThreads);

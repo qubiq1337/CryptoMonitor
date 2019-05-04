@@ -5,7 +5,6 @@ import android.arch.persistence.room.PrimaryKey;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.util.Objects;
 
 @Entity
 public class CoinInfo {

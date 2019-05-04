@@ -1,4 +1,3 @@
-
 package com.example.cryptomonitor.model_cryptocompare.model_coins;
 
 import com.google.gson.annotations.Expose;

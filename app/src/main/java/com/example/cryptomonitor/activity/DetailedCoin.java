@@ -3,11 +3,12 @@ package com.example.cryptomonitor.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.entities.CoinInfo;
@@ -24,14 +25,17 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.squareup.picasso.Picasso;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
+
 import static com.example.cryptomonitor.activity.MainActivity.EXTRA_CURRENCY_KEY;
 import static com.example.cryptomonitor.activity.MainActivity.EXTRA_INDEX_KEY;
 import static com.example.cryptomonitor.activity.MainActivity.EXTRA_POSITION_KEY;
@@ -82,7 +86,7 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
             mIndex = intent.getStringExtra(EXTRA_INDEX_KEY);
             mCurrency = intent.getStringExtra(EXTRA_CURRENCY_KEY);
             int position = 0;
-            mRank = "#"+intent.getIntExtra(EXTRA_POSITION_KEY,position);
+            mRank = "#" + intent.getIntExtra(EXTRA_POSITION_KEY, position);
             initViews();
             initChart();
         }
@@ -166,12 +170,12 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
                 .subscribe(this::bindViews));
     }
 
-    private void bindViews(CoinInfo coinInfo){
+    private void bindViews(CoinInfo coinInfo) {
         fullname.setText(coinInfo.getFullName());
         Picasso.with(this).load(coinInfo.getImageURL()).into(icon);
         price.setText(coinInfo.getPriceDisplay());
         setChangeColor(coinInfo.getChangeDay());
-        String changeConcat = coinInfo.getChangeDayDispaly()+" ("+coinInfo.getChangePctDay()+"%)";
+        String changeConcat = coinInfo.getChangeDayDispaly() + " (" + coinInfo.getChangePctDay() + "%)";
         change.setText(changeConcat);
         mkt.setText(coinInfo.getMktcap());
         supply.setText(coinInfo.getSupply());
@@ -185,9 +189,9 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
         });
     }
 
-    private void setChangeColor(Double d){
+    private void setChangeColor(Double d) {
         if (d > 0)
-        change.setTextColor(getResources().getColor(R.color.greenColor));
+            change.setTextColor(getResources().getColor(R.color.greenColor));
         else if (d < 0)
             change.setTextColor(getResources().getColor(R.color.redColor));
         else if (d == 0)

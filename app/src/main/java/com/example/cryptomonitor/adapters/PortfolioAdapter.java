@@ -19,7 +19,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
     private Context mContex;
     private List<Purchase> mPotfolioItemList;
 
-    public PortfolioAdapter (Context context){
+    public PortfolioAdapter(Context context) {
         mContex = context;
         mPotfolioItemList = new ArrayList<>();
     }
@@ -27,7 +27,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
     @NonNull
     @Override
     public PortfolioViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(mContex).inflate(R.layout.portfolio_item_card,viewGroup,false);
+        View view = LayoutInflater.from(mContex).inflate(R.layout.portfolio_item_card, viewGroup, false);
         return new PortfolioViewHolder(view);
     }
 
@@ -35,7 +35,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
     public void onBindViewHolder(@NonNull PortfolioViewHolder portfolioViewHolder, int i) {
         portfolioViewHolder.price.setText(mPotfolioItemList.get(i).getPriceDisplay());
         portfolioViewHolder.fullname.setText(mPotfolioItemList.get(i).getCoinFullName());
-        String amountStr = mPotfolioItemList.get(i).getAmount()+" "+mPotfolioItemList.get(i).getCoinIndex();
+        String amountStr = mPotfolioItemList.get(i).getAmount() + " " + mPotfolioItemList.get(i).getCoinIndex();
         portfolioViewHolder.amount.setText(amountStr);
     }
 
@@ -44,7 +44,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
         return mPotfolioItemList.size();
     }
 
-    class  PortfolioViewHolder extends RecyclerView.ViewHolder{
+    class PortfolioViewHolder extends RecyclerView.ViewHolder {
 
         TextView price;
         TextView amount;
