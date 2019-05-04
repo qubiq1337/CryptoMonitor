@@ -11,11 +11,20 @@ import com.example.cryptomonitor.database.entities.Purchase;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+import io.reactivex.Single;
+
 @Dao
 public interface PurchaseDao {
 
     @Query("select * from purchase")
     LiveData<List<Purchase>> getAll();
+
+    @Query("select * from purchase")
+    Flowable<List<Purchase>> getAll2();
+
+    @Query("select * from purchase")
+    Single<List<Purchase>> getAll3();
 
     @Insert
     void insert(Purchase purchase);

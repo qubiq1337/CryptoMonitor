@@ -1,5 +1,6 @@
 package com.example.cryptomonitor.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -19,6 +20,7 @@ import com.example.cryptomonitor.Favorite.FavoritesFragment;
 import com.example.cryptomonitor.Home.HomeFragment;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.ToolbarInteractor;
+import com.example.cryptomonitor.adapters.CoinAdapterHome;
 import com.example.cryptomonitor.fragment.BriefcaseFragment;
 import com.example.cryptomonitor.fragment.HistoryFragment;
 import com.example.cryptomonitor.fragment.NavigationBarFragment;
@@ -27,7 +29,8 @@ import com.example.cryptomonitor.network_api.NetworkHelper;
 public class MainActivity extends AppCompatActivity implements NavigationBarFragment.NavigationBarListener,
         SwipeRefreshLayout.OnRefreshListener,
         NetworkHelper.OnChangeRefreshingListener,
-        ToolbarInteractor {
+        ToolbarInteractor,
+        CoinAdapterHome.OnCoinClickListener {
 
     private static final String SEARCH_TEXT_KEY = "searchKey";
     private String mCurrency;
@@ -38,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     private MenuItem mSpinnerItem;
     private ToolbarInteractor mToolbarInteractor;
     private boolean isSearchViewExpanded;
+    public static final String EXTRA_INDEX_KEY = "INDEX";
+    public static final String EXTRA_CURRENCY_KEY = "CURRENCY";
+    public static final String EXTRA_POSITION_KEY = "POSITION";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,8 +217,19 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         mSpinnerItem = null;
         mToolbarInteractor = null;
         mSwipeRefresh = null;
+        networkHelper.getCompositeDisposable().dispose();
         networkHelper = null;
         super.onDestroy();
+
+    }
+
+    @Override
+    public void goToDetailedCoin(String index, int position) {
+        Intent intent = new Intent(this, DetailedCoin.class);
+        intent.putExtra(EXTRA_INDEX_KEY, index);
+        intent.putExtra(EXTRA_CURRENCY_KEY, mCurrency);
+        intent.putExtra(EXTRA_POSITION_KEY, position + 1);
+        startActivity(intent);
     }
 }
 

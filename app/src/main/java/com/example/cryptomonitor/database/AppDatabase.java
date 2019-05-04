@@ -11,5 +11,6 @@ import com.example.cryptomonitor.database.entities.Purchase;
 @Database(entities = {CoinInfo.class, Purchase.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract CoinInfoDao coinInfoDao();
+
     public abstract PurchaseDao purchaseDao();
 }

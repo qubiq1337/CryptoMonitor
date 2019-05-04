@@ -64,6 +64,10 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         }
     };
     private long mSelectedCoinId = -1;
+    private String mSelectedCoinFullName;
+    private String mSelectedCoinIndex;
+    private String mSelectedCoinPriceDisplay;
+    private double mSelectedCoinPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +111,13 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         mSelectedCoinId = coinInfo.getId();
         mSelectedCoinTv.setText(coinInfo.getFullName());
         Picasso.with(this).load(coinInfo.getImageURL()).into(mSelectedCoinIcon);
+
+        mSelectedCoinFullName = coinInfo.getFullName();
+        mSelectedCoinIndex = coinInfo.getShortName();
+        //Неправильно
+        mSelectedCoinPriceDisplay = coinInfo.getPriceDisplay();
+        mSelectedCoinPrice = coinInfo.getPrice();
+        //
         mPriceEdit.setText(String.valueOf(coinInfo.getPrice()));
         mSymbolText.setText(coinInfo.getSymbol());
     }
@@ -149,6 +160,12 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
                 if (fieldsAreValid()) {
                     mPurchase.setAmount(Double.valueOf(mAmountEdit.getText().toString()));
                     mPurchase.setCoinId(mSelectedCoinId);
+
+                    mPurchase.setCoinFullName(mSelectedCoinFullName);
+                    mPurchase.setCoinIndex(mSelectedCoinIndex);
+                    mPurchase.setPriceDisplay(mSelectedCoinPriceDisplay);
+                    mPurchase.setPrice(mSelectedCoinPrice);
+
                     PurchaseDataHelper.insert(mPurchase);
                     finish();
                 }
@@ -180,24 +197,18 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         final long coinId = savedInstanceState.getLong(COIN_ID_KEY);
-        AppExecutors.getInstance().getDbExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                final CoinInfo coinInfo = App.getDatabase().coinInfoDao().getById(coinId);
-                if (coinInfo != null)
-                    mSelectedCoinTv.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mSearchRv.setVisibility(View.GONE);
-                            mNameEdit.setVisibility(View.GONE);
-                            mCoinHolder.setVisibility(View.VISIBLE);
-                            mSelectedCoinId = coinInfo.getId();
-                            mSelectedCoinTv.setText(coinInfo.getFullName());
-                            mPriceEdit.setText(String.valueOf(coinInfo.getPrice()));
-                            mSymbolText.setText(coinInfo.getSymbol());
-                        }
-                    });
-            }
+        AppExecutors.getInstance().getDbExecutor().execute(() -> {
+            final CoinInfo coinInfo = App.getDatabase().coinInfoDao().getById(coinId);
+            if (coinInfo != null)
+                mSelectedCoinTv.post(() -> {
+                    mSearchRv.setVisibility(View.GONE);
+                    mNameEdit.setVisibility(View.GONE);
+                    mCoinHolder.setVisibility(View.VISIBLE);
+                    mSelectedCoinId = coinInfo.getId();
+                    mSelectedCoinTv.setText(coinInfo.getFullName());
+                    mPriceEdit.setText(String.valueOf(coinInfo.getPrice()));
+                    mSymbolText.setText(coinInfo.getSymbol());
+                });
         });
         int day = savedInstanceState.getInt(DAY_KEY);
         int month = savedInstanceState.getInt(MONTH_KEY);

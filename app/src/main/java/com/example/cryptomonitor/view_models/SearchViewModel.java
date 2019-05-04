@@ -3,7 +3,6 @@ package com.example.cryptomonitor.view_models;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.support.annotation.Nullable;
 
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.entities.CoinInfo;
@@ -18,12 +17,7 @@ public class SearchViewModel extends ViewModel {
 
     private MutableLiveData<List<CoinInfo>> mSearchLiveData = new MutableLiveData<>();
     private Disposable mDisposableSubscription;
-    private Consumer<List<CoinInfo>> mListConsumer = new Consumer<List<CoinInfo>>() {
-        @Override
-        public void accept(@Nullable List<CoinInfo> coinInfoList) {
-            mSearchLiveData.postValue(coinInfoList);
-        }
-    };
+    private Consumer<List<CoinInfo>> mListConsumer = coinInfoList -> mSearchLiveData.postValue(coinInfoList);
 
     public void onTextChanged(final String currentText) {
         if (mDisposableSubscription != null)

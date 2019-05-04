@@ -1,19 +1,19 @@
-package com.example.cryptomonitor.model_coinmarket_cup;
+package com.example.cryptomonitor.model_cryptocompare.model_coins;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Quote {
+public class DISPLAY {
 
     @SerializedName(value = "USD", alternate = {"EUR", "RUB", "CNY", "GBP"})
     @Expose
-    private USD uSD;
+    private USD_ uSD;
 
-    public USD getUSD() {
+    public USD_ getUSD() {
         return uSD;
     }
 
-    public void setUSD(USD uSD) {
+    public void setUSD(USD_ uSD) {
         this.uSD = uSD;
     }
 
