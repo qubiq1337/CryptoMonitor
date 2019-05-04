@@ -105,4 +105,8 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             });
         }
     }
+
+    public interface OnCoinClickListener{
+        void goToDetailedCoin(String index,int position);
+    }
 }

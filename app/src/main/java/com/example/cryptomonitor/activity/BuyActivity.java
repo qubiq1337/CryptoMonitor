@@ -64,6 +64,10 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         }
     };
     private long mSelectedCoinId = -1;
+    private String mSelectedCoinFullName;
+    private String mSelectedCoinIndex;
+    private String mSelectedCoinPriceDisplay;
+    private double mSelectedCoinPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +111,14 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         mSelectedCoinId = coinInfo.getId();
         mSelectedCoinTv.setText(coinInfo.getFullName());
         Picasso.with(this).load(coinInfo.getImageURL()).into(mSelectedCoinIcon);
+
+        mSelectedCoinFullName = coinInfo.getFullName();
+        mSelectedCoinIndex = coinInfo.getShortName();
+        //Неправильно
+        mSelectedCoinPriceDisplay = coinInfo.getPriceDisplay();
+        mSelectedCoinPrice = coinInfo.getPrice();
+        //
+        mSelectedCoinItem.setText(coinInfo.getFullName());
         mPriceEdit.setText(String.valueOf(coinInfo.getPrice()));
         mSymbolText.setText(coinInfo.getSymbol());
     }
@@ -149,6 +161,12 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
                 if (fieldsAreValid()) {
                     mPurchase.setAmount(Double.valueOf(mAmountEdit.getText().toString()));
                     mPurchase.setCoinId(mSelectedCoinId);
+
+                    mPurchase.setCoinFullName(mSelectedCoinFullName);
+                    mPurchase.setCoinIndex(mSelectedCoinIndex);
+                    mPurchase.setPriceDisplay(mSelectedCoinPriceDisplay);
+                    mPurchase.setPrice(mSelectedCoinPrice);
+
                     PurchaseDataHelper.insert(mPurchase);
                     finish();
                 }
