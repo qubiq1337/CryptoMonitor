@@ -1,4 +1,4 @@
-package com.example.cryptomonitor.fragment;
+package com.example.cryptomonitor.Home;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -15,11 +15,7 @@ import android.view.animation.LayoutAnimationController;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.ToolbarInteractor;
-import com.example.cryptomonitor.adapters.CoinAdapterHome;
-import com.example.cryptomonitor.database.CoinDataHelper;
 import com.example.cryptomonitor.database.entities.CoinInfo;
-import com.example.cryptomonitor.view_models.HomeViewModel;
-import com.example.cryptomonitor.view_models.SearchViewModel;
 
 import java.util.List;
 
@@ -36,17 +32,15 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
             mCoinAdapterHome.setData(coinInfos);
         }
     };
+    private Observer<Boolean> searchModeObserver = new Observer<Boolean>() {
+        @Override
+        public void onChanged(@Nullable Boolean aBoolean) {
+
+        }
+    };
     private HomeViewModel mHomeViewModel;
-    private SearchViewModel mSearchViewModel;
     private RecyclerView mRecyclerView;
     private CoinAdapterHome mCoinAdapterHome;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (savedInstanceState != null)
-            isSearchViewExpanded = savedInstanceState.getBoolean(SEARCH_MODE_KEY, false);
-    }
 
     @Nullable
     @Override
@@ -62,22 +56,14 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         mRecyclerView.setLayoutAnimation(animation);
         mRecyclerView.setAdapter(mCoinAdapterHome);
 
-        mSearchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
         mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-        if (isSearchViewExpanded)
-            mSearchViewModel.getSearchLiveData().observe(this, listObserver);
-        else
-            mHomeViewModel.getAllCoinsLiveData().observe(this, listObserver);
+        mHomeViewModel.getCoinsLiveData().observe(this, listObserver);
         return view;
     }
 
     @Override
     public void onStarClick(CoinInfo clickedCoinInfo) {
-        if (clickedCoinInfo.isFavorite())
-            clickedCoinInfo.setFavorite(false);
-        else
-            clickedCoinInfo.setFavorite(true);
-        CoinDataHelper.updateCoin(clickedCoinInfo);
+        mHomeViewModel.onStarClicked(clickedCoinInfo);
     }
 
 
@@ -88,39 +74,32 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
 
     @Override
     public boolean onQueryTextChange(String currentText) {
-        mSearchViewModel.onTextChanged(currentText);
+        mHomeViewModel.onTextChanged(currentText);
         return false;
     }
 
     @Override
     public void onClick(View v) {
-        mHomeViewModel.getAllCoinsLiveData().removeObservers(this);
-        mSearchViewModel.getSearchLiveData().observe(this, listObserver);
-        isSearchViewExpanded = true;
+        switch (v.getId()) {
+            case R.id.search:
+                mHomeViewModel.onSearchClicked();
+                break;
+        }
     }
 
     @Override
     public boolean onClose() {
-        mSearchViewModel.getSearchLiveData().removeObservers(this);
-        mHomeViewModel.getAllCoinsLiveData().observe(this, listObserver);
-        isSearchViewExpanded = false;
+        mHomeViewModel.onSearchDeactivated();
         return false;
     }
 
     @Override
     public void onDestroy() {
-        mSearchViewModel = null;
         mHomeViewModel = null;
         mCoinAdapterHome = null;
         mRecyclerView = null;
         listObserver = null;
         super.onDestroy();
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(SEARCH_MODE_KEY, isSearchViewExpanded);
     }
 
     @Override

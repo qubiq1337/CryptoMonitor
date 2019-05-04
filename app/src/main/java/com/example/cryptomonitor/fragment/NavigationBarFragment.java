@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.cryptomonitor.Favorite.FavoritesFragment;
+import com.example.cryptomonitor.Home.HomeFragment;
 import com.example.cryptomonitor.R;
 
 

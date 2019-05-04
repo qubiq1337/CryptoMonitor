@@ -1,4 +1,4 @@
-package com.example.cryptomonitor.adapters;
+package com.example.cryptomonitor.Favorite;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -17,37 +17,30 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinViewHolder> {
-
-
+public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapter.CoinViewHolder> {
     private Context mContext;
     private List<CoinInfo> mData;
     private OnStarClickListener onStarClickListener;
-    private OnEndReachListener mOnEndReachListener;
-    private Boolean isLoading;
 
-    public CoinAdapterHome(Context context) {
+    FavoriteCoinAdapter(Context context) {
         this.mContext = context;
         mData = new ArrayList<>();
     }
 
 
-    public void setup(Fragment fragment) {
+    void setup(Fragment fragment) {
         this.onStarClickListener = (OnStarClickListener) fragment;
-        if (fragment instanceof OnEndReachListener)
-            this.mOnEndReachListener = (OnEndReachListener) fragment;
     }
 
     @NonNull
     @Override
-    public CoinViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public FavoriteCoinAdapter.CoinViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.rv_coin_layout, viewGroup, false);
-        return new CoinViewHolder(view);
+        return new FavoriteCoinAdapter.CoinViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CoinViewHolder coinViewHolder, int i) {
+    public void onBindViewHolder(@NonNull FavoriteCoinAdapter.CoinViewHolder coinViewHolder, int i) {
         CoinInfo coin = mData.get(i);
         coinViewHolder.textViewFullName.setText(coin.getFullName());
         coinViewHolder.textViewName.setText(coin.getShortName());
@@ -57,11 +50,6 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_favorite_star));
         else
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_not_favorite_star));
-
-        if (i > mData.size() - 20 && !isLoading) {
-            mOnEndReachListener.onEndReach();
-            isLoading = true;
-        }
     }
 
     @Override
@@ -73,14 +61,9 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         void onStarClick(CoinInfo coinInfo);
     }
 
-    public interface OnEndReachListener {
-        void onEndReach();
-    }
-
-    public void setData(List<CoinInfo> data) {
+    void setData(List<CoinInfo> data) {
         mData = data;
         notifyDataSetChanged();
-        isLoading = false;
     }
 
     class CoinViewHolder extends RecyclerView.ViewHolder {

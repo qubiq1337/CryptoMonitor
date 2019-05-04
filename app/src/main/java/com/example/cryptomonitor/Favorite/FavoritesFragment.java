@@ -1,4 +1,4 @@
-package com.example.cryptomonitor.fragment;
+package com.example.cryptomonitor.Favorite;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -15,19 +15,16 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 
 import com.example.cryptomonitor.R;
-import com.example.cryptomonitor.adapters.CoinAdapterHome;
-import com.example.cryptomonitor.adapters.FavoriteCoinAdapter;
-import com.example.cryptomonitor.database.CoinDataHelper;
 import com.example.cryptomonitor.database.entities.CoinInfo;
-import com.example.cryptomonitor.view_models.FavoriteViewModel;
 
 import java.util.List;
 
 
-public class FavoritesFragment extends Fragment implements CoinAdapterHome.OnStarClickListener {
+public class FavoritesFragment extends Fragment implements FavoriteCoinAdapter.OnStarClickListener {
 
     private RecyclerView mRecyclerView;
     private FavoriteCoinAdapter mCoinAdapterHome;
+    private FavoriteViewModel mViewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,8 +38,8 @@ public class FavoritesFragment extends Fragment implements CoinAdapterHome.OnSta
         mCoinAdapterHome.setup(this);
         mRecyclerView.setAdapter(mCoinAdapterHome);
 
-        FavoriteViewModel viewModel = ViewModelProviders.of(this).get(FavoriteViewModel.class);
-        viewModel.getFavoriteCoinsLiveData().observe(this, new Observer<List<CoinInfo>>() {
+        mViewModel = ViewModelProviders.of(this).get(FavoriteViewModel.class);
+        mViewModel.getFavoriteCoinsLiveData().observe(this, new Observer<List<CoinInfo>>() {
             @Override
             public void onChanged(@Nullable List<CoinInfo> coinInfoList) {
                 mCoinAdapterHome.setData(coinInfoList);
@@ -53,10 +50,6 @@ public class FavoritesFragment extends Fragment implements CoinAdapterHome.OnSta
 
     @Override
     public void onStarClick(CoinInfo clickedCoinInfo) {
-        if (clickedCoinInfo.isFavorite())
-            clickedCoinInfo.setFavorite(false);
-        else
-            clickedCoinInfo.setFavorite(true);
-        CoinDataHelper.updateCoin(clickedCoinInfo);
+        mViewModel.onStarClicked(clickedCoinInfo);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.cryptomonitor.adapters;
+package com.example.cryptomonitor.Home;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -17,31 +17,36 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapter.CoinViewHolder> {
+
+public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinViewHolder> {
+
+
     private Context mContext;
     private List<CoinInfo> mData;
-    private CoinAdapterHome.OnStarClickListener onStarClickListener;
-    private Boolean isLoading;
+    private OnStarClickListener mOnStarClickListener;
+    private OnEndReachListener mOnEndReachListener;
+    private boolean isLoading;
 
-    public FavoriteCoinAdapter(Context context) {
+    CoinAdapterHome(Context context) {
         this.mContext = context;
         mData = new ArrayList<>();
     }
 
 
-    public void setup(Fragment fragment) {
-        this.onStarClickListener = (CoinAdapterHome.OnStarClickListener) fragment;
+    void setup(Fragment fragment) {
+        this.mOnStarClickListener = (OnStarClickListener) fragment;
+        this.mOnEndReachListener = (OnEndReachListener) fragment;
     }
 
     @NonNull
     @Override
-    public FavoriteCoinAdapter.CoinViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public CoinViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.rv_coin_layout, viewGroup, false);
-        return new FavoriteCoinAdapter.CoinViewHolder(view);
+        return new CoinViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FavoriteCoinAdapter.CoinViewHolder coinViewHolder, int i) {
+    public void onBindViewHolder(@NonNull CoinViewHolder coinViewHolder, int i) {
         CoinInfo coin = mData.get(i);
         coinViewHolder.textViewFullName.setText(coin.getFullName());
         coinViewHolder.textViewName.setText(coin.getShortName());
@@ -51,6 +56,13 @@ public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapte
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_favorite_star));
         else
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_not_favorite_star));
+
+        if (i > mData.size() - 20
+                && !isLoading
+                && mOnEndReachListener != null) {
+            mOnEndReachListener.onEndReach();
+            isLoading = true;
+        }
     }
 
     @Override
@@ -62,7 +74,11 @@ public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapte
         void onStarClick(CoinInfo coinInfo);
     }
 
-    public void setData(List<CoinInfo> data) {
+    public interface OnEndReachListener {
+        void onEndReach();
+    }
+
+    void setData(List<CoinInfo> data) {
         mData = data;
         notifyDataSetChanged();
         isLoading = false;
@@ -85,7 +101,8 @@ public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapte
             isFavoriteImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onStarClickListener.onStarClick(mData.get(getAdapterPosition()));
+                    if (mOnStarClickListener != null)
+                        mOnStarClickListener.onStarClick(mData.get(getAdapterPosition()));
                 }
             });
         }
