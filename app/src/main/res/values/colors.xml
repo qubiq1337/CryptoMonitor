@@ -10,10 +10,11 @@
     <color name="red_close">#DD2C00</color>
     <color name="textColorPrimary">#ffffff</color>
     <color name="textColorDark">#c7c7c7</color>
-    <color name="backgroundColor">#201c37</color>
+    <color name="backgroundColor">#201C37</color>
     <color name="redColor">#d50000</color>
     <color name="greenColor">#087f23</color>
-    <color name="backgroundChartColor">#18142e</color>
+    <color name="backgroundChartColor">#18142E</color>
     <color name="blue_color_selected">#007ff2</color>
     <color name="background_nav_bar_color">#110c22</color>
+    <color name="yellow_color_button">#E4CA00</color>
 </resources>

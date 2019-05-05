@@ -48,4 +48,5 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation "android.arch.persistence.room:rxjava2:1.1.1"
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }
