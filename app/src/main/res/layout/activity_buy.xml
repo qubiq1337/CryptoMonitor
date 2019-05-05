@@ -4,28 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
     tools:context=".activity.BuyActivity">
 
     <ImageButton
         android:id="@+id/ready_image"
         android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_margin="8dp"
-        android:backgroundTint="@color/white"
+        android:layout_height="35dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="76dp"
+        android:backgroundTint="@color/yellow_color_button"
         android:elevation="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:srcCompat="@drawable/ic_action_ok" />
 
     <ImageButton
         android:id="@+id/close_image"
         android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_margin="8dp"
-        android:backgroundTint="@color/white"
+        android:layout_height="35dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="76dp"
+        android:backgroundTint="@color/blue_color_selected"
         android:elevation="1dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:srcCompat="@drawable/ic_action_close" />
 
     <TableLayout
@@ -51,20 +54,19 @@
                 android:layout_height="wrap_content"
                 android:text="@string/coin" />
 
-            <TextView
-                android:id="@+id/selected_item"
-                style="@style/TextViewAttributes"
+            <LinearLayout
+                android:id="@+id/coin_holder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_action_close"
-                android:visibility="gone"
-                tools:text="COIN NAME" />
+                android:orientation="horizontal"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/name_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                style="@style/DarkEditTextStyle"
                 android:hint="@string/start_input"
                 android:inputType="textPersonName" />
 
@@ -84,6 +86,7 @@
 
             <EditText
                 android:id="@+id/price_edit"
+                style="@style/DarkEditTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -116,6 +119,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                style="@style/DarkEditTextStyle"
                 android:hint="@string/amount"
                 android:inputType="numberDecimal" />
         </TableRow>
@@ -135,8 +139,8 @@
                 android:id="@+id/date_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/TextViewAttributes"
                 android:layout_gravity="center_vertical"
-                android:background="@color/grey"
                 android:gravity="center"
                 tools:text="10.09.2019" />
         </TableRow>
@@ -153,5 +157,12 @@
         app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
 </android.support.constraint.ConstraintLayout>

@@ -12,7 +12,6 @@ import com.example.cryptomonitor.database.entities.Purchase;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 
 @Dao

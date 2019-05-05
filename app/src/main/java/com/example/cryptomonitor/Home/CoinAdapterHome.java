@@ -1,7 +1,8 @@
-package com.example.cryptomonitor.adapters;
+package com.example.cryptomonitor.Home;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,28 +21,21 @@ import java.util.List;
 public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinViewHolder> {
 
 
-    private static final String ICONS_MASTER_64_X_64 = "https://raw.githubusercontent.com/MoneyConverter/cryptocurrencies-icons/master/64x64/";
-    private List<CoinInfo> coinData;
     private Context mContext;
-    private OnStarClickListener onStarClickListener;
+    private List<CoinInfo> mData;
+    private OnStarClickListener mOnStarClickListener;
+    private OnEndReachListener mOnEndReachListener;
+    private boolean isLoading;
 
-    public CoinAdapterHome(Context context) {
-        mContext = context;
-        coinData = new ArrayList<>();
-
+    CoinAdapterHome(Context context) {
+        this.mContext = context;
+        mData = new ArrayList<>();
     }
 
-    public List<CoinInfo> getCoinData() {
-        return coinData;
-    }
 
-    public void setCoinData(List<CoinInfo> coinData) {
-        this.coinData = coinData;
-        notifyDataSetChanged();
-    }
-
-    public void setOnStarClickListener(OnStarClickListener onStarClickListener) {
-        this.onStarClickListener = onStarClickListener;
+    void setup(Fragment fragment) {
+        this.mOnStarClickListener = (OnStarClickListener) fragment;
+        this.mOnEndReachListener = (OnEndReachListener) fragment;
     }
 
     @NonNull
@@ -53,24 +47,41 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
 
     @Override
     public void onBindViewHolder(@NonNull CoinViewHolder coinViewHolder, int i) {
-        coinViewHolder.textViewFullName.setText(coinData.get(i).getFullName());
-        coinViewHolder.textViewName.setText(coinData.get(i).getShortName());
-        coinViewHolder.textViewPrice.setText(coinData.get(i).getPriceDisplay());
-        String URL = ICONS_MASTER_64_X_64 + coinData.get(i).getShortName().toLowerCase() + ".png";
-        Picasso.with(mContext).load(coinData.get(i).getImageURL()).into(coinViewHolder.imageViewIcon);
-        if (coinData.get(i).isFavorite())
+        CoinInfo coin = mData.get(i);
+        coinViewHolder.textViewFullName.setText(coin.getFullName());
+        coinViewHolder.textViewName.setText(coin.getShortName());
+        coinViewHolder.textViewPrice.setText(coin.getPriceStr());
+        Picasso.with(mContext).load(coin.getImageURL()).into(coinViewHolder.imageViewIcon);
+        if (coin.isFavorite())
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_favorite_star));
         else
-            coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_not_favorite_star));
+            coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_not_favorite_star_light));
+
+        if (i > mData.size() - 20
+                && !isLoading
+                && mOnEndReachListener != null) {
+            mOnEndReachListener.onEndReach();
+            isLoading = true;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return coinData.size();
+        return mData.size();
     }
 
     public interface OnStarClickListener {
-        void onStarClick(int position);
+        void onStarClick(CoinInfo coinInfo);
+    }
+
+    public interface OnEndReachListener {
+        void onEndReach();
+    }
+
+    void setData(List<CoinInfo> data) {
+        mData = data;
+        notifyDataSetChanged();
+        isLoading = false;
     }
 
     class CoinViewHolder extends RecyclerView.ViewHolder {
@@ -87,16 +98,17 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             textViewPrice = itemView.findViewById(R.id.rv_coin_layout_price);
             imageViewIcon = itemView.findViewById(R.id.rv_coin_layout_icon);
             isFavoriteImage = itemView.findViewById(R.id.rv_coin_favorite_image);
-            isFavoriteImage.setOnClickListener(v -> onStarClickListener.onStarClick(getAdapterPosition()));
-            itemView.setOnClickListener(v -> {
-                OnCoinClickListener listener = (OnCoinClickListener) mContext;
-                if (listener != null)
-                    listener.goToDetailedCoin(coinData.get(getAdapterPosition()).getShortName(),getAdapterPosition());
+            isFavoriteImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnStarClickListener != null)
+                        mOnStarClickListener.onStarClick(mData.get(getAdapterPosition()));
+                }
             });
         }
     }
 
-    public interface OnCoinClickListener{
-        void goToDetailedCoin(String index,int position);
+    public interface OnCoinClickListener {
+        void goToDetailedCoin(String index, int position);
     }
 }

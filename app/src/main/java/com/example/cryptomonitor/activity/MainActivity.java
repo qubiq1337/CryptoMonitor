@@ -3,7 +3,6 @@ package com.example.cryptomonitor.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,13 +16,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.example.cryptomonitor.ExitClass;
+import com.example.cryptomonitor.Favorite.FavoritesFragment;
+import com.example.cryptomonitor.Home.CoinAdapterHome;
+import com.example.cryptomonitor.Home.HomeFragment;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.ToolbarInteractor;
-import com.example.cryptomonitor.adapters.CoinAdapterHome;
 import com.example.cryptomonitor.fragment.BriefcaseFragment;
-import com.example.cryptomonitor.fragment.FavoritesFragment;
 import com.example.cryptomonitor.fragment.HistoryFragment;
-import com.example.cryptomonitor.fragment.HomeFragment;
 import com.example.cryptomonitor.fragment.NavigationBarFragment;
 import com.example.cryptomonitor.network_api.NetworkHelper;
 
@@ -225,11 +224,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     }
 
     @Override
-    public void goToDetailedCoin(String index,int position) {
-        Intent intent = new Intent(this,DetailedCoin.class);
-        intent.putExtra(EXTRA_INDEX_KEY,index);
-        intent.putExtra(EXTRA_CURRENCY_KEY,mCurrency);
-        intent.putExtra(EXTRA_POSITION_KEY,position+1);
+    public void goToDetailedCoin(String index, int position) {
+        Intent intent = new Intent(this, DetailedCoin.class);
+        intent.putExtra(EXTRA_INDEX_KEY, index);
+        intent.putExtra(EXTRA_CURRENCY_KEY, mCurrency);
+        intent.putExtra(EXTRA_POSITION_KEY, position + 1);
         startActivity(intent);
     }
 }

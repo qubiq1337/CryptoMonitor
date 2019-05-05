@@ -11,7 +11,8 @@
         android:src="@drawable/ic_action_close" />
 
     <TextView
-        android:id="@+id/rv_item_name"
+        android:id="@+id/item_name"
+        style="@style/TextViewAttributes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

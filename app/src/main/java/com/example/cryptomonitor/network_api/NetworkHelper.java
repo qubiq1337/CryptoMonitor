@@ -19,8 +19,14 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NetworkHelper {
 
+<<<<<<< HEAD
     /* private final int START_LIMIT = 5000;
      private final int START_PAGE = 1;*/
+=======
+    private final int START_LIMIT = 5000;
+    private final int START_PAGE = 1;
+    private static final String ICONS_MASTER_64_X_64 = "https://raw.githubusercontent.com/MoneyConverter/cryptocurrencies-icons/master/64x64/";
+>>>>>>> origin/develop
     private OnChangeRefreshingListener mRefreshingListener;
     private static HashMap<String, String> coinSymbols = new HashMap<>();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -76,7 +82,8 @@ public class NetworkHelper {
             String shortName = coin.getSymbol();
             double price = coin.getQuote().getUSD().getPrice();
             String symbol = coinSymbols.get(currency);
-            coinInfo = new CoinInfo(fullName, shortName, price, symbol);
+            String URL = ICONS_MASTER_64_X_64 + shortName.toLowerCase() + ".png";
+            coinInfo = new CoinInfo(fullName, shortName, URL, price, symbol);
             coinInfoArrayList.add(coinInfo);
         }
         return coinInfoArrayList;
@@ -139,6 +146,7 @@ public class NetworkHelper {
         return compositeDisposable;
     }
 
+<<<<<<< HEAD
     private Observable<ModelChart> getChartData(String symbol, String currency, int aggregate, int limit) {
         return Network
                 .getInstance()
@@ -154,6 +162,11 @@ public class NetworkHelper {
                 .getApiCryptoCompare()
                 .getChartDataMinute(symbol, currency, 12, 119)
                 .subscribeOn(Schedulers.io())
+=======
+    public Observable<ModelChart> getChartData(String symbol, String currency) {
+        return Network.getInstance().getApiCryptoCompare().getChartData(symbol, currency)
+                .subscribeOn(Schedulers.io()) // "work" on io thread
+>>>>>>> origin/develop
                 .observeOn(AndroidSchedulers.mainThread());
     }
 

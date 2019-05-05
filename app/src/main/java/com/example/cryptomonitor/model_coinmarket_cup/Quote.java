@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Quote {
 
-    @SerializedName(value = "USD", alternate = {"EUR","RUB","CNY","GBP"})
+    @SerializedName(value = "USD", alternate = {"EUR", "RUB", "CNY", "GBP"})
     @Expose
     private USD uSD;
 

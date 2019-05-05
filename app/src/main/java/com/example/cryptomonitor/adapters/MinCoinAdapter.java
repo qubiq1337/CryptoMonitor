@@ -19,18 +19,22 @@ import java.util.List;
 public class MinCoinAdapter extends RecyclerView.Adapter<MinCoinAdapter.MinCoinViewHolder> {
 
     private static final String ICONS_MASTER_32_X_32 = "https://raw.githubusercontent.com/MoneyConverter/cryptocurrencies-icons/master/32x32/";
-    private List<CoinInfo> mData;
     private Context mContext;
     private OnItemClickListener mOnClickListener;
+    private List<CoinInfo> mData = new ArrayList<>();
 
     public interface OnItemClickListener {
         void OnItemClick(CoinInfo coinInfo);
     }
 
+    public void setData(List<CoinInfo> coinInfoList) {
+        mData = coinInfoList;
+        notifyDataSetChanged();
+    }
+
     public MinCoinAdapter(Context context, OnItemClickListener onItemClickListener) {
         this.mContext = context;
         this.mOnClickListener = onItemClickListener;
-        mData = new ArrayList<>();
     }
 
     @NonNull
@@ -53,18 +57,13 @@ public class MinCoinAdapter extends RecyclerView.Adapter<MinCoinAdapter.MinCoinV
         return mData.size();
     }
 
-    public void setData(List<CoinInfo> list) {
-        mData = list;
-        notifyDataSetChanged();
-    }
-
     class MinCoinViewHolder extends RecyclerView.ViewHolder {
         private TextView mCoinNameTv;
         private ImageView mIconImage;
 
         MinCoinViewHolder(@NonNull View itemView) {
             super(itemView);
-            mCoinNameTv = itemView.findViewById(R.id.rv_item_name);
+            mCoinNameTv = itemView.findViewById(R.id.item_name);
             mIconImage = itemView.findViewById(R.id.item_icon);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

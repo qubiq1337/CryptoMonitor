@@ -65,13 +65,13 @@
         tools:text="6000.25" />
 
     <ImageView
-        android:background="@color/textColorPrimary"
         android:id="@+id/rv_coin_favorite_image"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
+        android:background="@color/backgroundChartColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_not_favorite_star" />
+        tools:src="@drawable/ic_not_favorite_star_light" />
 </android.support.constraint.ConstraintLayout>

@@ -10,6 +10,7 @@ import retrofit2.http.Query;
 
 public interface ApiCryptoCompare {
 
+<<<<<<< HEAD
     @GET("/data/histohour?")
     Observable<ModelChart> getChartDataHour(@Query("fsym") String symbol,
                                             @Query("tsym") String currency,
@@ -25,6 +26,13 @@ public interface ApiCryptoCompare {
     @GET("/data/top/mktcapfull?limit=100")
     Observable<CoinCryptoCompare> getAllCoins(@Query("page") int page,
                                               @Query("tsym") String currency);
+=======
+    @GET("/data/histohour?aggregate=6&limit=120")
+    Observable<ModelChart> getChartData(@Query("fsym") String symbol, @Query("tsym") String currency);
+
+    @GET("/data/top/mktcapfull?limit=100")
+    Observable<CoinCryptoCompare> getAllCoins(@Query("page") int page, @Query("tsym") String currency);
+>>>>>>> origin/develop
 
 
 }
