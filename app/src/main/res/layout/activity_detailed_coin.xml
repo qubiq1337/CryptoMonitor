@@ -266,15 +266,19 @@
         android:orientation="horizontal">
 
         <TextView
+            android:clickable="true"
+            android:focusable="true"
+            android:id="@+id/detailed_1D"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:text="1D"
             android:gravity="center"
             android:textColor="@color/textColorPrimary"
-            android:background="@drawable/rounded_text_view"
+
             android:textSize="20sp"
             />
         <TextView
+            android:id="@+id/detailed_1W"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:text="1W"
@@ -284,6 +288,7 @@
             android:textSize="20sp"
             android:layout_marginStart="10dp" />
         <TextView
+            android:id="@+id/detailed_1M"
             android:layout_marginStart="10dp"
             android:layout_width="60dp"
             android:layout_height="match_parent"
@@ -294,6 +299,7 @@
             android:textSize="20sp"
             />
         <TextView
+            android:id="@+id/detailed_3M"
             android:layout_marginStart="10dp"
             android:layout_width="60dp"
             android:layout_height="match_parent"

@@ -1,5 +1,6 @@
 package com.example.cryptomonitor.network_api;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.cryptomonitor.database.CoinDataHelper;
@@ -18,12 +19,13 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NetworkHelper {
 
-   /* private final int START_LIMIT = 5000;
-    private final int START_PAGE = 1;*/
+    /* private final int START_LIMIT = 5000;
+     private final int START_PAGE = 1;*/
     private OnChangeRefreshingListener mRefreshingListener;
     private static HashMap<String, String> coinSymbols = new HashMap<>();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final String BASE_IMAGE_URL = "https://www.cryptocompare.com";
+
     static {
         coinSymbols.put("USD", "\u0024");
         coinSymbols.put("EUR", "\u20AC");
@@ -99,7 +101,7 @@ public class NetworkHelper {
                 .map(this::toCoinInfo)
                 .toList()
                 .subscribe(coinInfoList -> {
-                    Log.e("testRxLoadCoins", "coinInfoList size:"+ coinInfoList.size());
+                    Log.e("testRxLoadCoins", "coinInfoList size:" + coinInfoList.size());
                     CoinDataHelper.updateDatabase(coinInfoList);
                     mRefreshingListener.stopRefreshing(true);
                 })
@@ -119,7 +121,7 @@ public class NetworkHelper {
                 coinsData.getCoinInfo().getName(),
                 coinsData.getRAW().getUSD().getPRICE(), coinsData.getDISPLAY().getUSD().getPRICE(),
                 coinsData.getDISPLAY().getUSD().getTOSYMBOL(),
-                BASE_IMAGE_URL+coinsData.getCoinInfo().getImageUrl(),
+                BASE_IMAGE_URL + coinsData.getCoinInfo().getImageUrl(),
                 coinsData.getDISPLAY().getUSD().getCHANGEDAY(),
                 coinsData.getRAW().getUSD().getCHANGEDAY(),
                 coinsData.getDISPLAY().getUSD().getCHANGEPCTDAY(),
@@ -129,7 +131,7 @@ public class NetworkHelper {
                 coinsData.getDISPLAY().getUSD().getTOTALVOLUME24HTO(),
                 coinsData.getDISPLAY().getUSD().getHIGHDAY(),
                 coinsData.getDISPLAY().getUSD().getLOWDAY(),
-                BASE_IMAGE_URL+coinsData.getCoinInfo().getUrl()
+                BASE_IMAGE_URL + coinsData.getCoinInfo().getUrl()
         );
     }
 
@@ -137,9 +139,33 @@ public class NetworkHelper {
         return compositeDisposable;
     }
 
-    public Observable<ModelChart> getChartData(String symbol, String currency){
-        return Network.getInstance().getApiCryptoCompare().getChartData(symbol,currency)
-                .subscribeOn(Schedulers.io()) // "work" on io thread
+    private Observable<ModelChart> getChartData(String symbol, String currency, int aggregate, int limit) {
+        return Network
+                .getInstance()
+                .getApiCryptoCompare()
+                .getChartDataHour(symbol, currency, aggregate, limit)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<ModelChart> getChartData1D(String symbol, String currency) {
+        return Network
+                .getInstance()
+                .getApiCryptoCompare()
+                .getChartDataMinute(symbol, currency, 12, 119)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<ModelChart> getChartData1W(String symbol, String currency) {
+        return getChartData(symbol, currency, 1, 168);
+    }
+
+    public Observable<ModelChart> getChartData1M(String symbol, String currency) {
+        return getChartData(symbol, currency, 6, 120);
+    }
+
+    public Observable<ModelChart> getChartData3M(String symbol, String currency) {
+        return getChartData(symbol, currency, 18, 120);
     }
 }
