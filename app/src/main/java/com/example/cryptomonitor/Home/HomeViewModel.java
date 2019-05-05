@@ -44,7 +44,10 @@ class HomeViewModel extends ViewModel {
     void onEndReached() {
         if (!mIsSearchActive) {
             mDisposableSubscription.dispose();
-            mDisposableSubscription = App.getDatabase().coinInfoDao().getAllBefore(lastIndex + loadSize)
+            mDisposableSubscription = App
+                    .getDatabase()
+                    .coinInfoDao()
+                    .getAllBefore(lastIndex + loadSize)
                     .subscribeOn(Schedulers.io())
                     .subscribe(mListConsumer);
         }
@@ -57,7 +60,11 @@ class HomeViewModel extends ViewModel {
         } else {
             if (mDisposableSubscription != null)
                 mDisposableSubscription.dispose();
-            mDisposableSubscription = App.getDatabase().coinInfoDao().getSearchCoins(currentText)
+
+            mDisposableSubscription = App
+                    .getDatabase()
+                    .coinInfoDao()
+                    .getSearchCoins(currentText)
                     .subscribeOn(Schedulers.io())
                     .subscribe(mListConsumer);
         }
@@ -85,7 +92,11 @@ class HomeViewModel extends ViewModel {
     private void setStartList() {
         if (mDisposableSubscription != null)
             mDisposableSubscription.dispose();
-        mDisposableSubscription = App.getDatabase().coinInfoDao().getAllBefore(initialSize)
+
+        mDisposableSubscription = App
+                .getDatabase()
+                .coinInfoDao()
+                .getAllBefore(initialSize)
                 .subscribeOn(Schedulers.io())
                 .subscribe(mListConsumer);
     }

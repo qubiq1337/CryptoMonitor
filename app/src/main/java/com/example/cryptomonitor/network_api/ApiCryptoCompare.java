@@ -27,7 +27,4 @@ public interface ApiCryptoCompare {
     Observable<CoinCryptoCompare> getAllCoins(@Query("page") int page,
                                               @Query("tsym") String currency);
 
-    @GET("/data/histohour?aggregate=6&limit=120")
-    Observable<ModelChart> getChartData(@Query("fsym") String symbol, @Query("tsym") String currency);
-
 }

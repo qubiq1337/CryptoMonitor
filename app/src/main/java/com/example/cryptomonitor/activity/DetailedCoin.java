@@ -62,7 +62,6 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
     private ImageView infoURL;
     private ImageView backButton;
     private ImageView icon;
-    private String mRank;
     private TextView textView_1D;
     private TextView textView_1W;
     private TextView textView_1M;
@@ -100,14 +99,13 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
         textView_3M.setOnClickListener(this);
 
         Intent intent = getIntent();
+
         if (intent != null) {
             mIndex = intent.getStringExtra(EXTRA_INDEX_KEY);
             mCurrency = intent.getStringExtra(EXTRA_CURRENCY_KEY);
             int position = 0;
-            mRank = "#" + intent.getIntExtra(EXTRA_POSITION_KEY, position);
-
+            String mRank = "#" + intent.getIntExtra(EXTRA_POSITION_KEY, position);
             rank.setText(mRank);
-
             initViews();
             initChart();
         }
@@ -122,6 +120,7 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
         lineChart.setScaleXEnabled(true);
         lineChart.getLegend().setEnabled(false);
         lineChart.getDescription().setEnabled(false);
+
         mCompositeDisposable.add(
                 networkHelper
                         .getChartData1M(mIndex, mCurrency)
@@ -180,14 +179,15 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
     }
 
     private void initViews() {
-        mCompositeDisposable.add(App
-                .getDatabase()
-                .coinInfoDao()
-                .getByShortName(mIndex)
-                .observeOn(AndroidSchedulers.mainThread())
-                .filter(coinInfoList -> !coinInfoList.isEmpty())
-                .flatMap(Flowable::fromIterable)
-                .subscribe(this::bindViews));
+        mCompositeDisposable.add(
+                App
+                        .getDatabase()
+                        .coinInfoDao()
+                        .getByShortName(mIndex)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .filter(coinInfoList -> !coinInfoList.isEmpty())
+                        .flatMap(Flowable::fromIterable)
+                        .subscribe(this::bindViews));
     }
 
 
@@ -225,6 +225,7 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
     public void startRefreshing() {
 
     }
+
     //No need
     @Override
     public void stopRefreshing(boolean isSuccess) {
