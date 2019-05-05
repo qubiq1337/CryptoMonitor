@@ -26,10 +26,13 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     private OnStarClickListener mOnStarClickListener;
     private OnEndReachListener mOnEndReachListener;
     private boolean isLoading;
+    private OnCoinClickListener onCoinClickListener;
 
     CoinAdapterHome(Context context) {
         this.mContext = context;
         mData = new ArrayList<>();
+        onCoinClickListener = (OnCoinClickListener) mContext;
+
     }
 
 
@@ -52,6 +55,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         coinViewHolder.textViewName.setText(coin.getShortName());
         coinViewHolder.textViewPrice.setText(coin.getPriceStr());
         Picasso.with(mContext).load(coin.getImageURL()).into(coinViewHolder.imageViewIcon);
+
         if (coin.isFavorite())
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_favorite_star));
         else
@@ -98,12 +102,13 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             textViewPrice = itemView.findViewById(R.id.rv_coin_layout_price);
             imageViewIcon = itemView.findViewById(R.id.rv_coin_layout_icon);
             isFavoriteImage = itemView.findViewById(R.id.rv_coin_favorite_image);
-            isFavoriteImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mOnStarClickListener != null)
-                        mOnStarClickListener.onStarClick(mData.get(getAdapterPosition()));
-                }
+            isFavoriteImage.setOnClickListener(v -> {
+                if (mOnStarClickListener != null)
+                    mOnStarClickListener.onStarClick(mData.get(getAdapterPosition()));
+            });
+            itemView.setOnClickListener(v -> {
+                if (onCoinClickListener != null)
+                   onCoinClickListener.goToDetailedCoin(String.valueOf(mData.get(getAdapterPosition()).getShortName()),getAdapterPosition());
             });
         }
     }

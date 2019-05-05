@@ -33,10 +33,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-<<<<<<< HEAD
+
 import io.reactivex.Flowable;
-=======
->>>>>>> origin/develop
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
@@ -107,10 +105,9 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
             mCurrency = intent.getStringExtra(EXTRA_CURRENCY_KEY);
             int position = 0;
             mRank = "#" + intent.getIntExtra(EXTRA_POSITION_KEY, position);
-<<<<<<< HEAD
+
             rank.setText(mRank);
-=======
->>>>>>> origin/develop
+
             initViews();
             initChart();
         }
@@ -193,13 +190,9 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
                 .subscribe(this::bindViews));
     }
 
-<<<<<<< HEAD
+
     private void bindViews(@android.support.annotation.NonNull CoinInfo coinInfo) {
         full_name.setText(coinInfo.getFullName());
-=======
-    private void bindViews(CoinInfo coinInfo) {
-        fullname.setText(coinInfo.getFullName());
->>>>>>> origin/develop
         Picasso.with(this).load(coinInfo.getImageURL()).into(icon);
         price.setText(coinInfo.getPriceDisplay());
         setChangeColor(coinInfo.getChangeDay());
