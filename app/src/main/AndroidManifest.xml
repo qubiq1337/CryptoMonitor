@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.DetailedCoin"></activity>
+        <activity
+            android:name=".activity.DetailedCoin"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activity.BuyActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
