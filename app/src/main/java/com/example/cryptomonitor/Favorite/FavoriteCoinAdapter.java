@@ -1,4 +1,4 @@
-package com.example.cryptomonitor.adapters;
+package com.example.cryptomonitor.Favorite;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -20,17 +20,16 @@ import java.util.List;
 public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapter.CoinViewHolder> {
     private Context mContext;
     private List<CoinInfo> mData;
-    private CoinAdapterHome.OnStarClickListener onStarClickListener;
-    private Boolean isLoading;
+    private OnStarClickListener onStarClickListener;
 
-    public FavoriteCoinAdapter(Context context) {
+    FavoriteCoinAdapter(Context context) {
         this.mContext = context;
         mData = new ArrayList<>();
     }
 
 
-    public void setup(Fragment fragment) {
-        this.onStarClickListener = (CoinAdapterHome.OnStarClickListener) fragment;
+    void setup(Fragment fragment) {
+        this.onStarClickListener = (OnStarClickListener) fragment;
     }
 
     @NonNull
@@ -62,10 +61,9 @@ public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapte
         void onStarClick(CoinInfo coinInfo);
     }
 
-    public void setData(List<CoinInfo> data) {
+    void setData(List<CoinInfo> data) {
         mData = data;
         notifyDataSetChanged();
-        isLoading = false;
     }
 
     class CoinViewHolder extends RecyclerView.ViewHolder {

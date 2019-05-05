@@ -1,4 +1,4 @@
-package com.example.cryptomonitor.adapters;
+package com.example.cryptomonitor.Home;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -23,20 +23,19 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
 
     private Context mContext;
     private List<CoinInfo> mData;
-    private OnStarClickListener onStarClickListener;
+    private OnStarClickListener mOnStarClickListener;
     private OnEndReachListener mOnEndReachListener;
-    private Boolean isLoading;
+    private boolean isLoading;
 
-    public CoinAdapterHome(Context context) {
+    CoinAdapterHome(Context context) {
         this.mContext = context;
         mData = new ArrayList<>();
     }
 
 
-    public void setup(Fragment fragment) {
-        this.onStarClickListener = (OnStarClickListener) fragment;
-        if (fragment instanceof OnEndReachListener)
-            this.mOnEndReachListener = (OnEndReachListener) fragment;
+    void setup(Fragment fragment) {
+        this.mOnStarClickListener = (OnStarClickListener) fragment;
+        this.mOnEndReachListener = (OnEndReachListener) fragment;
     }
 
     @NonNull
@@ -58,7 +57,9 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         else
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_not_favorite_star_light));
 
-        if (i > mData.size() - 20 && !isLoading) {
+        if (i > mData.size() - 20
+                && !isLoading
+                && mOnEndReachListener != null) {
             mOnEndReachListener.onEndReach();
             isLoading = true;
         }
@@ -77,7 +78,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         void onEndReach();
     }
 
-    public void setData(List<CoinInfo> data) {
+    void setData(List<CoinInfo> data) {
         mData = data;
         notifyDataSetChanged();
         isLoading = false;
@@ -100,7 +101,8 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             isFavoriteImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onStarClickListener.onStarClick(mData.get(getAdapterPosition()));
+                    if (mOnStarClickListener != null)
+                        mOnStarClickListener.onStarClick(mData.get(getAdapterPosition()));
                 }
             });
         }
