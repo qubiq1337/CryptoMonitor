@@ -10,7 +10,6 @@ public class Network {
     private Retrofit mRetrofit;
 
     private Network() {
-
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())

@@ -70,14 +70,14 @@ public class CoinRepo implements CoinDataSource {
 
     @Override
     public void updateCoin(CoinInfo coinInfo) {
-        dbExecutor.execute(() -> App.getDatabase().coinInfoDao().update(coinInfo));
+        dbExecutor.execute(() -> mCoinInfoDao.update(coinInfo));
     }
 
     @Override
     public void getAllCoins() {
         if (mDisposableSubscription != null)
             mDisposableSubscription.dispose();
-        mDisposableSubscription = App.getDatabase().coinInfoDao().getAllBefore(initialSize)
+        mDisposableSubscription = mCoinInfoDao.getAllBefore(initialSize)
                 .subscribeOn(Schedulers.io())
                 .subscribe(mListConsumer);
     }
@@ -94,7 +94,7 @@ public class CoinRepo implements CoinDataSource {
         if (word.isEmpty()) {
             mDataListener.listLoaded(new ArrayList<>());
         } else {
-            mDisposableSubscription = App.getDatabase().coinInfoDao().getSearchCoins(word)
+            mDisposableSubscription = mCoinInfoDao.getSearchCoins(word)
                     .subscribeOn(Schedulers.io())
                     .subscribe(mListConsumer);
         }
@@ -108,7 +108,7 @@ public class CoinRepo implements CoinDataSource {
     public void loadMore() {
         if (mDisposableSubscription != null)
             mDisposableSubscription.dispose();
-        mDisposableSubscription = App.getDatabase().coinInfoDao().getAllBefore(lastIndex + loadSize)
+        mDisposableSubscription = mCoinInfoDao.getAllBefore(lastIndex + loadSize)
                 .subscribeOn(Schedulers.io())
                 .subscribe(mListConsumer);
     }
@@ -116,7 +116,7 @@ public class CoinRepo implements CoinDataSource {
     private void setStartList() {
         if (mDisposableSubscription != null)
             mDisposableSubscription.dispose();
-        mDisposableSubscription = App.getDatabase().coinInfoDao().getAllBefore(initialSize)
+        mDisposableSubscription = mCoinInfoDao.getAllBefore(initialSize)
                 .subscribeOn(Schedulers.io())
                 .subscribe(mListConsumer);
     }
@@ -144,9 +144,9 @@ public class CoinRepo implements CoinDataSource {
     }
 
     private Observable<CoinCryptoCompare> concatObservable(String currency) {
-        Observable<CoinCryptoCompare> concatObs = Network.getInstance().getApiCryptoCompare().getAllCoins(0, currency);
+        Observable<CoinCryptoCompare> concatObs = mCoinInfoApi.getAllCoins(0, currency);
         for (int i = 0; i < 19; i++)
-            concatObs = Observable.concat(concatObs, Network.getInstance().getApiCryptoCompare().getAllCoins(i + 1, currency));
+            concatObs = Observable.concat(concatObs, mCoinInfoApi.getAllCoins(i + 1, currency));
         return concatObs;
     }
 
