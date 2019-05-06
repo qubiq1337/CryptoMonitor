@@ -1,4 +1,4 @@
-package com.example.cryptomonitor.Home;
+package com.example.cryptomonitor.home;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

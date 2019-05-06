@@ -102,10 +102,11 @@ public class NetworkHelper {
                 .map(this::toCoinInfo)
                 .toList()
                 .subscribe(coinInfoList -> {
-                    Log.e("testRxLoadCoins", "coinInfoList size:" + coinInfoList.size());
-                    CoinDataHelper.updateDatabase(coinInfoList);
-                    mRefreshingListener.stopRefreshing(true);
-                })
+                            Log.e("testRxLoadCoins", "coinInfoList size:" + coinInfoList.size());
+                            CoinDataHelper.updateDatabase(coinInfoList);
+                            mRefreshingListener.stopRefreshing(true);
+                        },
+                        e -> Log.e("testRxLoadCoins", "FAILED DOWNLOAD: ", e))
         );
 
     }

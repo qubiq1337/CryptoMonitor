@@ -13,8 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cryptomonitor.R;
-import com.example.cryptomonitor.activity.BuyActivity;
 import com.example.cryptomonitor.adapters.PortfolioAdapter;
+import com.example.cryptomonitor.buy.BuyActivity;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.entities.Purchase;
 import com.github.mikephil.charting.charts.PieChart;

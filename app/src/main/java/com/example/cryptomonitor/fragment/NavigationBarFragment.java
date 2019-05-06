@@ -11,9 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.cryptomonitor.Favorite.FavoritesFragment;
-import com.example.cryptomonitor.Home.HomeFragment;
 import com.example.cryptomonitor.R;
+import com.example.cryptomonitor.favorite.FavoritesFragment;
+import com.example.cryptomonitor.home.HomeFragment;
 
 
 public class NavigationBarFragment extends Fragment {

@@ -1,4 +1,4 @@
-package com.example.cryptomonitor.Favorite;
+package com.example.cryptomonitor.favorite;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
