@@ -11,11 +11,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cryptomonitor.R;
+import com.example.cryptomonitor.database.App;
+import com.example.cryptomonitor.database.dao.CoinInfoDao;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinViewHolder> {
@@ -24,8 +31,19 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     private Context mContext;
     private List<CoinInfo> mData;
     private OnStarClickListener mOnStarClickListener;
-    private OnEndReachListener mOnEndReachListener;
-    private boolean isLoading;
+    private boolean isLoading = false;
+    private CoinInfoDao mDao;
+    private Disposable disposable;
+    private final static int initialSize = 60;
+    private final static int loadSize = 20;
+    private boolean endReached = false;
+    private Consumer<List<CoinInfo>> mListConsumer = coinInfoList -> {
+        if (coinInfoList.size() - mData.size() < loadSize)
+            endReached = true;
+        mData = coinInfoList;
+        notifyDataSetChanged();
+        isLoading = false;
+    };
 
     CoinAdapterHome(Context context) {
         this.mContext = context;
@@ -35,7 +53,25 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
 
     void setup(Fragment fragment) {
         this.mOnStarClickListener = (OnStarClickListener) fragment;
-        this.mOnEndReachListener = (OnEndReachListener) fragment;
+        mDao = App.getDatabase().coinInfoDao();
+        showMode();
+    }
+
+    void showMode() {
+        if (disposable != null)
+            disposable.dispose();
+        disposable = mDao.getAllBefore(initialSize)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mListConsumer);
+    }
+
+    void setList(List<CoinInfo> coinInfoList) {
+        if (disposable != null)
+            disposable.dispose();
+        mData = coinInfoList;
+        notifyDataSetChanged();
+
     }
 
     @NonNull
@@ -46,8 +82,13 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CoinViewHolder coinViewHolder, int i) {
-        CoinInfo coin = mData.get(i);
+    public void onBindViewHolder(@NonNull CoinViewHolder coinViewHolder, int index) {
+        if (index > mData.size() - 20
+                && !isLoading
+                && !endReached) {
+            loadMore();
+        }
+        CoinInfo coin = mData.get(index);
         coinViewHolder.textViewFullName.setText(coin.getFullName());
         coinViewHolder.textViewName.setText(coin.getShortName());
         coinViewHolder.textViewPrice.setText(coin.getPriceStr());
@@ -56,13 +97,6 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_favorite_star));
         else
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_not_favorite_star_light));
-
-        if (i > mData.size() - 20
-                && !isLoading
-                && mOnEndReachListener != null) {
-            mOnEndReachListener.onEndReach();
-            isLoading = true;
-        }
     }
 
     @Override
@@ -74,14 +108,14 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         void onStarClick(CoinInfo coinInfo);
     }
 
-    public interface OnEndReachListener {
-        void onEndReach();
-    }
-
-    void setData(List<CoinInfo> data) {
-        mData = data;
-        notifyDataSetChanged();
-        isLoading = false;
+    private void loadMore() {
+        isLoading = true;
+        if (disposable != null)
+            disposable.dispose();
+        disposable = mDao.getAllBefore(getItemCount() + loadSize)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mListConsumer);
     }
 
     class CoinViewHolder extends RecyclerView.ViewHolder {
@@ -98,17 +132,21 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             textViewPrice = itemView.findViewById(R.id.rv_coin_layout_price);
             imageViewIcon = itemView.findViewById(R.id.rv_coin_layout_icon);
             isFavoriteImage = itemView.findViewById(R.id.rv_coin_favorite_image);
-            isFavoriteImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mOnStarClickListener != null)
-                        mOnStarClickListener.onStarClick(mData.get(getAdapterPosition()));
+            isFavoriteImage.setOnClickListener(v -> {
+                if (getAdapterPosition() >= 0) {
+                    CoinInfo clickedCoin = mData.get(getAdapterPosition());
+                    if (clickedCoin.isFavorite())
+                        clickedCoin.setFavorite(false);
+                    else
+                        clickedCoin.setFavorite(true);
+                    notifyItemChanged(getAdapterPosition());
+                    mOnStarClickListener.onStarClick(clickedCoin);
                 }
             });
         }
     }
 
     public interface OnCoinClickListener {
-        void goToDetailedCoin(String index, int position);
+        void onCoinClick(String index, int position);
     }
 }

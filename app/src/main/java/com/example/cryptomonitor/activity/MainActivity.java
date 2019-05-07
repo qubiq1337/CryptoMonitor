@@ -48,8 +48,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             changeFragment(R.id.bottom_container, NavigationBarFragment.class.getName());
         } else {
             Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.top_container);
-            if (fragment instanceof ToolbarInteractor)
+            if (fragment instanceof ToolbarInteractor) {
                 mToolbarInteractor = (ToolbarInteractor) fragment;
+                mToolbarInteractor.setCurrency(mCurrency);
+            }
         }
         if (savedInstanceState != null && savedInstanceState.containsKey(SEARCH_TEXT_KEY)) {
             isSearchViewExpanded = true;
@@ -79,8 +81,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(container, fragment);
         fragmentTransaction.commit();
-        if (fragment instanceof ToolbarInteractor)
+        if (fragment instanceof ToolbarInteractor) {
             mToolbarInteractor = (ToolbarInteractor) fragment;
+            mToolbarInteractor.setCurrency(mCurrency);
+        }
     }
 
     @Override
@@ -97,8 +101,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         mSpinnerItem = menu.findItem(R.id.action_bar_spinner);
         Spinner spinner = (Spinner) mSpinnerItem.getActionView();
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.spinner, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.spinner, R.layout.spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -188,18 +192,18 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     }
 
     @Override
-    public void goToDetailedCoin(String index, int position) {
+    public void setCurrency(String currency) {
+        mCurrency = currency;
+        mToolbarInteractor.setCurrency(currency);
+    }
+
+    @Override
+    public void onCoinClick(String index, int position) {
         Intent intent = new Intent(this, DetailedCoin.class);
         intent.putExtra(EXTRA_INDEX_KEY, index);
         intent.putExtra(EXTRA_CURRENCY_KEY, mCurrency);
         intent.putExtra(EXTRA_POSITION_KEY, position + 1);
         startActivity(intent);
-    }
-
-    @Override
-    public void setCurrency(String currency) {
-        mCurrency = currency;
-        mToolbarInteractor.setCurrency(currency);
     }
 }
 

@@ -18,28 +18,16 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class CoinRepo implements CoinDataSource {
 
-    private int lastIndex;
-    private final static int initialSize = 60;
-    private final static int loadSize = 20;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private final String BASE_IMAGE_URL = "https://www.cryptocompare.com";
     private CoinInfoDao mCoinInfoDao = App.getDatabase().coinInfoDao();
     private ApiCryptoCompare mCoinInfoApi = Network.getInstance().getApiCryptoCompare();
     private Disposable mDisposableSubscription;
-    private DataListener mDataListener;
     private static Executor dbExecutor = AppExecutors.getInstance().getDbExecutor();
-    private Consumer<List<CoinInfo>> mListConsumer = new Consumer<List<CoinInfo>>() {
-        @Override
-        public void accept(List<CoinInfo> coinInfoList) {
-            mDataListener.listLoaded(coinInfoList);
-            lastIndex = coinInfoList.size();
-        }
-    };
 
     @Override
     public void updateAll(List<CoinInfo> coinInfoList) {
@@ -63,41 +51,27 @@ public class CoinRepo implements CoinDataSource {
         });
     }
 
-    public CoinRepo(DataListener dataListener) {
-        mDataListener = dataListener;
-        setStartList();
-    }
-
     @Override
     public void updateCoin(CoinInfo coinInfo) {
         dbExecutor.execute(() -> mCoinInfoDao.update(coinInfo));
     }
 
     @Override
-    public void getAllCoins() {
+    public void getFavoriteCoins(GetCoinCallback callback) {
         if (mDisposableSubscription != null)
             mDisposableSubscription.dispose();
-        mDisposableSubscription = mCoinInfoDao.getAllBefore(initialSize)
+        mDisposableSubscription = mCoinInfoDao.getFavoriteCoins()
                 .subscribeOn(Schedulers.io())
-                .subscribe(mListConsumer);
+                .subscribe(callback::onLoaded, error -> callback.onFailed());
     }
 
     @Override
-    public void getFavoriteCoins() {
-
-    }
-
-    @Override
-    public void getSearchCoins(String word) {
+    public void getSearchCoins(String word, GetCoinCallback coinCallback) {
         if (mDisposableSubscription != null)
             mDisposableSubscription.dispose();
-        if (word.isEmpty()) {
-            mDataListener.listLoaded(new ArrayList<>());
-        } else {
-            mDisposableSubscription = mCoinInfoDao.getSearchCoins(word)
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(mListConsumer);
-        }
+        mDisposableSubscription = mCoinInfoDao.getSearchCoins(word)
+                .subscribeOn(Schedulers.io())
+                .subscribe(coinCallback::onLoaded, error -> coinCallback.onFailed());
     }
 
     @Override
@@ -105,31 +79,16 @@ public class CoinRepo implements CoinDataSource {
         testRxLoadCoins(currency, callback);
     }
 
-    public void loadMore() {
-        if (mDisposableSubscription != null)
-            mDisposableSubscription.dispose();
-        mDisposableSubscription = mCoinInfoDao.getAllBefore(lastIndex + loadSize)
-                .subscribeOn(Schedulers.io())
-                .subscribe(mListConsumer);
-    }
-
-    private void setStartList() {
-        if (mDisposableSubscription != null)
-            mDisposableSubscription.dispose();
-        mDisposableSubscription = mCoinInfoDao.getAllBefore(initialSize)
-                .subscribeOn(Schedulers.io())
-                .subscribe(mListConsumer);
-    }
-
     private void testRxLoadCoins(String currency, RefreshCallback callback) {
+        compositeDisposable = new CompositeDisposable();
         compositeDisposable.add(concatObservable(currency)
                 .subscribeOn(Schedulers.io()) // "work" on io thread
-                .observeOn(AndroidSchedulers.mainThread())
                 .map(CoinCryptoCompare::getData)
                 .flatMap(Observable::fromIterable)
                 .filter(coinsData -> coinsData.getRAW() != null && coinsData.getDISPLAY() != null)
                 .map(this::toCoinInfo)
                 .toList()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(coinInfoList -> {
                             Log.e("testRxLoadCoins", "coinInfoList size:" + coinInfoList.size());
                             callback.onSuccess();

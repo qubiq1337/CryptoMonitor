@@ -10,22 +10,18 @@ import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.events.Event;
 import com.example.cryptomonitor.events.Message;
 
+import java.util.ArrayList;
 import java.util.List;
 
-class HomeViewModel extends ViewModel implements CoinDataSource.DataListener {
+class HomeViewModel extends ViewModel {
 
-    private MutableLiveData<List<CoinInfo>> mCoinListLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<CoinInfo>> mSearchModeLiveData = new MutableLiveData<>();
     private MutableLiveData<Event> mEventMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> mIsRefreshLiveData = new MutableLiveData<>();
-    private boolean mIsSearchActive = false;
-    private CoinRepo mCoinRepository = new CoinRepo(this);
+    private CoinDataSource mCoinRepository = new CoinRepo();
 
-    HomeViewModel() {
-        mCoinRepository.getAllCoins();
-    }
-
-    LiveData<List<CoinInfo>> getCoinsLiveData() {
-        return mCoinListLiveData;
+    LiveData<List<CoinInfo>> getSearchModeLiveData() {
+        return mSearchModeLiveData;
     }
 
     LiveData<Event> getEventLiveData() {
@@ -36,37 +32,30 @@ class HomeViewModel extends ViewModel implements CoinDataSource.DataListener {
         return mIsRefreshLiveData;
     }
 
-    @Override
-    public void listLoaded(List<CoinInfo> coinInfoList) {
-        mCoinListLiveData.postValue(coinInfoList);
-    }
-
-    void onEndReached() {
-        if (!mIsSearchActive) {
-            mCoinRepository.loadMore();
-        }
-    }
-
     void onTextChanged(final String currentText) {
-        mCoinRepository.getSearchCoins(currentText);
+        mCoinRepository.getSearchCoins(currentText, new CoinDataSource.GetCoinCallback() {
+            @Override
+            public void onLoaded(List<CoinInfo> coinInfoList) {
+                mSearchModeLiveData.setValue(coinInfoList);
+            }
+
+            @Override
+            public void onFailed() {
+                mEventMutableLiveData.setValue(new Message("Failed"));
+            }
+        });
     }
 
     void onStarClicked(CoinInfo clickedCoinInfo) {
-        if (clickedCoinInfo.isFavorite())
-            clickedCoinInfo.setFavorite(false);
-        else
-            clickedCoinInfo.setFavorite(true);
         mCoinRepository.updateCoin(clickedCoinInfo);
     }
 
     void onSearchClicked() {
-        mIsSearchActive = true;
-        mCoinRepository.getSearchCoins("");
+        mSearchModeLiveData.setValue(new ArrayList<>());
     }
 
     void onSearchDeactivated() {
-        mIsSearchActive = false;
-        mCoinRepository.getAllCoins();
+        mSearchModeLiveData.setValue(null);
     }
 
     void refresh(String currency) {

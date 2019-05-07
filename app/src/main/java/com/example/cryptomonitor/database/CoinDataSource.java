@@ -6,23 +6,23 @@ import java.util.List;
 
 public interface CoinDataSource {
 
-    interface DataListener {
-        void listLoaded(List<CoinInfo> coinInfoList);
-    }
-
     interface RefreshCallback {
         void onSuccess();
 
         void onFailed();
     }
 
-    void getAllCoins();
+    interface GetCoinCallback {
+        void onLoaded(List<CoinInfo> coinInfoList);
 
-    void getFavoriteCoins();
+        void onFailed();
+    }
+
+    void getFavoriteCoins(GetCoinCallback coinCallback);
 
     void refreshCoins(String currency, RefreshCallback refreshCallback);
 
-    void getSearchCoins(String word);
+    void getSearchCoins(String word, GetCoinCallback coinCallback);
 
     void updateCoin(CoinInfo coinInfo);
 

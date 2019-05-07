@@ -26,12 +26,10 @@ import java.util.List;
 
 public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener,
         ToolbarInteractor,
-        CoinAdapterHome.OnEndReachListener,
         SwipeRefreshLayout.OnRefreshListener {
 
     private static final String SEARCH_MODE_KEY = "modeKey";
     public static final String TAG = "MyLogs";
-    private boolean isSearchViewExpanded;
     private String mCurrency;
     private HomeViewModel mHomeViewModel;
     private SwipeRefreshLayout mSwipeRefresh;
@@ -57,7 +55,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         mRecyclerView.setAdapter(mCoinAdapterHome);
 
         mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-        mHomeViewModel.getCoinsLiveData().observe(this, listObserver);
+        mHomeViewModel.getSearchModeLiveData().observe(this, listObserver);
         mHomeViewModel.getEventLiveData().observe(this, eventObserver);
         mHomeViewModel.getSwipeRefreshLiveData().observe(this, swipeRefreshObserver);
         return view;
@@ -106,7 +104,10 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     }
 
     private Observer<List<CoinInfo>> listObserver = coinInfoList -> {
-        mCoinAdapterHome.setData(coinInfoList);
+        if (coinInfoList != null)
+            mCoinAdapterHome.setList(coinInfoList);
+        else
+            mCoinAdapterHome.showMode();
     };
 
     private Observer<Event> eventObserver = event -> {
@@ -123,10 +124,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
             mSwipeRefresh.setRefreshing(false);
     };
 
-    @Override
-    public void onEndReach() {
-        mHomeViewModel.onEndReached();
-    }
 
     @Override
     public void setCurrency(String currency) {
@@ -136,6 +133,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
 
     @Override
     public void onRefresh() {
-        mHomeViewModel.refresh(mCurrency);
+        if (mHomeViewModel != null)
+            mHomeViewModel.refresh(mCurrency);
     }
 }
