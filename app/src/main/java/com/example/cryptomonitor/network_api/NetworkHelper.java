@@ -2,7 +2,8 @@ package com.example.cryptomonitor.network_api;
 
 import android.util.Log;
 
-import com.example.cryptomonitor.database.CoinDataHelper;
+import com.example.cryptomonitor.database.coins.CoinDataSource;
+import com.example.cryptomonitor.database.coins.CoinRepo;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.model_cryptocompare.model_chart.ModelChart;
 import com.example.cryptomonitor.model_cryptocompare.model_coins.CoinCryptoCompare;
@@ -18,9 +19,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NetworkHelper {
 
-    private final int START_LIMIT = 5000;
-    private final int START_PAGE = 1;
-    private static final String ICONS_MASTER_64_X_64 = "https://raw.githubusercontent.com/MoneyConverter/cryptocurrencies-icons/master/64x64/";
+    private CoinDataSource mCoinDataSource = new CoinRepo();
     private OnChangeRefreshingListener mRefreshingListener;
     private static HashMap<String, String> coinSymbols = new HashMap<>();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -37,51 +36,6 @@ public class NetworkHelper {
     public NetworkHelper(OnChangeRefreshingListener mRefreshingListener) {
         this.mRefreshingListener = mRefreshingListener;
     }
-
-    public void refreshCoins(String currency) {
-        testRxLoadCoins(currency);
-    }
-
-    //Старый код
-
-   /* private void loadCoins(final String currency) {
-        mRefreshingListener.startRefreshing();
-        Network.getInstance()
-                .getApiCryptoCompare()
-                .getAllCoinData(START_PAGE, START_LIMIT, currency)
-                .enqueue(new Callback<CoinMarketCup>() {
-                    @Override
-                    public void onResponse(@NonNull Call<CoinMarketCup> call, @NonNull Response<CoinMarketCup> response) {
-                        if (response.body() != null) {
-                            CoinDataHelper.updateDatabase(getCoinInfoList(response.body(), currency));
-                        }
-                        mRefreshingListener.stopRefreshing(true);
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<CoinMarketCup> call, @NonNull Throwable t) {
-                        Log.e("ERROR LOAD_COINS", t.toString());
-                        mRefreshingListener.stopRefreshing(false);
-                    }
-                });
-    }
-
-    private List<CoinInfo> getCoinInfoList(CoinMarketCup coinMarketCup, String currency) {
-        List<CoinInfo> coinInfoArrayList = new ArrayList<>();
-        List<ChartData> coinCoinMarketCupData = coinMarketCup.getData();
-        CoinInfo coinInfo;
-
-        for (ChartData coin : coinCoinMarketCupData) {
-            String fullName = coin.getName();
-            String shortName = coin.getSymbol();
-            double price = coin.getQuote().getUSD().getPrice();
-            String symbol = coinSymbols.get(currency);
-            String URL = ICONS_MASTER_64_X_64 + shortName.toLowerCase() + ".png";
-            coinInfo = new CoinInfo(fullName, shortName, URL, price, symbol);
-            coinInfoArrayList.add(coinInfo);
-        }
-        return coinInfoArrayList;
-    }*/
 
 
     public interface OnChangeRefreshingListener {
@@ -103,7 +57,7 @@ public class NetworkHelper {
                 .toList()
                 .subscribe(coinInfoList -> {
                             Log.e("testRxLoadCoins", "coinInfoList size:" + coinInfoList.size());
-                            CoinDataHelper.updateDatabase(coinInfoList);
+                            mCoinDataSource.updateAll(coinInfoList);
                             mRefreshingListener.stopRefreshing(true);
                         },
                         e -> Log.e("testRxLoadCoins", "FAILED DOWNLOAD: ", e))

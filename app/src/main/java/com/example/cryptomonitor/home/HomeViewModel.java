@@ -4,8 +4,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.example.cryptomonitor.database.CoinDataSource;
-import com.example.cryptomonitor.database.CoinRepo;
+import com.example.cryptomonitor.database.coins.CoinDataSource;
+import com.example.cryptomonitor.database.coins.CoinRepo;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.events.Event;
 import com.example.cryptomonitor.events.Message;

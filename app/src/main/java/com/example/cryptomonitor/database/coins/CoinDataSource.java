@@ -1,4 +1,4 @@
-package com.example.cryptomonitor.database;
+package com.example.cryptomonitor.database.coins;
 
 import com.example.cryptomonitor.database.entities.CoinInfo;
 

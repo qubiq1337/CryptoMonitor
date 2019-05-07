@@ -36,10 +36,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     private Disposable disposable;
     private final static int initialSize = 60;
     private final static int loadSize = 20;
-    private boolean endReached = false;
     private Consumer<List<CoinInfo>> mListConsumer = coinInfoList -> {
-        if (coinInfoList.size() - mData.size() < loadSize)
-            endReached = true;
         mData = coinInfoList;
         notifyDataSetChanged();
         isLoading = false;
@@ -71,7 +68,6 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             disposable.dispose();
         mData = coinInfoList;
         notifyDataSetChanged();
-
     }
 
     @NonNull
@@ -83,9 +79,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
 
     @Override
     public void onBindViewHolder(@NonNull CoinViewHolder coinViewHolder, int index) {
-        if (index > mData.size() - 20
-                && !isLoading
-                && !endReached) {
+        if (index + loadSize > mData.size() && !isLoading) {
             loadMore();
         }
         CoinInfo coin = mData.get(index);

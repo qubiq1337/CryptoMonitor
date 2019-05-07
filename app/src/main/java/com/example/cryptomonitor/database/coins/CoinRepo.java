@@ -1,8 +1,9 @@
-package com.example.cryptomonitor.database;
+package com.example.cryptomonitor.database.coins;
 
 import android.util.Log;
 
 import com.example.cryptomonitor.AppExecutors;
+import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.dao.CoinInfoDao;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.model_cryptocompare.model_coins.CoinCryptoCompare;
@@ -62,6 +63,7 @@ public class CoinRepo implements CoinDataSource {
             mDisposableSubscription.dispose();
         mDisposableSubscription = mCoinInfoDao.getFavoriteCoins()
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(callback::onLoaded, error -> callback.onFailed());
     }
 
@@ -69,9 +71,14 @@ public class CoinRepo implements CoinDataSource {
     public void getSearchCoins(String word, GetCoinCallback coinCallback) {
         if (mDisposableSubscription != null)
             mDisposableSubscription.dispose();
-        mDisposableSubscription = mCoinInfoDao.getSearchCoins(word)
-                .subscribeOn(Schedulers.io())
-                .subscribe(coinCallback::onLoaded, error -> coinCallback.onFailed());
+        if (word.isEmpty()) {
+            coinCallback.onLoaded(new ArrayList<>());
+        } else {
+            mDisposableSubscription = mCoinInfoDao.getSearchCoins(word)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(coinCallback::onLoaded, error -> coinCallback.onFailed());
+        }
     }
 
     @Override

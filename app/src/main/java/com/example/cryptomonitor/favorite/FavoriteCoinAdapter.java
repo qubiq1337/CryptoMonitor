@@ -80,9 +80,14 @@ public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapte
             textViewPrice = itemView.findViewById(R.id.rv_coin_layout_price);
             imageViewIcon = itemView.findViewById(R.id.rv_coin_layout_icon);
             isFavoriteImage = itemView.findViewById(R.id.rv_coin_favorite_image);
-            isFavoriteImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            isFavoriteImage.setOnClickListener(v -> {
+                if (getAdapterPosition() >= 0) {
+                    CoinInfo coinInfo = mData.get(getAdapterPosition());
+                    if (coinInfo.isFavorite())
+                        coinInfo.setFavorite(false);
+                    else
+                        coinInfo.setFavorite(true);
+                    notifyItemChanged(getAdapterPosition());
                     onStarClickListener.onStarClick(mData.get(getAdapterPosition()));
                 }
             });

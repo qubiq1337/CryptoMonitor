@@ -4,39 +4,42 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.example.cryptomonitor.database.App;
-import com.example.cryptomonitor.database.CoinDataHelper;
+import com.example.cryptomonitor.database.coins.CoinDataSource;
+import com.example.cryptomonitor.database.coins.CoinRepo;
 import com.example.cryptomonitor.database.entities.CoinInfo;
+import com.example.cryptomonitor.events.Event;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-
 class FavoriteViewModel extends ViewModel {
-    FavoriteViewModel() {
-        final Disposable subscribe = App.getDatabase().coinInfoDao().getFavoriteCoins()
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Consumer<List<CoinInfo>>() {
-                    @Override
-                    public void accept(List<CoinInfo> coinInfoList) {
-                        mFavoriteCoinsLiveData.postValue(coinInfoList);
-                    }
-                });
-    }
-
+    private CoinDataSource mCoinDataSource = new CoinRepo();
     private MutableLiveData<List<CoinInfo>> mFavoriteCoinsLiveData = new MutableLiveData<>();
+    private MutableLiveData<Event> mEventMutableLiveData = new MutableLiveData<>();
+
+    FavoriteViewModel() {
+        mCoinDataSource.getFavoriteCoins(new CoinDataSource.GetCoinCallback() {
+            @Override
+            public void onLoaded(List<CoinInfo> coinInfoList) {
+                mFavoriteCoinsLiveData.setValue(coinInfoList);
+            }
+
+            @Override
+            public void onFailed() {
+                mFavoriteCoinsLiveData.setValue(new ArrayList<>());
+            }
+        });
+    }
 
     LiveData<List<CoinInfo>> getFavoriteCoinsLiveData() {
         return mFavoriteCoinsLiveData;
     }
 
+    LiveData<Event> getEventLiveData() {
+        return mEventMutableLiveData;
+    }
+
     void onStarClicked(CoinInfo clickedCoinInfo) {
-        if (clickedCoinInfo.isFavorite())
-            clickedCoinInfo.setFavorite(false);
-        else
-            clickedCoinInfo.setFavorite(true);
-        CoinDataHelper.updateCoin(clickedCoinInfo);
+        mCoinDataSource.updateCoin(clickedCoinInfo);
     }
 }

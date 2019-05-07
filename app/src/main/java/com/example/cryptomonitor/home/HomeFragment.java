@@ -111,9 +111,11 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     };
 
     private Observer<Event> eventObserver = event -> {
-        if (event instanceof Message) {
-            Message message = (Message) event;
-            Toast.makeText(getContext(), message.getMessageText(), Toast.LENGTH_SHORT).show();
+        if (!event.isHandled()) {
+            if (event instanceof Message) {
+                Message message = (Message) event;
+                Toast.makeText(getContext(), message.getMessageText(), Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
