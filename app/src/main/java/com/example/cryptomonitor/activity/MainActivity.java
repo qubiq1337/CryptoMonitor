@@ -21,12 +21,10 @@ import com.example.cryptomonitor.favorite.FavoritesFragment;
 import com.example.cryptomonitor.fragment.BriefcaseFragment;
 import com.example.cryptomonitor.fragment.HistoryFragment;
 import com.example.cryptomonitor.fragment.NavigationBarFragment;
-import com.example.cryptomonitor.home.CoinAdapterHome;
 import com.example.cryptomonitor.home.HomeFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarFragment.NavigationBarListener,
-        ToolbarInteractor,
-        CoinAdapterHome.OnCoinClickListener {
+        ToolbarInteractor {
 
     private static final String SEARCH_TEXT_KEY = "searchKey";
     private String mCurrency;
@@ -197,8 +195,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             mToolbarInteractor.setCurrency(currency);
     }
 
-    @Override
-    public void onCoinClick(String index, int position) {
+    public void onCoinClicked(String index, int position) {
         Intent intent = new Intent(this, DetailedCoin.class);
         intent.putExtra(EXTRA_INDEX_KEY, index);
         intent.putExtra(EXTRA_CURRENCY_KEY, mCurrency);

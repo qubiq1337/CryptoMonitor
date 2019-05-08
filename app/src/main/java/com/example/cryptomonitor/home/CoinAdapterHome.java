@@ -137,7 +137,6 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
                         clickedCoin.setFavorite(true);
                     notifyItemChanged(getAdapterPosition());
                     mOnStarClickListener.onStarClick(clickedCoin);
-                    mOnCoinClickListener.onCoinClick(mData.get(getAdapterPosition()).getShortName(), getAdapterPosition());
                 }
             });
             imageViewIcon.setOnClickListener(v ->
