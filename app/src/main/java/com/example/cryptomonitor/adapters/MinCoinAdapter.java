@@ -23,18 +23,14 @@ public class MinCoinAdapter extends RecyclerView.Adapter<MinCoinAdapter.MinCoinV
     private OnItemClickListener mOnClickListener;
     private List<CoinInfo> mData = new ArrayList<>();
 
-    public interface OnItemClickListener {
-        void OnItemClick(CoinInfo coinInfo);
+    public MinCoinAdapter(Context context, OnItemClickListener onItemClickListener) {
+        this.mContext = context;
+        this.mOnClickListener = onItemClickListener;
     }
 
     public void setData(List<CoinInfo> coinInfoList) {
         mData = coinInfoList;
         notifyDataSetChanged();
-    }
-
-    public MinCoinAdapter(Context context, OnItemClickListener onItemClickListener) {
-        this.mContext = context;
-        this.mOnClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -55,6 +51,10 @@ public class MinCoinAdapter extends RecyclerView.Adapter<MinCoinAdapter.MinCoinV
     @Override
     public int getItemCount() {
         return mData.size();
+    }
+
+    public interface OnItemClickListener {
+        void OnItemClick(CoinInfo coinInfo);
     }
 
     class MinCoinViewHolder extends RecyclerView.ViewHolder {

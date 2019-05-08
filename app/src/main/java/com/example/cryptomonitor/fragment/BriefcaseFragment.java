@@ -34,18 +34,18 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class BriefcaseFragment extends Fragment implements View.OnClickListener {
 
+
     private FloatingActionButton mPlusButton;
     private PortfolioAdapter portfolioAdapter;
     private PieChart mPieChart;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_briefcase, container, false);
-
         mPlusButton = view.findViewById(R.id.floatingActionButton);
         mPlusButton.setOnClickListener(this);
-
         RecyclerView recyclerView = view.findViewById(R.id.portfolio_recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         portfolioAdapter = new PortfolioAdapter(getActivity());
@@ -54,7 +54,6 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener 
         mPieChart = view.findViewById(R.id.portfolio_pie_chart);
         initPieChart();
         getDataFromDb();
-
         return view;
     }
 

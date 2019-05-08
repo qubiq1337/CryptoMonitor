@@ -22,16 +22,9 @@ import java.util.List;
 
 public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener, ToolbarInteractor, CoinAdapterHome.OnEndReachListener {
 
-    private static final String SEARCH_MODE_KEY = "modeKey";
     public static final String TAG = "MyLogs";
+    private static final String SEARCH_MODE_KEY = "modeKey";
     private boolean isSearchViewExpanded;
-
-    private Observer<List<CoinInfo>> listObserver = new Observer<List<CoinInfo>>() {
-        @Override
-        public void onChanged(@Nullable List<CoinInfo> coinInfos) {
-            mCoinAdapterHome.setData(coinInfos);
-        }
-    };
     private Observer<Boolean> searchModeObserver = new Observer<Boolean>() {
         @Override
         public void onChanged(@Nullable Boolean aBoolean) {
@@ -41,6 +34,12 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     private HomeViewModel mHomeViewModel;
     private RecyclerView mRecyclerView;
     private CoinAdapterHome mCoinAdapterHome;
+    private Observer<List<CoinInfo>> listObserver = new Observer<List<CoinInfo>>() {
+        @Override
+        public void onChanged(@Nullable List<CoinInfo> coinInfos) {
+            mCoinAdapterHome.setData(coinInfos);
+        }
+    };
 
     @Nullable
     @Override

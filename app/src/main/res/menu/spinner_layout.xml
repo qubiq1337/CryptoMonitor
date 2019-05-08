@@ -4,8 +4,6 @@
     android:layout_width="0dp"
     android:layout_height="0dp"
     tools:context=".activity.MainActivity">
-
-
     <item
         android:id="@+id/action_bar_spinner"
         android:title="@string/action_bar_spinner"
@@ -16,5 +14,18 @@
         android:id="@+id/search"
         android:title="@string/find"
         app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+    <!--<item-->
+    <!--android:id="@+id/settings"-->
+    <!--android:icon="@drawable/ic_dots_vertical"-->
+    <!--android:orderInCategory="101"-->
+    <!--android:title="@string/settings"-->
+    <!--app:showAsAction="always">-->
+    <!--<menu>-->
+    <!--<item-->
+    <!--android:id="@+id/sort"-->
+    <!--android:title="@string/sort"-->
+    <!--app:showAsAction="ifRoom" />-->
+    <!--</menu>-->
+    <!--</item>-->
 </menu>

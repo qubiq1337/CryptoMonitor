@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:showAsAction="always"
+    android:id="@+id/menu_one"
+
+    >
+
+    <item
+        android:id="@+id/one"
+        android:showAsAction="ifRoom|withText"
+        android:title="One" />
+    <item
+        android:id="@+id/two"
+
+        android:showAsAction="ifRoom|withText"
+        android:title="Two" />
+    <item
+        android:id="@+id/three"
+
+        android:showAsAction="ifRoom|withText"
+        android:title="Three" />
+</menu>

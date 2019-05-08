@@ -1,6 +1,5 @@
 package com.example.cryptomonitor.network_api;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.cryptomonitor.database.CoinDataHelper;
@@ -20,11 +19,7 @@ import io.reactivex.schedulers.Schedulers;
 public class NetworkHelper {
 
     private static final String ICONS_MASTER_64_X_64 = "https://raw.githubusercontent.com/MoneyConverter/cryptocurrencies-icons/master/64x64/";
-
-    private OnChangeRefreshingListener mRefreshingListener;
     private static HashMap<String, String> coinSymbols = new HashMap<>();
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private final String BASE_IMAGE_URL = "https://www.cryptocompare.com";
 
     static {
         coinSymbols.put("USD", "\u0024");
@@ -33,6 +28,10 @@ public class NetworkHelper {
         coinSymbols.put("CNY", "\u5713");
         coinSymbols.put("GBP", "\uFFE1");
     }
+
+    private final String BASE_IMAGE_URL = "https://www.cryptocompare.com";
+    private OnChangeRefreshingListener mRefreshingListener;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public NetworkHelper(OnChangeRefreshingListener mRefreshingListener) {
         this.mRefreshingListener = mRefreshingListener;
@@ -82,13 +81,6 @@ public class NetworkHelper {
         }
         return coinInfoArrayList;
     }*/
-
-
-    public interface OnChangeRefreshingListener {
-        void startRefreshing();
-
-        void stopRefreshing(boolean isSuccess);
-    }
 
     private void testRxLoadCoins(String currency) {
         mRefreshingListener.startRefreshing();
@@ -158,7 +150,7 @@ public class NetworkHelper {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<ModelChart> getChartData1W (String symbol, String currency) {
+    public Observable<ModelChart> getChartData1W(String symbol, String currency) {
         return getChartData(symbol, currency, 1, 168);
     }
 
@@ -168,5 +160,11 @@ public class NetworkHelper {
 
     public Observable<ModelChart> getChartData3M(String symbol, String currency) {
         return getChartData(symbol, currency, 18, 120);
+    }
+
+    public interface OnChangeRefreshingListener {
+        void startRefreshing();
+
+        void stopRefreshing(boolean isSuccess);
     }
 }

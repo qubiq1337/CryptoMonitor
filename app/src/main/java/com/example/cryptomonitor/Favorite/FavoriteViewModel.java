@@ -15,6 +15,8 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 class FavoriteViewModel extends ViewModel {
+    private MutableLiveData<List<CoinInfo>> mFavoriteCoinsLiveData = new MutableLiveData<>();
+
     FavoriteViewModel() {
         final Disposable subscribe = App.getDatabase().coinInfoDao().getFavoriteCoins()
                 .subscribeOn(Schedulers.io())
@@ -25,8 +27,6 @@ class FavoriteViewModel extends ViewModel {
                     }
                 });
     }
-
-    private MutableLiveData<List<CoinInfo>> mFavoriteCoinsLiveData = new MutableLiveData<>();
 
     LiveData<List<CoinInfo>> getFavoriteCoinsLiveData() {
         return mFavoriteCoinsLiveData;

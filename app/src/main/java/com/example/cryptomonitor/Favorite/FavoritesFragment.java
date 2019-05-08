@@ -26,12 +26,12 @@ public class FavoritesFragment extends Fragment implements FavoriteCoinAdapter.O
     private FavoriteCoinAdapter mCoinAdapterHome;
     private FavoriteViewModel mViewModel;
 
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         mRecyclerView = view.findViewById(R.id.rv_favorite_coins);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_fall_down);
         mRecyclerView.setLayoutAnimation(animation);
         mCoinAdapterHome = new FavoriteCoinAdapter(getContext());

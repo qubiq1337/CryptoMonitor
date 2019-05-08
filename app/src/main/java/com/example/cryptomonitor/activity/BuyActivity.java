@@ -68,6 +68,27 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
     private String mSelectedCoinIndex;
     private String mSelectedCoinPriceDisplay;
     private double mSelectedCoinPrice;
+    private TextWatcher searchTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            //ignored
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (s.toString().isEmpty())
+                mSearchRv.setVisibility(View.GONE);
+            else {
+                mSearchRv.setVisibility(View.VISIBLE);
+                mSearchViewModel.onTextChanged(s.toString());
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            //ignored
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,28 +142,6 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         mPriceEdit.setText(String.valueOf(coinInfo.getPrice()));
         mSymbolText.setText(coinInfo.getSymbol());
     }
-
-    private TextWatcher searchTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            //ignored
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (s.toString().isEmpty())
-                mSearchRv.setVisibility(View.GONE);
-            else {
-                mSearchRv.setVisibility(View.VISIBLE);
-                mSearchViewModel.onTextChanged(s.toString());
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            //ignored
-        }
-    };
 
     @Override
     public void onClick(View v) {

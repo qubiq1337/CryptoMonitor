@@ -44,6 +44,10 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
         return mPotfolioItemList.size();
     }
 
+    public void setmPotfolioItemList(List<Purchase> mPotfolioItemList) {
+        this.mPotfolioItemList = mPotfolioItemList;
+    }
+
     class PortfolioViewHolder extends RecyclerView.ViewHolder {
 
         TextView price;
@@ -56,9 +60,5 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
             amount = itemView.findViewById(R.id.portfolio_amount);
             fullname = itemView.findViewById(R.id.portfolio_fullname);
         }
-    }
-
-    public void setmPotfolioItemList(List<Purchase> mPotfolioItemList) {
-        this.mPotfolioItemList = mPotfolioItemList;
     }
 }

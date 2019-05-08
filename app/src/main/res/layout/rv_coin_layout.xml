@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:background="@color/backgroundChartColor">
+    android:layout_height="80dp">
 
 
     <ImageView
@@ -33,32 +32,32 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:textColor="@color/textColorPrimary"
             android:id="@+id/rv_coin_layout_fullname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
+            android:textColor="@color/textColorPrimary"
             android:textSize="16sp"
             tools:text="Bitcoin" />
 
         <TextView
-            android:textColor="@color/textColorDark"
             android:id="@+id/rv_coin_layout_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
+            android:textColor="@color/textColorDark"
             android:textSize="14sp"
             tools:text="BTC" />
     </LinearLayout>
 
     <TextView
-        android:textColor="@color/textColorPrimary"
         android:id="@+id/rv_coin_layout_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|end"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="15dp"
+        android:textColor="@color/textColorPrimary"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +69,6 @@
         android:layout_height="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@color/backgroundChartColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/ic_not_favorite_star_light" />

@@ -1,6 +1,8 @@
 package com.example.cryptomonitor.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.example.cryptomonitor.ExitClass;
@@ -26,12 +29,18 @@ import com.example.cryptomonitor.fragment.HistoryFragment;
 import com.example.cryptomonitor.fragment.NavigationBarFragment;
 import com.example.cryptomonitor.network_api.NetworkHelper;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity implements NavigationBarFragment.NavigationBarListener,
         SwipeRefreshLayout.OnRefreshListener,
         NetworkHelper.OnChangeRefreshingListener,
         ToolbarInteractor,
         CoinAdapterHome.OnCoinClickListener {
 
+    public static final String EXTRA_INDEX_KEY = "INDEX";
+    public static final String EXTRA_CURRENCY_KEY = "CURRENCY";
+    public static final String EXTRA_POSITION_KEY = "POSITION";
+    public static final String THEME = "THEME";
     private static final String SEARCH_TEXT_KEY = "searchKey";
     private String mCurrency;
     private String savedText;
@@ -39,14 +48,15 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     private NetworkHelper networkHelper = new NetworkHelper(this);
     private SearchView mSearchView;
     private MenuItem mSpinnerItem;
+    private MenuItem mSettingsItem;
     private ToolbarInteractor mToolbarInteractor;
     private boolean isSearchViewExpanded;
-    public static final String EXTRA_INDEX_KEY = "INDEX";
-    public static final String EXTRA_CURRENCY_KEY = "CURRENCY";
-    public static final String EXTRA_POSITION_KEY = "POSITION";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences settings = getSharedPreferences(THEME, 0);
+        int theme = settings.getInt("theme", R.style.AppThemeDark);
+        setTheme(theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
@@ -59,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         }
         mSwipeRefresh = findViewById(R.id.refresh);
         mSwipeRefresh.setOnRefreshListener(this);
-        mSwipeRefresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+        mSwipeRefresh.setColorSchemeResources(R.color.greenColor, R.color.redColor, R.color.blue_color_selected);
         if (savedInstanceState != null && savedInstanceState.containsKey(SEARCH_TEXT_KEY)) {
             isSearchViewExpanded = true;
             savedText = savedInstanceState.getString(SEARCH_TEXT_KEY, "");
@@ -72,14 +82,19 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     public void changeFragment(int container, String fragmentName) {
         Fragment fragment;
         if (fragmentName.equals(HomeFragment.class.getName())) {
+            changeTheme(R.style.AppThemeDark);
             fragment = new HomeFragment();
         } else if (fragmentName.equals(FavoritesFragment.class.getName())) {
+            changeTheme(R.style.AppThemeDark);
             fragment = new FavoritesFragment();
         } else if (fragmentName.equals(HistoryFragment.class.getName())) {
+            changeTheme(R.style.HistoryFragmentTheme);
             fragment = new HistoryFragment();
         } else if (fragmentName.equals(NavigationBarFragment.class.getName())) {
+            changeTheme(R.style.AppThemeDark);
             fragment = new NavigationBarFragment();
         } else if (fragmentName.equals(BriefcaseFragment.class.getName())) {
+            changeTheme(R.style.BriefcaseFragmentTheme);
             fragment = new BriefcaseFragment();
         } else {
             Log.e("ERROR", "No such fragment: " + fragmentName);
@@ -90,6 +105,14 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         fragmentTransaction.commit();
         if (fragment instanceof ToolbarInteractor)
             mToolbarInteractor = (ToolbarInteractor) fragment;
+    }
+
+    private void changeTheme(int theme) {
+        SharedPreferences settings = getSharedPreferences(THEME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("theme", theme);
+        editor.apply();
+        recreate();
     }
 
     @Override
@@ -103,11 +126,14 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.spinner_layout, menu);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false); // Dont put app name on bar
         mSpinnerItem = menu.findItem(R.id.action_bar_spinner);
         Spinner spinner = (Spinner) mSpinnerItem.getActionView();
+        spinner.getBackground().setColorFilter(R.attr.itemIconTint, PorterDuff.Mode.DST); // Replace color of arrow
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.spinner, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.array.spinner, R.layout.spinner_item);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -122,6 +148,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             }
         });
         mSearchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        ImageView searchIcon = mSearchView.findViewById(android.support.v7.appcompat.R.id.search_button);
+        searchIcon.setColorFilter(R.attr.itemIconTint, PorterDuff.Mode.DST);// Replace color of search icon
+
+
         mSearchView.setOnQueryTextListener(this);
         mSearchView.setOnSearchClickListener(this);
         mSearchView.setOnCloseListener(this);
@@ -129,6 +159,26 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             mSearchView.setIconified(false);
             mSearchView.setQuery(savedText, false);
         }
+//        mSettingsItem = menu.findItem(R.id.sort);
+//        mSettingsItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                View viewSettings = findViewById(R.id.menu_one);
+//                PopupMenu popupMenu = new PopupMenu(MainActivity.this, viewSettings);
+//                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+//                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    public boolean onMenuItemClick(MenuItem item) {
+//                        Toast.makeText(MainActivity.this, "You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+//                        return true;
+//                    }
+//                });
+//                popupMenu.show();
+//
+//                return true;
+//            }
+//        });
+
         return true;
     }
 

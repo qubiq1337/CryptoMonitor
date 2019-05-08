@@ -18,11 +18,11 @@ import io.reactivex.schedulers.Schedulers;
 
 class HomeViewModel extends ViewModel {
 
+    private final static int initialSize = 60;
+    private final static int loadSize = 20;
     private MutableLiveData<List<CoinInfo>> mCoinListLiveData = new MutableLiveData<>();
     private int lastIndex;
     private boolean mIsSearchActive = false;
-    private final static int initialSize = 60;
-    private final static int loadSize = 20;
     private Disposable mDisposableSubscription;
     private Consumer<List<CoinInfo>> mListConsumer = new Consumer<List<CoinInfo>>() {
         @Override
@@ -105,3 +105,5 @@ class HomeViewModel extends ViewModel {
         mCoinListLiveData.postValue(new ArrayList<CoinInfo>());
     }
 }
+
+

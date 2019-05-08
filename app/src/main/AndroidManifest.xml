@@ -12,11 +12,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_crypto_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        android:theme="@style/AppThemeDark"
+        tools:ignore="GoogleAppIndexingWarning"
+        >
         <activity
             android:name=".activity.DetailedCoin"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/DetailedActivityTheme"></activity>
         <activity
             android:name=".activity.BuyActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

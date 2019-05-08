@@ -57,13 +57,13 @@ public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapte
         return mData.size();
     }
 
-    public interface OnStarClickListener {
-        void onStarClick(CoinInfo coinInfo);
-    }
-
     void setData(List<CoinInfo> data) {
         mData = data;
         notifyDataSetChanged();
+    }
+
+    public interface OnStarClickListener {
+        void onStarClick(CoinInfo coinInfo);
     }
 
     class CoinViewHolder extends RecyclerView.ViewHolder {

@@ -15,6 +15,12 @@ public class AppExecutors {
     private final Executor mMainThreadExecutor;
     private final int nThreads = 3;
 
+    private AppExecutors() {
+        mMainThreadExecutor = new MainThreadExecutor();
+        mDbExecutor = Executors.newSingleThreadExecutor();
+        mNetworkExecutor = Executors.newFixedThreadPool(nThreads);
+    }
+
     public static AppExecutors getInstance() {
         if (executors == null) {
             executors = new AppExecutors();
@@ -32,12 +38,6 @@ public class AppExecutors {
 
     public Executor getMainThreadExecutor() {
         return mMainThreadExecutor;
-    }
-
-    private AppExecutors() {
-        mMainThreadExecutor = new MainThreadExecutor();
-        mDbExecutor = Executors.newSingleThreadExecutor();
-        mNetworkExecutor = Executors.newFixedThreadPool(nThreads);
     }
 
     private static class MainThreadExecutor implements Executor {

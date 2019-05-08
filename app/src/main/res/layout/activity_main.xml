@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.cryptomonitor.activity.MainActivity">
 
-    <!--<include layout="@layout/toolbar" />-->
+    <!--<include popup_menu="@popup_menu/toolbar" />-->
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="0dp"

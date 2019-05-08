@@ -1,7 +1,6 @@
 package com.example.cryptomonitor.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -88,6 +86,13 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
         low = findViewById(R.id.detailed_low);
         infoURL = findViewById(R.id.detailed_infoURL);
         backButton = findViewById(R.id.detailed_back);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailedCoin.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
         icon = findViewById(R.id.detailed_icon);
         textView_1D = findViewById(R.id.detailed_1D);
         textView_1D.setOnClickListener(this);
