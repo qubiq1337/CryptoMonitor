@@ -113,22 +113,25 @@ class BuyViewModel extends ViewModel {
     void ready(String priceStr, String amountStr) {
         double price;
         double amount;
-        try {
-            price = Double.parseDouble(priceStr);
-            amount = Double.parseDouble(amountStr);
-            mPurchase.setCoinId(mCurrentCoinInfo.getId());
-            mPurchase.setAmount(amount);
-            mPurchase.setPrice(price);
-            mPurchase.setCoinFullName(mCurrentCoinInfo.getFullName());
-            mPurchase.setCoinIndex(mCurrentCoinInfo.getShortName());
-            mPurchase.setPriceDisplay(mCurrentCoinInfo.getPriceDisplay());
-            PurchaseDataHelper.insert(mPurchase);
-            mEvent.setValue(new FinishEvent());
-        } catch (NullPointerException e) {
-            mEvent.setValue(new Message("Select coin"));
-        } catch (NumberFormatException e) {
-            mEvent.setValue(new Message("Wrong format"));
-        }
+        if (priceStr.isEmpty() || amountStr.isEmpty())
+            mEvent.setValue(new Message("Fill empty fields"));
+        else
+            try {
+                mPurchase.setCoinId(mCurrentCoinInfo.getId());
+                price = Double.parseDouble(priceStr);
+                amount = Double.parseDouble(amountStr);
+                mPurchase.setAmount(amount);
+                mPurchase.setPrice(price);
+                mPurchase.setCoinFullName(mCurrentCoinInfo.getFullName());
+                mPurchase.setCoinIndex(mCurrentCoinInfo.getShortName());
+                mPurchase.setPriceDisplay(mCurrentCoinInfo.getPriceDisplay());
+                PurchaseDataHelper.insert(mPurchase);
+                mEvent.setValue(new FinishEvent());
+            } catch (NullPointerException e) {
+                mEvent.setValue(new Message("Select coin"));
+            } catch (NumberFormatException e) {
+                mEvent.setValue(new Message("Wrong format"));
+            }
     }
 
     private void defaultSetup() {

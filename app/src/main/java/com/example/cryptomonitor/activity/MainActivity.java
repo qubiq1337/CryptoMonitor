@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.top_container);
             if (fragment instanceof ToolbarInteractor) {
                 mToolbarInteractor = (ToolbarInteractor) fragment;
-                mToolbarInteractor.setCurrency(mCurrency);
             }
         }
         if (savedInstanceState != null && savedInstanceState.containsKey(SEARCH_TEXT_KEY)) {
@@ -194,7 +193,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     @Override
     public void setCurrency(String currency) {
         mCurrency = currency;
-        mToolbarInteractor.setCurrency(currency);
+        if (mToolbarInteractor != null)
+            mToolbarInteractor.setCurrency(currency);
     }
 
     @Override

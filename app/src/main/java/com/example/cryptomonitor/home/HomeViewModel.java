@@ -19,6 +19,7 @@ class HomeViewModel extends ViewModel {
     private MutableLiveData<Event> mEventMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<Boolean> mIsRefreshLiveData = new MutableLiveData<>();
     private CoinDataSource mCoinRepository = new CoinRepo();
+    private boolean isRefreshing = false;
 
     LiveData<List<CoinInfo>> getSearchModeLiveData() {
         return mSearchModeLiveData;
@@ -59,19 +60,24 @@ class HomeViewModel extends ViewModel {
     }
 
     void refresh(String currency) {
-        mIsRefreshLiveData.setValue(true);
-        mCoinRepository.refreshCoins(currency, new CoinDataSource.RefreshCallback() {
-            @Override
-            public void onSuccess() {
-                mEventMutableLiveData.setValue(new Message("Successful"));
-                mIsRefreshLiveData.setValue(false);
-            }
+        if (!isRefreshing) {
+            isRefreshing = true;
+            mIsRefreshLiveData.setValue(true);
+            mCoinRepository.refreshCoins(currency, new CoinDataSource.RefreshCallback() {
+                @Override
+                public void onSuccess() {
+                    mEventMutableLiveData.setValue(new Message("Successful"));
+                    isRefreshing = false;
+                    mIsRefreshLiveData.setValue(false);
+                }
 
-            @Override
-            public void onFailed() {
-                mEventMutableLiveData.setValue(new Message("Failed"));
-                mIsRefreshLiveData.setValue(false);
-            }
-        });
+                @Override
+                public void onFailed() {
+                    mEventMutableLiveData.setValue(new Message("Failed"));
+                    isRefreshing = false;
+                    mIsRefreshLiveData.setValue(false);
+                }
+            });
+        }
     }
 }
