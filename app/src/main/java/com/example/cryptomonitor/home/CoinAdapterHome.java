@@ -31,6 +31,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     private Context mContext;
     private List<CoinInfo> mData;
     private OnStarClickListener mOnStarClickListener;
+    private OnCoinClickListener mOnCoinClickListener;
     private boolean isLoading = false;
     private CoinInfoDao mDao;
     private Disposable disposable;
@@ -50,6 +51,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
 
     void setup(Fragment fragment) {
         this.mOnStarClickListener = (OnStarClickListener) fragment;
+        this.mOnCoinClickListener = (OnCoinClickListener) fragment;
         mDao = App.getDatabase().coinInfoDao();
         showMode();
     }
@@ -135,8 +137,11 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
                         clickedCoin.setFavorite(true);
                     notifyItemChanged(getAdapterPosition());
                     mOnStarClickListener.onStarClick(clickedCoin);
+                    mOnCoinClickListener.onCoinClick(mData.get(getAdapterPosition()).getShortName(), getAdapterPosition());
                 }
             });
+            imageViewIcon.setOnClickListener(v ->
+                    mOnCoinClickListener.onCoinClick(mData.get(getAdapterPosition()).getShortName(), getAdapterPosition()));
         }
     }
 

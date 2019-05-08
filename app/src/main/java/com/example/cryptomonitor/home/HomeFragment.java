@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.ToolbarInteractor;
+import com.example.cryptomonitor.activity.MainActivity;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.events.Event;
 import com.example.cryptomonitor.events.Message;
@@ -26,7 +27,8 @@ import java.util.List;
 
 public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener,
         ToolbarInteractor,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener,
+        CoinAdapterHome.OnCoinClickListener {
 
     private static final String SEARCH_MODE_KEY = "modeKey";
     public static final String TAG = "MyLogs";
@@ -137,5 +139,10 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     public void onRefresh() {
         if (mHomeViewModel != null)
             mHomeViewModel.refresh(mCurrency);
+    }
+
+    @Override
+    public void onCoinClick(String index, int position) {
+        ((MainActivity) getActivity()).onCoinClick(index, position);
     }
 }
