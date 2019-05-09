@@ -4,6 +4,7 @@
     package="com.example.cryptomonitor">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INSTALL_SHORTCUT" />
 
     <application
         android:name=".database.App"
@@ -13,8 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_crypto_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeDark"
-        tools:ignore="GoogleAppIndexingWarning"
-        >
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".activity.DetailedCoin"
             android:screenOrientation="portrait"
