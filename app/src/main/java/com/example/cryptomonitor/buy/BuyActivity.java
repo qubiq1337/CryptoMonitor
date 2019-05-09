@@ -76,7 +76,6 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
                 mSearchRv.setVisibility(View.GONE);
             else {
                 mSearchRv.setVisibility(View.VISIBLE);
-                mSearchViewModel.onTextChanged(s.toString());
             }
         }
 
@@ -100,7 +99,6 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         mDateEdit = findViewById(R.id.date_edit);
         mSymbolText = findViewById(R.id.symbol_tv);
         mCoinHolder = findViewById(R.id.coin_holder);
-        mCoinCancelButton = findViewById(R.id.item_cancel_coin);
         LinearLayout layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.min_coin_item, mCoinHolder, true);
         mSelectedCoinIcon = layout.findViewById(R.id.item_icon);
         mSelectedCoinTv = layout.findViewById(R.id.item_name);
@@ -133,22 +131,7 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         mViewModel.coinSelected(coinInfo);
     }
 
-    private TextWatcher searchTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            //ignored
-        }
 
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mViewModel.onTextChanged(s.toString());
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            //ignored
-        }
-    };
 
     @Override
     public void onClick(View v) {
@@ -164,8 +147,6 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
                 DialogFragment newFragment = new DatePickerFragment();
                 newFragment.show(getSupportFragmentManager(), "Time Picker");
                 break;
-            case R.id.item_cancel_coin:
-                mViewModel.coinCancelled();
         }
     }
 

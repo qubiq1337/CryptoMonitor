@@ -1,10 +1,6 @@
 package com.example.cryptomonitor.home;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +15,6 @@ import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.dao.CoinInfoDao;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +31,21 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     private Context mContext;
     private List<CoinInfo> mData;
     private OnStarClickListener mOnStarClickListener;
-
+    private OnCoinClickListener mOnCoinClickListener;
+    private boolean isLoading = false;
+    private CoinInfoDao mDao;
+    private Disposable disposable;
+    private final static int initialSize = 60;
+    private final static int loadSize = 20;
+    private Consumer<List<CoinInfo>> mListConsumer = coinInfoList -> {
+        mData = coinInfoList;
+        notifyDataSetChanged();
+        isLoading = false;
+    };
 
     CoinAdapterHome(Context context) {
         this.mContext = context;
         mData = new ArrayList<>();
-        onCoinClickListener = (OnCoinClickListener) mContext;
-
     }
 
 
@@ -85,10 +88,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         coinViewHolder.textViewFullName.setText(coin.getFullName());
         coinViewHolder.textViewName.setText(coin.getShortName());
         coinViewHolder.textViewPrice.setText(coin.getPriceStr());
-        Picasso.with(mContext).load(coin.getImageURL())
-                .transform(new PicassoCircleTransformation())
-                .into(coinViewHolder.imageViewIcon);
-
+        Picasso.with(mContext).load(coin.getImageURL()).into(coinViewHolder.imageViewIcon);
         if (coin.isFavorite())
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_favorite_star));
         else
@@ -98,12 +98,6 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     @Override
     public int getItemCount() {
         return mData.size();
-    }
-
-    void setData(List<CoinInfo> data) {
-        mData = data;
-        notifyDataSetChanged();
-        isLoading = false;
     }
 
     public interface OnStarClickListener {
@@ -150,9 +144,8 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         }
 
     }
-}
 
     public interface OnCoinClickListener {
         void onCoinClick(String index, int position);
     }
-
+}

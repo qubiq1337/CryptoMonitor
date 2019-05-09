@@ -25,6 +25,8 @@ import com.example.cryptomonitor.events.Message;
 import java.util.List;
 
 
+
+
 public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener,
         ToolbarInteractor,
         SwipeRefreshLayout.OnRefreshListener,
