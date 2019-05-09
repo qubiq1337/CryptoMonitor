@@ -6,7 +6,6 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -19,23 +18,18 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.example.cryptomonitor.ExitClass;
-import com.example.cryptomonitor.Favorite.FavoritesFragment;
-import com.example.cryptomonitor.Home.CoinAdapterHome;
-import com.example.cryptomonitor.Home.HomeFragment;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.ToolbarInteractor;
+import com.example.cryptomonitor.favorite.FavoritesFragment;
 import com.example.cryptomonitor.fragment.BriefcaseFragment;
 import com.example.cryptomonitor.fragment.HistoryFragment;
 import com.example.cryptomonitor.fragment.NavigationBarFragment;
-import com.example.cryptomonitor.network_api.NetworkHelper;
+import com.example.cryptomonitor.home.HomeFragment;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarFragment.NavigationBarListener,
-        SwipeRefreshLayout.OnRefreshListener,
-        NetworkHelper.OnChangeRefreshingListener,
-        ToolbarInteractor,
-        CoinAdapterHome.OnCoinClickListener {
+        ToolbarInteractor {
 
     public static final String EXTRA_INDEX_KEY = "INDEX";
     public static final String EXTRA_CURRENCY_KEY = "CURRENCY";
@@ -44,8 +38,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     private static final String SEARCH_TEXT_KEY = "searchKey";
     private String mCurrency;
     private String savedText;
-    private SwipeRefreshLayout mSwipeRefresh;
-    private NetworkHelper networkHelper = new NetworkHelper(this);
     private SearchView mSearchView;
     private MenuItem mSpinnerItem;
     private MenuItem mSettingsItem;
@@ -64,12 +56,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             changeFragment(R.id.bottom_container, NavigationBarFragment.class.getName());
         } else {
             Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.top_container);
-            if (fragment instanceof ToolbarInteractor)
+            if (fragment instanceof ToolbarInteractor) {
                 mToolbarInteractor = (ToolbarInteractor) fragment;
+            }
         }
-        mSwipeRefresh = findViewById(R.id.refresh);
-        mSwipeRefresh.setOnRefreshListener(this);
-        mSwipeRefresh.setColorSchemeResources(R.color.greenColor, R.color.redColor, R.color.blue_color_selected);
         if (savedInstanceState != null && savedInstanceState.containsKey(SEARCH_TEXT_KEY)) {
             isSearchViewExpanded = true;
             savedText = savedInstanceState.getString(SEARCH_TEXT_KEY, "");
@@ -103,8 +93,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(container, fragment);
         fragmentTransaction.commit();
-        if (fragment instanceof ToolbarInteractor)
+        if (fragment instanceof ToolbarInteractor) {
             mToolbarInteractor = (ToolbarInteractor) fragment;
+            mToolbarInteractor.setCurrency(mCurrency);
+        }
     }
 
     private void changeTheme(int theme) {
@@ -139,8 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] spinnerArray = getResources().getStringArray(R.array.spinner);
-                mCurrency = spinnerArray[position];
-                networkHelper.refreshCoins(mCurrency);
+                setCurrency(spinnerArray[position]);
             }
 
             @Override
@@ -180,32 +171,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
 //        });
 
         return true;
-    }
-
-    @Override
-    public void onRefresh() {
-        mSwipeRefresh.setRefreshing(true);
-        networkHelper.refreshCoins(mCurrency);
-    }
-
-    @Override
-    public void stopRefreshing(boolean isSuccessful) {
-        mSwipeRefresh.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefresh.setRefreshing(false);
-            }
-        });
-    }
-
-    @Override
-    public void startRefreshing() {
-        mSwipeRefresh.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefresh.setRefreshing(true);
-            }
-        });
     }
 
     @Override
@@ -266,15 +231,21 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         mSearchView = null;
         mSpinnerItem = null;
         mToolbarInteractor = null;
-        mSwipeRefresh = null;
+       /* mSwipeRefresh = null;
         networkHelper.getCompositeDisposable().dispose();
-        networkHelper = null;
+        networkHelper = null;*/
         super.onDestroy();
 
     }
 
     @Override
-    public void goToDetailedCoin(String index, int position) {
+    public void setCurrency(String currency) {
+        mCurrency = currency;
+        if (mToolbarInteractor != null)
+            mToolbarInteractor.setCurrency(currency);
+    }
+
+    public void onCoinClicked(String index, int position) {
         Intent intent = new Intent(this, DetailedCoin.class);
         intent.putExtra(EXTRA_INDEX_KEY, index);
         intent.putExtra(EXTRA_CURRENCY_KEY, mCurrency);

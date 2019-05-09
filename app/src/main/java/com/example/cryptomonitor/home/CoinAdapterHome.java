@@ -1,4 +1,4 @@
-package com.example.cryptomonitor.Home;
+package com.example.cryptomonitor.home;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,12 +15,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cryptomonitor.R;
+import com.example.cryptomonitor.database.App;
+import com.example.cryptomonitor.database.dao.CoinInfoDao;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinViewHolder> {
@@ -29,9 +36,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     private Context mContext;
     private List<CoinInfo> mData;
     private OnStarClickListener mOnStarClickListener;
-    private OnEndReachListener mOnEndReachListener;
-    private boolean isLoading;
-    private OnCoinClickListener onCoinClickListener;
+
 
     CoinAdapterHome(Context context) {
         this.mContext = context;
@@ -43,7 +48,25 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
 
     void setup(Fragment fragment) {
         this.mOnStarClickListener = (OnStarClickListener) fragment;
-        this.mOnEndReachListener = (OnEndReachListener) fragment;
+        this.mOnCoinClickListener = (OnCoinClickListener) fragment;
+        mDao = App.getDatabase().coinInfoDao();
+        showMode();
+    }
+
+    void showMode() {
+        if (disposable != null)
+            disposable.dispose();
+        disposable = mDao.getAllBefore(initialSize)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mListConsumer);
+    }
+
+    void setList(List<CoinInfo> coinInfoList) {
+        if (disposable != null)
+            disposable.dispose();
+        mData = coinInfoList;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -54,8 +77,11 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CoinViewHolder coinViewHolder, int i) {
-        CoinInfo coin = mData.get(i);
+    public void onBindViewHolder(@NonNull CoinViewHolder coinViewHolder, int index) {
+        if (index + loadSize > mData.size() && !isLoading) {
+            loadMore();
+        }
+        CoinInfo coin = mData.get(index);
         coinViewHolder.textViewFullName.setText(coin.getFullName());
         coinViewHolder.textViewName.setText(coin.getShortName());
         coinViewHolder.textViewPrice.setText(coin.getPriceStr());
@@ -67,13 +93,6 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_favorite_star));
         else
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_not_favorite_star_light));
-
-        if (i > mData.size() - 20
-                && !isLoading
-                && mOnEndReachListener != null) {
-            mOnEndReachListener.onEndReach();
-            isLoading = true;
-        }
     }
 
     @Override
@@ -91,12 +110,14 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         void onStarClick(CoinInfo coinInfo);
     }
 
-    public interface OnEndReachListener {
-        void onEndReach();
-    }
-
-    public interface OnCoinClickListener {
-        void goToDetailedCoin(String index, int position);
+    private void loadMore() {
+        isLoading = true;
+        if (disposable != null)
+            disposable.dispose();
+        disposable = mDao.getAllBefore(getItemCount() + loadSize)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mListConsumer);
     }
 
     class CoinViewHolder extends RecyclerView.ViewHolder {
@@ -114,49 +135,24 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             imageViewIcon = itemView.findViewById(R.id.rv_coin_layout_icon);
             isFavoriteImage = itemView.findViewById(R.id.rv_coin_favorite_image);
             isFavoriteImage.setOnClickListener(v -> {
-                if (mOnStarClickListener != null)
-                    mOnStarClickListener.onStarClick(mData.get(getAdapterPosition()));
+                if (getAdapterPosition() >= 0) {
+                    CoinInfo clickedCoin = mData.get(getAdapterPosition());
+                    if (clickedCoin.isFavorite())
+                        clickedCoin.setFavorite(false);
+                    else
+                        clickedCoin.setFavorite(true);
+                    notifyItemChanged(getAdapterPosition());
+                    mOnStarClickListener.onStarClick(clickedCoin);
+                }
             });
-            itemView.setOnClickListener(v -> {
-                if (onCoinClickListener != null)
-                    onCoinClickListener.goToDetailedCoin(String.valueOf(mData.get(getAdapterPosition()).getShortName()), getAdapterPosition());
-            });
+            itemView.setOnClickListener(v ->
+                    mOnCoinClickListener.onCoinClick(mData.get(getAdapterPosition()).getShortName(), getAdapterPosition()));
         }
+
     }
 }
 
-class PicassoCircleTransformation implements Transformation {
-
-    @Override
-    public Bitmap transform(Bitmap source) {
-        int size = Math.min(source.getWidth(), source.getHeight());
-
-        int x = (source.getWidth() - size) / 2;
-        int y = (source.getHeight() - size) / 2;
-
-        Bitmap squaredBitmap = Bitmap.createBitmap(source, x, y, size, size);
-        if (squaredBitmap != source) {
-            source.recycle();
-        }
-
-        Bitmap bitmap = Bitmap.createBitmap(size, size, source.getConfig());
-
-        Canvas canvas = new Canvas(bitmap);
-        Paint paint = new Paint();
-        BitmapShader shader = new BitmapShader(squaredBitmap,
-                BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP);
-        paint.setShader(shader);
-        paint.setAntiAlias(true);
-
-        float r = size / 2f;
-        canvas.drawCircle(r, r, r, paint);
-
-        squaredBitmap.recycle();
-        return bitmap;
+    public interface OnCoinClickListener {
+        void onCoinClick(String index, int position);
     }
 
-    @Override
-    public String key() {
-        return "circle";
-    }
-}

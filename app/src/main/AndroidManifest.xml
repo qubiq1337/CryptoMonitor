@@ -20,7 +20,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/DetailedActivityTheme"></activity>
         <activity
-            android:name=".activity.BuyActivity"
+            android:name=".buy.BuyActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.SplashActivity"

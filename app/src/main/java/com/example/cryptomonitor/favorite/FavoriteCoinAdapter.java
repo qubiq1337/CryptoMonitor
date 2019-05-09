@@ -1,4 +1,4 @@
-package com.example.cryptomonitor.Favorite;
+package com.example.cryptomonitor.favorite;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -80,9 +80,11 @@ public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapte
             textViewPrice = itemView.findViewById(R.id.rv_coin_layout_price);
             imageViewIcon = itemView.findViewById(R.id.rv_coin_layout_icon);
             isFavoriteImage = itemView.findViewById(R.id.rv_coin_favorite_image);
-            isFavoriteImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            isFavoriteImage.setOnClickListener(v -> {
+                if (getAdapterPosition() >= 0) {
+                    CoinInfo coinInfo = mData.get(getAdapterPosition());
+                    coinInfo.setFavorite(false);
+                    notifyItemRemoved(getAdapterPosition());
                     onStarClickListener.onStarClick(mData.get(getAdapterPosition()));
                 }
             });
