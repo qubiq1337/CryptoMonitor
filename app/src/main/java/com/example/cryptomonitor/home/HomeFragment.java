@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     private Observer<List<CoinInfo>> listObserver = new Observer<List<CoinInfo>>() {
         @Override
         public void onChanged(@Nullable List<CoinInfo> coinInfos) {
-            mCoinAdapterHome.setData(coinInfos);
+            mCoinAdapterHome.setList(coinInfos);
         }
     };
 
@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         mSwipeRefresh = view.findViewById(R.id.swipe_refresh);
 
         mSwipeRefresh.setOnRefreshListener(this);
-        mSwipeRefresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+        mSwipeRefresh.setColorSchemeResources(R.color.dark1, R.color.dark2, R.color.dark3);
 
         mCoinAdapterHome = new CoinAdapterHome(getContext());
         mCoinAdapterHome.setup(this);
@@ -112,12 +112,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         super.onDestroy();
     }
 
-    private Observer<List<CoinInfo>> listObserver = coinInfoList -> {
-        if (coinInfoList != null)
-            mCoinAdapterHome.setList(coinInfoList);
-        else
-            mCoinAdapterHome.showMode();
-    };
+
 
     private Observer<Event> eventObserver = event -> {
         if (!event.isHandled()) {

@@ -100,6 +100,9 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         return mData.size();
     }
 
+    public void setData(List<CoinInfo> coinInfos) {
+    }
+
     public interface OnStarClickListener {
         void onStarClick(CoinInfo coinInfo);
     }
