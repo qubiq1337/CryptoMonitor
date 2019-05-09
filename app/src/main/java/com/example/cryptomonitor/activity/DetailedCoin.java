@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -79,6 +80,13 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
         low = findViewById(R.id.detailed_low);
         infoURL = findViewById(R.id.detailed_infoURL);
         backButton = findViewById(R.id.detailed_back);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetailedCoin.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
         icon = findViewById(R.id.detailed_icon);
 
         Intent intent = getIntent();
