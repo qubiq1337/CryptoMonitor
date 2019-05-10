@@ -1,7 +1,6 @@
 package com.example.cryptomonitor.activity;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,15 +11,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.cryptomonitor.DeteiledViewModel;
+import com.example.cryptomonitor.DetailedViewModel;
 import com.example.cryptomonitor.R;
-import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.model_cryptocompare.model_chart.ChartData;
 import com.example.cryptomonitor.model_cryptocompare.model_chart.ModelChart;
-import com.example.cryptomonitor.network_api.NetworkHelper;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -38,7 +34,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -68,7 +63,7 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
     private TextView textView_1W;
     private TextView textView_1M;
     private TextView textView_3M;
-    private DeteiledViewModel  mDeteiledViewModel;
+    private DetailedViewModel mDeteiledViewModel;
     private Observer<ModelChart> modelChartObserver = this::setChartData;
     private Observer<CoinInfo> coinInfoObserver = this::bindViews;
 
@@ -113,7 +108,7 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
             initChart();
         }
 
-        mDeteiledViewModel = ViewModelProviders.of(this).get(DeteiledViewModel.class);
+        mDeteiledViewModel = ViewModelProviders.of(this).get(DetailedViewModel.class);
         mDeteiledViewModel.getChartLiveData().observe(this,modelChartObserver);
         mDeteiledViewModel.getCoinLiveData(mIndex).observe(this,coinInfoObserver);
         mDeteiledViewModel.setChartLiveData(mIndex,mCurrency);

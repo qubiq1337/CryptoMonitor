@@ -28,28 +28,26 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="30dp"
-            tools:text="Bitcoin"
             android:textColor="#ffffff"
             android:textSize="26sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="Bitcoin" />
 
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/relative"
         android:layout_width="match_parent"
-        android:layout_height="365dp"
+        android:layout_height="match_parent"
         android:layout_below="@+id/linear1"
-        android:background="@color/backgroundColor"
-        >
+        android:background="@color/backgroundColor">
 
         <ImageView
             android:id="@+id/detailed_icon"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="30dp"
-            />
+            android:layout_marginTop="30dp" />
 
         <LinearLayout
             android:id="@+id/linear2"
@@ -64,20 +62,20 @@
                 android:id="@+id/detailed_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="$5 174,01"
                 android:textColor="#ffffff"
                 android:textSize="36sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="$5 174,01" />
 
             <TextView
-                android:layout_marginLeft="7dp"
                 android:id="@+id/detailed_change"
-                android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
                 android:layout_marginTop="5dp"
-                tools:text="- 1 310,36 (20,21%)"
-                android:textColor="@color/redColor" />
+                android:textColor="@color/redColor"
+                android:textSize="16sp"
+                tools:text="- 1 310,36 (20,21%)" />
         </LinearLayout>
 
         <TableLayout
@@ -90,240 +88,232 @@
             <TableRow>
 
                 <TextView
-                    android:textSize="@dimen/table_text_size"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="MKT"
                     android:textColor="@color/textColorDark"
-                    />
+                    android:textSize="@dimen/table_text_size" />
 
                 <TextView
                     android:id="@+id/detailed_mkt"
-                    android:textSize="@dimen/table_text_size"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    tools:text="89,94B"
                     android:textColor="#ffffff"
-                    />
+                    android:textSize="@dimen/table_text_size"
+                    tools:text="89,94B" />
 
                 <TextView
-                    android:textSize="@dimen/table_text_size"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
                     android:text="RANK"
                     android:textColor="@color/textColorDark"
-                    />
+                    android:textSize="@dimen/table_text_size" />
 
                 <TextView
                     android:id="@+id/detailed_RANK"
-                    android:textSize="@dimen/table_text_size"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    tools:text="#1"
                     android:textColor="#ffffff"
-                    />
+                    android:textSize="@dimen/table_text_size"
+                    tools:text="#1" />
             </TableRow>
 
             <TableRow>
 
                 <TextView
-                    android:textSize="@dimen/table_text_size"
-                    android:layout_marginTop="25dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
                     android:text="SUPPLY"
                     android:textColor="@color/textColorDark"
-                    />
+                    android:textSize="@dimen/table_text_size" />
 
                 <TextView
                     android:id="@+id/detailed_SPLY"
-                    android:textSize="@dimen/table_text_size"
-                    android:layout_marginTop="25dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    tools:text="17,38M"
+                    android:layout_marginTop="25dp"
                     android:textColor="#ffffff"
-                    />
+                    android:textSize="@dimen/table_text_size"
+                    tools:text="17,38M" />
 
                 <TextView
-                    android:textSize="@dimen/table_text_size"
-                    android:layout_marginTop="25dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
+                    android:layout_marginTop="25dp"
                     android:text="HIGH"
                     android:textColor="@color/textColorDark"
-                    />
+                    android:textSize="@dimen/table_text_size" />
 
                 <TextView
                     android:id="@+id/detailed_high"
-                    android:textSize="@dimen/table_text_size"
-                    android:layout_marginTop="25dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    tools:text="5 555,10"
-                    android:textColor="#ffffff" />
+                    android:layout_marginTop="25dp"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/table_text_size"
+                    tools:text="5 555,10" />
             </TableRow>
+
             <TableRow>
 
                 <TextView
-                    android:textSize="@dimen/table_text_size"
-                    android:layout_marginTop="25dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
                     android:text="VOL"
                     android:textColor="@color/textColorDark"
-                    />
+                    android:textSize="@dimen/table_text_size" />
 
                 <TextView
                     android:id="@+id/detailed_volume"
-                    android:textSize="@dimen/table_text_size"
-                    android:layout_marginTop="25dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    tools:text="21M"
-                    android:textColor="#ffffff" />
+                    android:layout_marginTop="25dp"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/table_text_size"
+                    tools:text="21M" />
 
                 <TextView
-                    android:textSize="@dimen/table_text_size"
-                    android:layout_marginTop="25dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
+                    android:layout_marginTop="25dp"
                     android:text="LOW"
                     android:textColor="@color/textColorDark"
-                    />
+                    android:textSize="@dimen/table_text_size" />
 
                 <TextView
                     android:id="@+id/detailed_low"
-                    android:textSize="@dimen/table_text_size"
-                    android:layout_marginTop="25dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    tools:text="5145,9"
-                    android:textColor="#ffffff" />
+                    android:layout_marginTop="25dp"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/table_text_size"
+                    tools:text="5145,9" />
             </TableRow>
+
             <TableRow>
 
                 <TextView
-                    android:textSize="@dimen/table_text_size"
-                    android:layout_marginTop="25dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
                     android:text="TOTAL VOL"
                     android:textColor="@color/textColorDark"
-                    />
+                    android:textSize="@dimen/table_text_size" />
 
                 <TextView
                     android:id="@+id/detailed_total_volume"
-                    android:textSize="@dimen/table_text_size"
-                    android:layout_marginTop="25dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    tools:text="5,552B"
-                    android:textColor="#ffffff" />
+                    android:layout_marginTop="25dp"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/table_text_size"
+                    tools:text="5,552B" />
 
                 <TextView
-                    android:textSize="@dimen/table_text_size"
-
-                    android:layout_marginTop="25dp"
                     android:layout_width="match_parent"
+
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
+                    android:layout_marginTop="25dp"
                     android:text="WEB"
                     android:textColor="@color/textColorDark"
-                    />
+                    android:textSize="@dimen/table_text_size" />
 
                 <ImageView
                     android:id="@+id/detailed_infoURL"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginLeft="20dp"
                     android:layout_width="@dimen/table_text_size"
                     android:layout_height="@dimen/table_text_size"
-                    android:src="@drawable/arrow_left_29172"
-                    android:tint="@color/textColorPrimary"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="25dp"
                     android:rotation="180"
-                    />
+                    android:src="@drawable/arrow_left_29172"
+                    android:tint="@color/textColorPrimary" />
             </TableRow>
         </TableLayout>
     </RelativeLayout>
+
     <LinearLayout
-        android:background="@color/backgroundChartColor"
         android:id="@+id/linear3"
-        android:layout_below="@id/relative"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:paddingBottom="2dp"
+        android:layout_above="@id/chart"
+        android:background="@color/backgroundChartColor"
+        android:orientation="horizontal"
         android:paddingTop="2dp"
-        android:orientation="horizontal">
+        android:paddingBottom="2dp">
 
         <TextView
-            android:clickable="true"
-            android:focusable="true"
             android:id="@+id/detailed_1D"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:text="1D"
+            android:clickable="true"
+            android:focusable="true"
             android:gravity="center"
+            android:text="1D"
             android:textColor="@color/textColorPrimary"
 
-            android:textSize="20sp"
-            />
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/detailed_1W"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:text="1W"
-            android:gravity="center"
-            android:textColor="@color/textColorPrimary"
+            android:layout_marginStart="10dp"
             android:background="@drawable/rounded_text_view"
-            android:textSize="20sp"
-            android:layout_marginStart="10dp" />
+            android:gravity="center"
+            android:text="1W"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/detailed_1M"
-            android:layout_marginStart="10dp"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:text="1M"
-            android:gravity="center"
-            android:textColor="@color/textColorPrimary"
+            android:layout_marginStart="10dp"
             android:background="@drawable/rounded_text_view_selected"
-            android:textSize="20sp"
-            />
+            android:gravity="center"
+            android:text="1M"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/detailed_3M"
-            android:layout_marginStart="10dp"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:text="3M"
-            android:gravity="center"
-            android:textColor="@color/textColorPrimary"
+            android:layout_marginStart="10dp"
             android:background="@drawable/rounded_text_view"
-            android:textSize="20sp"
-            />
+            android:gravity="center"
+            android:text="3M"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
-        android:background="@color/backgroundChartColor"
-        android:layout_below="@id/linear3"
         android:layout_width="match_parent"
-        android:layout_height="260dp"
-        />
+        android:layout_height="280dp"
+        android:layout_above="@+id/view"
+        android:background="@color/backgroundChartColor" />
+
     <View
-        android:layout_below="@id/chart"
+        android:id="@+id/view"
+        android:layout_alignParentEnd="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/backgroundChartColor">
-    </View>
+        android:layout_height="15dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/backgroundChartColor" />
 
 </RelativeLayout>

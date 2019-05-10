@@ -61,8 +61,8 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.floatingActionButton:
-                Intent intent = new Intent(this.getContext(), BuyActivity.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(getActivity(), BuyActivity.class);
+                startActivity(intent);*/
                 break;
         }
     }

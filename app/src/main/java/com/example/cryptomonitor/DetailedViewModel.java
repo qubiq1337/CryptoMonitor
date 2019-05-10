@@ -10,7 +10,7 @@ import com.example.cryptomonitor.model_cryptocompare.model_chart.ModelChart;
 
 import io.reactivex.disposables.Disposable;
 
-public class DeteiledViewModel extends ViewModel {
+public class DetailedViewModel extends ViewModel {
 
     private ChartRepo chartRepo = new ChartRepo();
     private Disposable disposable;
