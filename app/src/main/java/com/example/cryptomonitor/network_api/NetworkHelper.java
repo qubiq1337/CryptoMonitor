@@ -95,8 +95,10 @@ public class NetworkHelper {
         return compositeDisposable;
     }
 
-    public Observable<ModelChart> getChartData(String symbol, String currency) {
-        return Network.getInstance().getApiCryptoCompare().getChartData(symbol, currency)
+    public Observable<ModelChart> getChartData(String symbol, String currency,int aggregate, int limit) {
+        return Network.getInstance()
+                .getApiCryptoCompare()
+                .getChartDataHours(symbol, currency, aggregate, limit)
                 .subscribeOn(Schedulers.io()) // "work" on io thread
                 .observeOn(AndroidSchedulers.mainThread());
     }

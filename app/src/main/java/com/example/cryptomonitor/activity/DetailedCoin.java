@@ -1,5 +1,8 @@
 package com.example.cryptomonitor.activity;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -9,7 +12,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.cryptomonitor.DeteiledViewModel;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.entities.CoinInfo;
@@ -41,10 +46,9 @@ import static com.example.cryptomonitor.activity.MainActivity.EXTRA_CURRENCY_KEY
 import static com.example.cryptomonitor.activity.MainActivity.EXTRA_INDEX_KEY;
 import static com.example.cryptomonitor.activity.MainActivity.EXTRA_POSITION_KEY;
 
-public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnChangeRefreshingListener {
+public class DetailedCoin extends AppCompatActivity implements View.OnClickListener {
     private LineChart lineChart;
     private List<String> dateXvalues = new ArrayList<>();
-    private NetworkHelper networkHelper = new NetworkHelper(this);
     private String mIndex;
     private String mCurrency;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
@@ -55,13 +59,18 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
     private TextView mkt;
     private TextView volume;
     private TextView total_volme;
-    private TextView rank;
     private TextView high;
     private TextView low;
     private ImageView infoURL;
-    private ImageView backButton;
     private ImageView icon;
     private String mRank;
+    private TextView textView_1D;
+    private TextView textView_1W;
+    private TextView textView_1M;
+    private TextView textView_3M;
+    private DeteiledViewModel  mDeteiledViewModel;
+    private Observer<ModelChart> modelChartObserver = this::setChartData;
+    private Observer<CoinInfo> coinInfoObserver = this::bindViews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,19 +84,24 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
         supply = findViewById(R.id.detailed_SPLY);
         volume = findViewById(R.id.detailed_volume);
         total_volme = findViewById(R.id.detailed_total_volume);
-        rank = findViewById(R.id.detailed_RANK);
+        TextView rank = findViewById(R.id.detailed_RANK);
         high = findViewById(R.id.detailed_high);
         low = findViewById(R.id.detailed_low);
         infoURL = findViewById(R.id.detailed_infoURL);
-        backButton = findViewById(R.id.detailed_back);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetailedCoin.this,MainActivity.class);
-                startActivity(intent);
-            }
+        ImageView backButton = findViewById(R.id.detailed_back);
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(DetailedCoin.this,MainActivity.class);
+            startActivity(intent);
         });
         icon = findViewById(R.id.detailed_icon);
+        textView_1D = findViewById(R.id.detailed_1D);
+        textView_1D.setOnClickListener(this);
+        textView_1W = findViewById(R.id.detailed_1W);
+        textView_1W.setOnClickListener(this);
+        textView_1M = findViewById(R.id.detailed_1M);
+        textView_1M.setOnClickListener(this);
+        textView_3M = findViewById(R.id.detailed_3M);
+        textView_3M.setOnClickListener(this);
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -95,11 +109,14 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
             mCurrency = intent.getStringExtra(EXTRA_CURRENCY_KEY);
             int position = 0;
             mRank = "#" + intent.getIntExtra(EXTRA_POSITION_KEY, position);
-            initViews();
+            rank.setText(mRank);
             initChart();
         }
 
-        rank.setText(mRank);
+        mDeteiledViewModel = ViewModelProviders.of(this).get(DeteiledViewModel.class);
+        mDeteiledViewModel.getChartLiveData().observe(this,modelChartObserver);
+        mDeteiledViewModel.getCoinLiveData(mIndex).observe(this,coinInfoObserver);
+        mDeteiledViewModel.setChartLiveData(mIndex,mCurrency);
     }
 
     private void initChart() {
@@ -111,18 +128,9 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
         lineChart.setScaleXEnabled(true);
         lineChart.getLegend().setEnabled(false);
         lineChart.getDescription().setEnabled(false);
-        lineChart.animateXY(2000, 2000);
-
-        mCompositeDisposable.add(networkHelper.getChartData(mIndex, mCurrency)
-                .map(this::dataVales)
-                .map(entries -> {
-                    return new LineDataSet(entries, "30 day");
-                })
-                .subscribe(this::getSet, throwable -> Log.e("ER RX", throwable.toString()))
-        );
     }
 
-    private ArrayList<Entry> dataVales(ModelChart modelChart) {
+    private void setChartData(ModelChart modelChart) {
         ArrayList<Entry> dataVal1 = new ArrayList<Entry>();
         List<ChartData> coinData = modelChart.getData();
         int i = 0;
@@ -135,10 +143,7 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
             dateXvalues.add(strDate);
             i++;
         }
-        return dataVal1;
-    }
-
-    private void getSet(LineDataSet set) {
+        LineDataSet set = new LineDataSet(dataVal1,"");
         set.setDrawFilled(true);
         set.setColor(Color.parseColor("#ffffff"));
         set.setFillColor(Color.parseColor("#007ff2"));
@@ -164,18 +169,9 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
             }
         };
         xAxis.setValueFormatter(valueFormatter);
+        lineChart.animateXY(2000, 2000);
         lineChart.setData(data);
         lineChart.invalidate();
-    }
-
-    private void initViews() {
-        mCompositeDisposable.add(App.getDatabase()
-                .coinInfoDao()
-                .getByShortName(mIndex)
-                .observeOn(AndroidSchedulers.mainThread())
-                .filter(coinInfoList -> !coinInfoList.isEmpty())
-                .map(coinInfoList -> coinInfoList.get(0))
-                .subscribe(this::bindViews));
     }
 
     private void bindViews(CoinInfo coinInfo) {
@@ -206,23 +202,62 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
             change.setTextColor(getResources().getColor(R.color.textColorDark));
     }
 
-
-    @Override
-    public void startRefreshing() {
-
-    }
-
-    @Override
-    public void stopRefreshing(boolean isSuccess) {
-
-    }
-
     @NonNull
     @Override
     protected void onDestroy() {
+        mDeteiledViewModel = null;
         lineChart = null;
         dateXvalues = null;
         mCompositeDisposable.dispose();
         super.onDestroy();
+    }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.detailed_1D:
+                v.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
+                textView_1W.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_3M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1D.setClickable(false);
+                textView_1W.setClickable(true);
+                textView_1M.setClickable(true);
+                textView_3M.setClickable(true);
+                mDeteiledViewModel.setChartLiveData(mIndex,mCurrency,v.getId());
+                break;
+            case R.id.detailed_1W:
+                v.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
+                textView_1D.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_3M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1W.setClickable(false);
+                textView_1D.setClickable(true);
+                textView_1M.setClickable(true);
+                textView_3M.setClickable(true);
+                mDeteiledViewModel.setChartLiveData(mIndex,mCurrency,v.getId());
+                break;
+            case R.id.detailed_1M:
+                v.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
+                textView_1D.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1W.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_3M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1M.setClickable(false);
+                textView_1D.setClickable(true);
+                textView_1W.setClickable(true);
+                textView_3M.setClickable(true);
+                mDeteiledViewModel.setChartLiveData(mIndex,mCurrency,v.getId());
+                break;
+            case R.id.detailed_3M:
+                v.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
+                textView_1D.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1W.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_3M.setClickable(false);
+                textView_1D.setClickable(true);
+                textView_1W.setClickable(true);
+                textView_1M.setClickable(true);
+                mDeteiledViewModel.setChartLiveData(mIndex,mCurrency,v.getId());
+                break;
+        }
     }
 }
