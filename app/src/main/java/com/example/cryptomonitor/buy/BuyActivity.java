@@ -23,10 +23,10 @@ import android.widget.Toast;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.MinCoinAdapter;
 import com.example.cryptomonitor.database.entities.CoinInfo;
-import com.example.cryptomonitor.database.entities.Purchase;
 import com.example.cryptomonitor.events.Event;
 import com.example.cryptomonitor.events.FinishEvent;
 import com.example.cryptomonitor.events.Message;
+import com.example.cryptomonitor.events.PriceEvent;
 import com.example.cryptomonitor.fragment.DatePickerFragment;
 import com.squareup.picasso.Picasso;
 
@@ -57,33 +57,7 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
     private TextView mSymbolText;
     private MinCoinAdapter mAdapter;
     private BuyViewModel mViewModel;
-    private Purchase mPurchase = new Purchase();
 
-    private long mSelectedCoinId = -1;
-    private String mSelectedCoinFullName;
-    private String mSelectedCoinIndex;
-    private String mSelectedCoinPriceDisplay;
-    private double mSelectedCoinPrice;
-    private TextWatcher searchTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            //ignored
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (s.toString().isEmpty())
-                mSearchRv.setVisibility(View.GONE);
-            else {
-                mSearchRv.setVisibility(View.VISIBLE);
-            }
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            //ignored
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +73,7 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         mDateEdit = findViewById(R.id.date_edit);
         mSymbolText = findViewById(R.id.symbol_tv);
         mCoinHolder = findViewById(R.id.coin_holder);
+        mCoinCancelButton = findViewById(R.id.item_cancel_coin);
         LinearLayout layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.min_coin_item, mCoinHolder, true);
         mSelectedCoinIcon = layout.findViewById(R.id.item_icon);
         mSelectedCoinTv = layout.findViewById(R.id.item_name);
@@ -122,6 +97,7 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         mViewModel.getSelectedCoinVisible().observe(this, coinInfoVisibleObserver);
         mViewModel.getSelectedCoinLiveData().observe(this, coinInfoObserver);
         mViewModel.getToastLiveData().observe(this, toastObserver);
+        mViewModel.getPriceLiveData().observe(this, priceObserver);
         final Calendar c = Calendar.getInstance();
         mViewModel.onDateSet(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH), c.get(Calendar.YEAR));
     }
@@ -131,7 +107,22 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         mViewModel.coinSelected(coinInfo);
     }
 
+    private TextWatcher searchTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            //ignored
+        }
 
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            mViewModel.onTextChanged(s.toString());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            //ignored
+        }
+    };
 
     @Override
     public void onClick(View v) {
@@ -147,6 +138,8 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
                 DialogFragment newFragment = new DatePickerFragment();
                 newFragment.show(getSupportFragmentManager(), "Time Picker");
                 break;
+            case R.id.item_cancel_coin:
+                mViewModel.coinCancelled();
         }
     }
 
@@ -155,18 +148,25 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         mViewModel.onDateSet(dayOfMonth, month, year);
     }
 
-    private Observer<Event> toastObserver = new Observer<Event>() {
-        @Override
-        public void onChanged(Event event) {
-            if (event != null && !event.isHandled()) {
-                if (event instanceof Message) {
-                    Message message = (Message) event;
-                    Toast.makeText(BuyActivity.this, message.getMessageText(), Toast.LENGTH_SHORT).show();
-                } else if (event instanceof FinishEvent) {
-                    FinishEvent finishEvent = (FinishEvent) event;
-                    finishEvent.accepted();
-                    finish();
-                }
+
+    private Observer<Event> priceObserver = priceEvent -> {
+        if (priceEvent != null && !priceEvent.isHandled()) {
+            PriceEvent price = (PriceEvent) priceEvent;
+            mSymbolText.setText(price.getSymbol());
+            mPriceEdit.setText(price.getPrice());
+        }
+    };
+
+    private Observer<Event> toastObserver = event -> {
+        if (event != null && !event.isHandled()) {
+            if (event instanceof Message) {
+                Message message = (Message) event;
+                Toast.makeText(BuyActivity.this, message.getMessageText(), Toast.LENGTH_SHORT).show();
+                message.handled();
+            } else if (event instanceof FinishEvent) {
+                FinishEvent finishEvent = (FinishEvent) event;
+                finishEvent.handled();
+                finish();
             }
         }
     };

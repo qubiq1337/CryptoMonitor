@@ -25,8 +25,6 @@ import com.example.cryptomonitor.events.Message;
 import java.util.List;
 
 
-
-
 public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener,
         ToolbarInteractor,
         SwipeRefreshLayout.OnRefreshListener,
@@ -38,12 +36,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     private SwipeRefreshLayout mSwipeRefresh;
     private RecyclerView mRecyclerView;
     private CoinAdapterHome mCoinAdapterHome;
-    private Observer<List<CoinInfo>> listObserver = new Observer<List<CoinInfo>>() {
-        @Override
-        public void onChanged(@Nullable List<CoinInfo> coinInfos) {
-            mCoinAdapterHome.setList(coinInfos);
-        }
-    };
 
     @Nullable
     @Override
@@ -112,13 +104,19 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         super.onDestroy();
     }
 
-
+    private Observer<List<CoinInfo>> listObserver = coinInfoList -> {
+        if (coinInfoList != null)
+            mCoinAdapterHome.setList(coinInfoList);
+        else
+            mCoinAdapterHome.showMode();
+    };
 
     private Observer<Event> eventObserver = event -> {
-        if (!event.isHandled()) {
+        if (event != null && !event.isHandled()) {
             if (event instanceof Message) {
                 Message message = (Message) event;
                 Toast.makeText(getContext(), message.getMessageText(), Toast.LENGTH_SHORT).show();
+                message.handled();
             }
         }
     };

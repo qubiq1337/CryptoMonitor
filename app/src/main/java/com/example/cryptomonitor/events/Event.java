@@ -6,4 +6,8 @@ public abstract class Event {
     public boolean isHandled() {
         return mIsHandled;
     }
+
+    public void handled(){
+        mIsHandled = true;
+    }
 }

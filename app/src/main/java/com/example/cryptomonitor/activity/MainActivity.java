@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     private String savedText;
     private SearchView mSearchView;
     private MenuItem mSpinnerItem;
-    private MenuItem mSettingsItem;
     private ToolbarInteractor mToolbarInteractor;
     private boolean isSearchViewExpanded;
 

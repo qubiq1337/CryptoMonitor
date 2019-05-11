@@ -8,7 +8,6 @@ public class Message extends Event {
     }
 
     public String getMessageText() {
-        mIsHandled = true;
         return mMessageText;
     }
 }
