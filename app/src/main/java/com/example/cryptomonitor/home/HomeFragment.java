@@ -112,8 +112,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         super.onDestroy();
     }
 
-
-
     private Observer<Event> eventObserver = event -> {
         if (!event.isHandled()) {
             if (event instanceof Message) {
@@ -124,10 +122,14 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     };
 
     private Observer<Boolean> swipeRefreshObserver = isRefreshing -> {
-        if (isRefreshing)
+        if (isRefreshing) {
             mSwipeRefresh.setRefreshing(true);
-        else
+            mCoinAdapterHome.setRefreshing(true);
+        }
+        else{
             mSwipeRefresh.setRefreshing(false);
+            mCoinAdapterHome.setRefreshing(false);
+        }
     };
 
 

@@ -4,10 +4,12 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.cryptomonitor.R;
@@ -29,6 +31,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
 
 
     private Context mContext;
+    private boolean isRefreshing = false;
     private List<CoinInfo> mData;
     private OnStarClickListener mOnStarClickListener;
     private OnCoinClickListener mOnCoinClickListener;
@@ -84,11 +87,21 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         if (index + loadSize > mData.size() && !isLoading) {
             loadMore();
         }
+        if (isRefreshing) {
+            coinViewHolder.textViewPrice.setVisibility(View.GONE);
+            coinViewHolder.progressBar.setVisibility(View.VISIBLE);
+        }
+        else {
+            coinViewHolder.textViewPrice.setVisibility(View.VISIBLE);
+            coinViewHolder.progressBar.setVisibility(View.GONE);
+        }
+
         CoinInfo coin = mData.get(index);
         coinViewHolder.textViewFullName.setText(coin.getFullName());
         coinViewHolder.textViewName.setText(coin.getShortName());
         coinViewHolder.textViewPrice.setText(coin.getPriceStr());
         Picasso.with(mContext).load(coin.getImageURL()).into(coinViewHolder.imageViewIcon);
+
         if (coin.isFavorite())
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_favorite_star));
         else
@@ -101,6 +114,12 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     }
 
     public void setData(List<CoinInfo> coinInfos) {
+    }
+
+    public void setRefreshing(boolean refreshing) {
+        isRefreshing = refreshing;
+        notifyDataSetChanged();
+        Log.e("setRefreshing",isRefreshing+"");
     }
 
     public interface OnStarClickListener {
@@ -123,6 +142,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         private TextView textViewName;
         private ImageView imageViewIcon;
         private ImageView isFavoriteImage;
+        private ProgressBar progressBar;
 
         CoinViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -131,6 +151,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             textViewPrice = itemView.findViewById(R.id.rv_coin_layout_price);
             imageViewIcon = itemView.findViewById(R.id.rv_coin_layout_icon);
             isFavoriteImage = itemView.findViewById(R.id.rv_coin_favorite_image);
+            progressBar = itemView.findViewById(R.id.rv_coin_progress);
             isFavoriteImage.setOnClickListener(v -> {
                 if (getAdapterPosition() >= 0) {
                     CoinInfo clickedCoin = mData.get(getAdapterPosition());

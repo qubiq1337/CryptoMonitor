@@ -32,24 +32,22 @@ public class CoinRepo implements CoinDataSource {
 
     @Override
     public void updateAll(List<CoinInfo> coinInfoList) {
-        dbExecutor.execute(() -> {
-            List<CoinInfo> insertList = new ArrayList<>();
-            List<CoinInfo> updateList = new ArrayList<>();
-            for (CoinInfo coinInfo : coinInfoList) {
-                List<CoinInfo> dbInfoList = mCoinInfoDao.getByFullName(coinInfo.getFullName());
-                if (dbInfoList.isEmpty()) {
-                    insertList.add(coinInfo);
-                } else {
-                    CoinInfo dbCoinInfo = dbInfoList.get(0);
-                    coinInfo.setId(dbCoinInfo.getId());
-                    coinInfo.setFavorite(dbCoinInfo.isFavorite());
-                    updateList.add(coinInfo);
-                }
+        List<CoinInfo> insertList = new ArrayList<>();
+        List<CoinInfo> updateList = new ArrayList<>();
+        for (CoinInfo coinInfo : coinInfoList) {
+            List<CoinInfo> dbInfoList = mCoinInfoDao.getByFullName(coinInfo.getFullName());
+            if (dbInfoList.isEmpty()) {
+                insertList.add(coinInfo);
+            } else {
+                CoinInfo dbCoinInfo = dbInfoList.get(0);
+                coinInfo.setId(dbCoinInfo.getId());
+                coinInfo.setFavorite(dbCoinInfo.isFavorite());
+                updateList.add(coinInfo);
             }
-            mCoinInfoDao.insert(insertList);
-            mCoinInfoDao.update(updateList);
-            Log.e("DbHelper", "isLoaded ");
-        });
+        }
+        mCoinInfoDao.insert(insertList);
+        mCoinInfoDao.update(updateList);
+        Log.e("CoinRepo", "updateAll_isLoaded ");
     }
 
     @Override
@@ -95,11 +93,11 @@ public class CoinRepo implements CoinDataSource {
                 .filter(coinsData -> coinsData.getRAW() != null && coinsData.getDISPLAY() != null)
                 .map(this::toCoinInfo)
                 .toList()
+                .doOnSuccess(this::updateAll)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(coinInfoList -> {
                             Log.e("testRxLoadCoins", "coinInfoList size:" + coinInfoList.size());
                             callback.onSuccess();
-                            updateAll(coinInfoList);
                         },
                         e -> {
                             Log.e("testRxLoadCoins", "FAILED DOWNLOAD: ", e);
