@@ -43,22 +43,20 @@ import static com.example.cryptomonitor.activity.MainActivity.EXTRA_POSITION_KEY
 
 public class DetailedCoin extends AppCompatActivity implements View.OnClickListener {
     private LineChart lineChart;
-    private List<String> dateXvalues = new ArrayList<>();
     private String mIndex;
     private String mCurrency;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-    private TextView fullname;
+    private TextView full_name;
     private TextView price;
     private TextView change;
     private TextView supply;
     private TextView mkt;
     private TextView volume;
-    private TextView total_volme;
+    private TextView total_volume;
     private TextView high;
     private TextView low;
     private ImageView infoURL;
     private ImageView icon;
-    private String mRank;
     private TextView textView_1D;
     private TextView textView_1W;
     private TextView textView_1M;
@@ -72,21 +70,20 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_coin);
 
-        fullname = findViewById(R.id.detailed_fullname);
+        full_name = findViewById(R.id.detailed_fullname);
         price = findViewById(R.id.detailed_price);
         change = findViewById(R.id.detailed_change);
         mkt = findViewById(R.id.detailed_mkt);
         supply = findViewById(R.id.detailed_SPLY);
         volume = findViewById(R.id.detailed_volume);
-        total_volme = findViewById(R.id.detailed_total_volume);
+        total_volume = findViewById(R.id.detailed_total_volume);
         TextView rank = findViewById(R.id.detailed_RANK);
         high = findViewById(R.id.detailed_high);
         low = findViewById(R.id.detailed_low);
         infoURL = findViewById(R.id.detailed_infoURL);
         ImageView backButton = findViewById(R.id.detailed_back);
         backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(DetailedCoin.this,MainActivity.class);
-            startActivity(intent);
+            finish();
         });
         icon = findViewById(R.id.detailed_icon);
         textView_1D = findViewById(R.id.detailed_1D);
@@ -103,7 +100,7 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
             mIndex = intent.getStringExtra(EXTRA_INDEX_KEY);
             mCurrency = intent.getStringExtra(EXTRA_CURRENCY_KEY);
             int position = 0;
-            mRank = "#" + intent.getIntExtra(EXTRA_POSITION_KEY, position);
+            String mRank = "#" + intent.getIntExtra(EXTRA_POSITION_KEY, position);
             rank.setText(mRank);
             initChart();
         }
@@ -115,7 +112,6 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initChart() {
-        Log.e("Bundle", mCurrency + " " + mIndex);
         lineChart = findViewById(R.id.chart);
         lineChart.setTouchEnabled(false);
         lineChart.setDragEnabled(false);
@@ -128,6 +124,7 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
     private void setChartData(ModelChart modelChart) {
         ArrayList<Entry> dataVal1 = new ArrayList<Entry>();
         List<ChartData> coinData = modelChart.getData();
+        List<String> dateXvalues = new ArrayList<>();
         int i = 0;
         for (ChartData data : coinData) {
             dataVal1.add(new Entry((float) i, data.getOpen().floatValue()));
@@ -170,7 +167,7 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
     }
 
     private void bindViews(CoinInfo coinInfo) {
-        fullname.setText(coinInfo.getFullName());
+        full_name.setText(coinInfo.getFullName());
         Picasso.with(this).load(coinInfo.getImageURL()).into(icon);
         price.setText(coinInfo.getPriceDisplay());
         setChangeColor(coinInfo.getChangeDay());
@@ -179,7 +176,7 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
         mkt.setText(coinInfo.getMktcap());
         supply.setText(coinInfo.getSupply());
         volume.setText(coinInfo.getVolume());
-        total_volme.setText(coinInfo.getTotalVolume24hTo());
+        total_volume.setText(coinInfo.getTotalVolume24hTo());
         high.setText(coinInfo.getHigh());
         low.setText(coinInfo.getLow());
         infoURL.setOnClickListener(v -> {
@@ -202,7 +199,6 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy() {
         mDeteiledViewModel = null;
         lineChart = null;
-        dateXvalues = null;
         mCompositeDisposable.dispose();
         super.onDestroy();
     }

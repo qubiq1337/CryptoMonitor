@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.PortfolioAdapter;
 import com.example.cryptomonitor.buy.BuyActivity;
@@ -24,15 +23,13 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
-
 import java.util.List;
-
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
 
-public class BriefcaseFragment extends Fragment implements View.OnClickListener {
+public class BriefcaseFragment extends Fragment  {
 
 
     private FloatingActionButton mPlusButton;
@@ -45,7 +42,10 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_briefcase, container, false);
         mPlusButton = view.findViewById(R.id.floatingActionButton);
-        mPlusButton.setOnClickListener(this);
+        mPlusButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), BuyActivity.class);
+            startActivity(intent);
+        });
         RecyclerView recyclerView = view.findViewById(R.id.portfolio_recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         portfolioAdapter = new PortfolioAdapter(getActivity());
@@ -57,15 +57,6 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener 
         return view;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.floatingActionButton:
-                /*Intent intent = new Intent(getActivity(), BuyActivity.class);
-                startActivity(intent);*/
-                break;
-        }
-    }
 
     private void getDataFromDb() {
         mCompositeDisposable.add(App.getDatabase()

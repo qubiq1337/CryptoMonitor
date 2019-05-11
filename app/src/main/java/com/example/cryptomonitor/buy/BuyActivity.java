@@ -102,7 +102,7 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
         LinearLayout layout = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.min_coin_item, mCoinHolder, true);
         mSelectedCoinIcon = layout.findViewById(R.id.item_icon);
         mSelectedCoinTv = layout.findViewById(R.id.item_name);
-
+        mCoinCancelButton = findViewById(R.id.item_cancel_coin);
         mDateEdit.setOnClickListener(this);
         mReadyButton.setOnClickListener(this);
         mCloseButton.setOnClickListener(this);
