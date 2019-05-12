@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundChartColor"
+    tools:context=".activity.TransactionActivity">
+
+    <TextView
+
+        android:id="@+id/transaction_currency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/textColorDark"
+        android:textSize="@dimen/transaction_text_size"
+        android:text="Coin" />
+
+    <AutoCompleteTextView
+        android:scrollHorizontally="true"
+        android:inputType="textAutoComplete"
+        android:maxLines="1"
+        android:id="@+id/transaction_actv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/transaction_currency"
+        android:hint="Name"
+        android:padding="15dp"
+        android:textColor="@color/textColorPrimary"
+        android:textColorHint="@color/textColorDark"
+        android:textSize="22sp"
+        android:completionThreshold="1"
+        android:clickable="true"
+        />
+
+    <TableLayout
+        android:id="@+id/transaction_tabel_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/transaction_actv"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="15dp"
+        android:stretchColumns="0,1">
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price in USD"
+                android:textColor="@color/textColorDark"
+                android:textSize="@dimen/transaction_text_size" />
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Amount"
+                android:textColor="@color/textColorDark"
+                android:textSize="@dimen/transaction_text_size" />
+        </TableRow>
+
+        <TableRow>
+
+            <EditText
+                android:scrollHorizontally="true"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="26sp"
+                tools:text="$ 4656,34" />
+
+            <EditText
+                android:scrollHorizontally="true"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="26sp"
+                tools:text="10" />
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        android:id="@+id/transaction_linear1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/transaction_tabel_layout"
+        android:layout_marginTop="30dp"
+        android:background="@color/backgroundColor"
+        android:orientation="vertical"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="Total Cost"
+            android:textColor="@color/textColorDark"
+            android:textSize="@dimen/transaction_text_size" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:textSize="45sp"
+            android:text="$ 45000000000,56" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/transaction_linear2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/transaction_linear1"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textColor="@color/textColorDark"
+            android:textSize="@dimen/transaction_text_size" />
+
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="20sp"
+            android:text="November 20, 2019" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/transaction_linear2"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Deduct from USD Holdings"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="20sp" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:switchMinWidth="70dp"
+            tools:checked="true" />
+
+    </LinearLayout>
+
+</RelativeLayout>

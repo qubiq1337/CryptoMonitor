@@ -3,4 +3,5 @@
     <dimen name="table_text_size">14sp</dimen>
     <dimen name="cardViewWidth">150dp</dimen>
     <dimen name="roundFloat">5</dimen>
+    <dimen name="transaction_text_size">16sp</dimen>
 </resources>

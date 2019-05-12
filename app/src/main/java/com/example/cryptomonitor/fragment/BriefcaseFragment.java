@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.cryptomonitor.R;
+import com.example.cryptomonitor.activity.TransactionActivity;
 import com.example.cryptomonitor.adapters.PortfolioAdapter;
 import com.example.cryptomonitor.buy.BuyActivity;
 import com.example.cryptomonitor.database.App;
@@ -43,7 +44,7 @@ public class BriefcaseFragment extends Fragment  {
         View view = inflater.inflate(R.layout.fragment_briefcase, container, false);
         mPlusButton = view.findViewById(R.id.floatingActionButton);
         mPlusButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), BuyActivity.class);
+            Intent intent = new Intent(getActivity(), TransactionActivity.class);
             startActivity(intent);
         });
         RecyclerView recyclerView = view.findViewById(R.id.portfolio_recyclerView);

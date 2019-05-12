@@ -27,6 +27,9 @@ public interface CoinInfoDao {
     @Query("select * from coininfo where fullName=:fullName")
     List<CoinInfo> getByFullName(String fullName);
 
+    @Query("select * from coininfo")
+    Flowable <List<CoinInfo>> getByFullNameFlowable();
+
     @Query("select * from coininfo where isFavorite = 1 order by fullName")
     Flowable<List<CoinInfo>> getFavoriteCoins();
 
