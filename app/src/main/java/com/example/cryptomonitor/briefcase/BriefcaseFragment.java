@@ -29,7 +29,7 @@ import java.util.List;
 import io.reactivex.disposables.CompositeDisposable;
 
 
-public class BriefcaseFragment extends Fragment  {
+public class BriefcaseFragment extends Fragment implements View.OnClickListener  {
 
 
     private PortfolioAdapter portfolioAdapter;
