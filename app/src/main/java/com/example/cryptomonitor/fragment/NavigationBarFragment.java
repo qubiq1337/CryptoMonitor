@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cryptomonitor.R;
+import com.example.cryptomonitor.briefcase.BriefcaseFragment;
 import com.example.cryptomonitor.favorite.FavoritesFragment;
 import com.example.cryptomonitor.home.HomeFragment;
 

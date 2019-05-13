@@ -1,13 +1,14 @@
-package com.example.cryptomonitor.fragment;
+package com.example.cryptomonitor.briefcase;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,7 @@ import android.view.ViewGroup;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.PortfolioAdapter;
 import com.example.cryptomonitor.buy.BuyActivity;
-import com.example.cryptomonitor.database.App;
-import com.example.cryptomonitor.database.entities.Purchase;
+import com.example.cryptomonitor.database.purchases.PurchaseAndCoin;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -27,33 +27,31 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
 
 public class BriefcaseFragment extends Fragment implements View.OnClickListener {
 
 
-    private FloatingActionButton mPlusButton;
     private PortfolioAdapter portfolioAdapter;
     private PieChart mPieChart;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private BriefcaseViewModel mViewModel;
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_briefcase, container, false);
-        mPlusButton = view.findViewById(R.id.floatingActionButton);
-        mPlusButton.setOnClickListener(this);
-        RecyclerView recyclerView = view.findViewById(R.id.portfolio_recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        FloatingActionButton plusButton = view.findViewById(R.id.floatingActionButton);
+        plusButton.setOnClickListener(this);
         portfolioAdapter = new PortfolioAdapter(getActivity());
+        RecyclerView recyclerView = view.findViewById(R.id.portfolio_recyclerView);
         recyclerView.setAdapter(portfolioAdapter);
-
         mPieChart = view.findViewById(R.id.portfolio_pie_chart);
         initPieChart();
-        getDataFromDb();
+        mViewModel = ViewModelProviders.of(this).get(BriefcaseViewModel.class);
+        mViewModel.getPieLiveData().observe(this, mPieEntryObserver);
+        mViewModel.getPurchaseAndCoinLive().observe(this, mListObserver);
         return view;
     }
 
@@ -67,43 +65,11 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-    private void getDataFromDb() {
-        mCompositeDisposable.add(App.getDatabase()
-                .purchaseDao()
-                .getAll2()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(purchases ->
-                        {
-                            setItemsToPieChart(purchases);
-                            portfolioAdapter.setmPotfolioItemList(purchases);
-                            portfolioAdapter.notifyDataSetChanged();
-                        },
-                        e -> Log.e("OnError", e.toString())
-                )
-        );
-    }
-
-    private void setItemsToPieChart(List<Purchase> purchases) {
-
-        mCompositeDisposable.add(
-                Flowable.just(purchases)
-                        .flatMap(Flowable::fromIterable)
-                        .groupBy(Purchase::getCoinFullName)
-                        .flatMapSingle(group ->
-                                group.map(purchase -> purchase.getAmount() * purchase.getPrice())
-                                        .reduce(0d, (Double x, Double y) -> x + y)
-                                        .map(aDouble -> new PieEntry(aDouble.floatValue(), group.getKey() + ""))
-                        )
-                        .toList()
-                        .subscribe(this::setPieDataSet)
-        );
-    }
-
     private void initPieChart() {
         mPieChart.setUsePercentValues(true);
         mPieChart.setExtraOffsets(5, 10, 5, 5);
         mPieChart.setDrawHoleEnabled(true);
-        mPieChart.setHoleColor(Color.parseColor("#18142e"));
+        mPieChart.setHoleColor(getResources().getColor(R.color.backgroundChartColor));
         mPieChart.animateY(800);
         mPieChart.getDescription().setEnabled(false);
         mPieChart.setTouchEnabled(false);
@@ -130,6 +96,13 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener 
         mPieChart.setData(pieData);
         mPieChart.notifyDataSetChanged();
     }
+
+    private Observer<List<PieEntry>> mPieEntryObserver = this::setPieDataSet;
+
+    private Observer<List<PurchaseAndCoin>> mListObserver = purchaseList -> {
+        portfolioAdapter.setPortfolioItemList(purchaseList);
+        portfolioAdapter.notifyDataSetChanged();
+    };
 
     @Override
     public void onDestroy() {

@@ -1,6 +1,5 @@
 package com.example.cryptomonitor.database.dao;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -8,23 +7,24 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.example.cryptomonitor.database.entities.Purchase;
+import com.example.cryptomonitor.database.purchases.PurchaseAndCoin;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.Single;
 
 @Dao
 public interface PurchaseDao {
 
     @Query("select * from purchase")
-    LiveData<List<Purchase>> getAll();
+    Flowable<List<Purchase>> getAll();
 
-    @Query("select * from purchase")
-    Flowable<List<Purchase>> getAll2();
-
-    @Query("select * from purchase")
-    Single<List<Purchase>> getAll3();
+    @Query("select *, coinInfo.priceDisplay as coin_price_display" +
+            ", coinInfo.fullName as coin_full_name" +
+            ", coinInfo.shortName as coin_short_name" +
+            ", coinInfo.imageURL as coin_url" +
+            " from purchase, coinInfo where purchase.coinId == coinInfo.id")
+    Flowable<List<PurchaseAndCoin>> getAll1();
 
     @Insert
     void insert(Purchase purchase);

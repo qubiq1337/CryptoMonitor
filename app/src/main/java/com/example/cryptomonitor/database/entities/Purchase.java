@@ -16,10 +16,6 @@ public class Purchase {
     private String USD;
     private double amount;
 
-    private String priceDisplay;
-    private String coinFullName;
-    private String coinIndex;
-
 
     public double getAmount() {
         return amount;
@@ -89,29 +85,5 @@ public class Purchase {
 
     public void setYear(int year) {
         this.year = year;
-    }
-
-    public String getPriceDisplay() {
-        return priceDisplay;
-    }
-
-    public void setPriceDisplay(String priceDisplay) {
-        this.priceDisplay = priceDisplay;
-    }
-
-    public String getCoinFullName() {
-        return coinFullName;
-    }
-
-    public void setCoinFullName(String coinFullName) {
-        this.coinFullName = coinFullName;
-    }
-
-    public String getCoinIndex() {
-        return coinIndex;
-    }
-
-    public void setCoinIndex(String coinIndex) {
-        this.coinIndex = coinIndex;
     }
 }

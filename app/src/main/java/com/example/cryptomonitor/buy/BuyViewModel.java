@@ -3,9 +3,7 @@ package com.example.cryptomonitor.buy;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.util.Log;
 
-import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.PurchaseDataHelper;
 import com.example.cryptomonitor.database.coins.CoinDataSource;
 import com.example.cryptomonitor.database.coins.CoinRepo;
@@ -17,13 +15,7 @@ import com.example.cryptomonitor.events.Message;
 import com.example.cryptomonitor.events.PriceEvent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 class BuyViewModel extends ViewModel {
 
@@ -140,9 +132,6 @@ class BuyViewModel extends ViewModel {
                 amount = Double.parseDouble(amountStr);
                 mPurchase.setAmount(amount);
                 mPurchase.setPrice(price);
-                mPurchase.setCoinFullName(mCurrentCoinInfo.getFullName());
-                mPurchase.setCoinIndex(mCurrentCoinInfo.getShortName());
-                mPurchase.setPriceDisplay(mCurrentCoinInfo.getPriceDisplay());
                 PurchaseDataHelper.insert(mPurchase);
                 mEvent.setValue(new FinishEvent());
             } catch (NullPointerException e) {
