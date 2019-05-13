@@ -36,6 +36,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     private OnStarClickListener mOnStarClickListener;
     private OnCoinClickListener mOnCoinClickListener;
     private boolean isLoading = false;
+    private boolean showMode = false;
     private CoinInfoDao mDao;
     private Disposable disposable;
     private final static int initialSize = 60;
@@ -60,6 +61,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     }
 
     void showMode() {
+        showMode = true;
         if (disposable != null)
             disposable.dispose();
         disposable = mDao.getAllBefore(initialSize)
@@ -69,6 +71,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     }
 
     void setList(List<CoinInfo> coinInfoList) {
+        showMode = false;
         if (disposable != null)
             disposable.dispose();
         mData = coinInfoList;
@@ -84,7 +87,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
 
     @Override
     public void onBindViewHolder(@NonNull CoinViewHolder coinViewHolder, int index) {
-        if (index + loadSize > mData.size() && !isLoading) {
+        if (index + loadSize > mData.size() && !isLoading && showMode) {
             loadMore();
         }
         if (isRefreshing) {
@@ -113,8 +116,6 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         return mData.size();
     }
 
-    public void setData(List<CoinInfo> coinInfos) {
-    }
 
     public void setRefreshing(boolean refreshing) {
         isRefreshing = refreshing;

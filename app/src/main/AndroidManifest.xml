@@ -19,9 +19,11 @@
         <activity
             android:name=".activity.DetailedCoin"
             android:screenOrientation="portrait"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/DetailedActivityTheme" />
         <activity
             android:name=".buy.BuyActivity"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.SplashActivity"

@@ -57,22 +57,22 @@
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/ic_action_name"
         app:backgroundTint="@color/blue_color_selected"
-        app:elevation="10dp"
-        android:layout_gravity="bottom|end">
-    </android.support.design.widget.FloatingActionButton>
+        app:elevation="10dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/portfolio_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/backgroundChartColor"
-        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
-    </android.support.v7.widget.RecyclerView>
+        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior"
+        app:spanCount="2" />
 
 </android.support.design.widget.CoordinatorLayout>

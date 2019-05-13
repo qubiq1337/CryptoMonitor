@@ -20,8 +20,8 @@ import android.widget.Spinner;
 import com.example.cryptomonitor.ExitClass;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.ToolbarInteractor;
+import com.example.cryptomonitor.briefcase.BriefcaseFragment;
 import com.example.cryptomonitor.favorite.FavoritesFragment;
-import com.example.cryptomonitor.fragment.BriefcaseFragment;
 import com.example.cryptomonitor.fragment.HistoryFragment;
 import com.example.cryptomonitor.fragment.NavigationBarFragment;
 import com.example.cryptomonitor.home.HomeFragment;
@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     private String savedText;
     private SearchView mSearchView;
     private MenuItem mSpinnerItem;
-    private MenuItem mSettingsItem;
     private ToolbarInteractor mToolbarInteractor;
     private boolean isSearchViewExpanded;
 

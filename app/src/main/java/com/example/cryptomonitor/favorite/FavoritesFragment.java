@@ -45,10 +45,11 @@ public class FavoritesFragment extends Fragment implements FavoriteCoinAdapter.O
     }
 
     private Observer<Event> eventObserver = event -> {
-        if (!event.isHandled()) {
+        if (event != null && !event.isHandled()) {
             if (event instanceof Message) {
                 Message message = (Message) event;
                 Toast.makeText(getContext(), message.getMessageText(), Toast.LENGTH_SHORT).show();
+                message.handled();
             }
         }
     };

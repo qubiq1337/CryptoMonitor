@@ -6,6 +6,7 @@ import com.example.cryptomonitor.AppExecutors;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.dao.CoinInfoDao;
 import com.example.cryptomonitor.database.entities.CoinInfo;
+import com.example.cryptomonitor.model_cryptocompare.model_chart.ModelChart;
 import com.example.cryptomonitor.model_cryptocompare.model_coins.CoinCryptoCompare;
 import com.example.cryptomonitor.model_cryptocompare.model_coins.CoinsData;
 import com.example.cryptomonitor.network_api.ApiCryptoCompare;
@@ -77,6 +78,13 @@ public class CoinRepo implements CoinDataSource {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(coinCallback::onLoaded, error -> coinCallback.onFailed());
         }
+    }
+
+    @Override
+    public Observable<ModelChart> getChartData(String symbol, String currency) {
+        return Network.getInstance().getApiCryptoCompare().getChartData(symbol, currency)
+                .subscribeOn(Schedulers.io()) // "work" on io thread
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override

@@ -4,20 +4,19 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.example.cryptomonitor.database.App;
-import com.example.cryptomonitor.database.PurchaseDataHelper;
+import com.example.cryptomonitor.database.coins.CoinDataSource;
+import com.example.cryptomonitor.database.coins.CoinRepo;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.database.entities.Purchase;
+import com.example.cryptomonitor.database.purchases.PurchaseDataSource;
+import com.example.cryptomonitor.database.purchases.PurchaseRepo;
 import com.example.cryptomonitor.events.Event;
 import com.example.cryptomonitor.events.FinishEvent;
 import com.example.cryptomonitor.events.Message;
+import com.example.cryptomonitor.events.PriceEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 class BuyViewModel extends ViewModel {
 
@@ -25,26 +24,32 @@ class BuyViewModel extends ViewModel {
     private MutableLiveData<Boolean> mSelectedCoinVisible = new MutableLiveData<>();
     private MutableLiveData<Boolean> mSearchRecyclerVisible = new MutableLiveData<>();
     private MutableLiveData<Boolean> mSearchEditTextVisible = new MutableLiveData<>();
+    private MutableLiveData<Event> mPriceEventLiveData = new MutableLiveData<>();
     private MutableLiveData<Event> mEvent = new MutableLiveData<>();
     private MutableLiveData<String> mDateSet = new MutableLiveData<>();
     private MutableLiveData<CoinInfo> mSelectedCoin = new MutableLiveData<>();
     private CoinInfo mCurrentCoinInfo;
     private Purchase mPurchase;
-    private Disposable mDisposableSubscription;
-    private Consumer<List<CoinInfo>> mListConsumer = coinInfoList -> mSearchLiveData.postValue(coinInfoList);
+    private CoinDataSource mCoinDataSource = new CoinRepo();
+    private PurchaseDataSource mPurchaseDataSource = new PurchaseRepo();
 
     BuyViewModel() {
         defaultSetup();
     }
 
     void onTextChanged(final String currentText) {
-        if (mDisposableSubscription != null)
-            mDisposableSubscription.dispose();
-
         if (!currentText.isEmpty()) {
-            mDisposableSubscription = App.getDatabase().coinInfoDao().getSearchCoins(currentText)
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(mListConsumer);
+            mCoinDataSource.getSearchCoins(currentText, new CoinDataSource.GetCoinCallback() {
+                @Override
+                public void onLoaded(List<CoinInfo> coinInfoList) {
+                    mSearchLiveData.setValue(coinInfoList);
+                }
+
+                @Override
+                public void onFailed() {
+                    mSearchLiveData.setValue(new ArrayList<>());
+                }
+            });
             if (mCurrentCoinInfo == null) {
                 mSearchRecyclerVisible.setValue(true);
             } else {
@@ -84,6 +89,10 @@ class BuyViewModel extends ViewModel {
         return mEvent;
     }
 
+    LiveData<Event> getPriceLiveData() {
+        return mPriceEventLiveData;
+    }
+
     void onDateSet(int day, int month, int year) {
         mPurchase.setDay(day);
         mPurchase.setMonth(month + 1);
@@ -98,6 +107,9 @@ class BuyViewModel extends ViewModel {
         mSearchLiveData.setValue(new ArrayList<>());
         mSelectedCoinVisible.setValue(true);
         mSelectedCoin.setValue(coinInfo);
+        String price = String.valueOf(coinInfo.getPrice());
+        String symbol = coinInfo.getSymbol();
+        mPriceEventLiveData.setValue(new PriceEvent(symbol, price));
     }
 
     void coinCancelled() {
@@ -122,10 +134,7 @@ class BuyViewModel extends ViewModel {
                 amount = Double.parseDouble(amountStr);
                 mPurchase.setAmount(amount);
                 mPurchase.setPrice(price);
-                mPurchase.setCoinFullName(mCurrentCoinInfo.getFullName());
-                mPurchase.setCoinIndex(mCurrentCoinInfo.getShortName());
-                mPurchase.setPriceDisplay(mCurrentCoinInfo.getPriceDisplay());
-                PurchaseDataHelper.insert(mPurchase);
+                mPurchaseDataSource.insert(mPurchase);
                 mEvent.setValue(new FinishEvent());
             } catch (NullPointerException e) {
                 mEvent.setValue(new Message("Select coin"));
@@ -137,8 +146,6 @@ class BuyViewModel extends ViewModel {
     private void defaultSetup() {
         mPurchase = new Purchase();
         mCurrentCoinInfo = null;
-        if (mDisposableSubscription != null)
-            mDisposableSubscription.dispose();
         mSearchLiveData.setValue(new ArrayList<>());
         mSelectedCoin.setValue(mCurrentCoinInfo);
         mDateSet.setValue("");
