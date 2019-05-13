@@ -9,15 +9,19 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.entities.CoinInfo;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -37,8 +41,13 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
         Disposable disposable = App
                 .getDatabase()
                 .coinInfoDao()
-                .getByFullNameFlowable()
-                .subscribe(list -> coinInfoList = list);
+                .getAll()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(list -> {
+                    coinInfoList = list;
+                    Log.e("findCoin",coinInfoList.size()+"");
+                });
     }
 
     @Override
@@ -62,11 +71,12 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
             convertView = LayoutInflater.from(mContex).inflate(R.layout.autocomplete_tv_item, parent, false);
         }
         TextView textView = convertView.findViewById(R.id.autocomplete_item_full_name);
-
+        ImageView imageView = convertView.findViewById(R.id.autocomplete_item_icon);
         CoinInfo coinInfo = getItem(position);
 
         if (coinInfo != null) {
             textView.setText(coinInfo.getFullName());
+            Picasso.with(mContex).load(coinInfo.getImageURL()).into(imageView);
         }
 
         return convertView;
@@ -78,7 +88,7 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
         Filter filter = new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                Log.e("performFiltering",constraint.toString());
+
                 FilterResults filterResults = new FilterResults();
                 List<CoinInfo> suggestions = new ArrayList<>();
 
@@ -86,7 +96,6 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
                     suggestions.addAll(coinInfoList);
                 } else {
                     String filterPattern = constraint.toString().toLowerCase().trim();
-                    Log.e("performFiltering",filterPattern);
 
                     for (CoinInfo item : coinInfoList) {
                         if (item.getFullName().toLowerCase().contains(filterPattern)) {
@@ -118,27 +127,4 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
         };
         return filter;
     }
-
-    private void findCoin(String coinName) {
-        Disposable disposable = App
-                .getDatabase()
-                .coinInfoDao()
-                .getByFullNameFlowable()
-                .debounce(5000, TimeUnit.MILLISECONDS)
-                .distinctUntilChanged()
-                .doOnNext(coinInfo -> Log.e("findCoin", coinName))
-/*
-                .filter(coinInfo -> coinInfo.getFullName().toLowerCase().contains(coinName.toLowerCase().trim()))
-*/
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(coinInfo -> {
-                            Log.e("coinInfo", coinInfo.size() + "");
-                            coinInfoList = coinInfo;
-                        },
-                        e -> Log.e("Error", "Msg", e)
-                );
-    }
-
-
 }

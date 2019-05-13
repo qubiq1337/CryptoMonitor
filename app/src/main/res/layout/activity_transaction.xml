@@ -19,6 +19,8 @@
         android:text="Coin" />
 
     <AutoCompleteTextView
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:scrollHorizontally="true"
         android:inputType="textAutoComplete"
         android:maxLines="1"
@@ -27,12 +29,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/transaction_currency"
         android:hint="Name"
-        android:padding="15dp"
         android:textColor="@color/textColorPrimary"
         android:textColorHint="@color/textColorDark"
         android:textSize="22sp"
+        android:dropDownWidth="300dp"
         android:completionThreshold="1"
-        android:clickable="true"
         />
 
     <TableLayout
