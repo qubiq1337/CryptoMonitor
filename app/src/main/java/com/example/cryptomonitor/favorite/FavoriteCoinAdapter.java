@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.cryptomonitor.R;
@@ -72,6 +73,7 @@ public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapte
         private TextView textViewName;
         private ImageView imageViewIcon;
         private ImageView isFavoriteImage;
+        private ProgressBar progressBar;
 
         CoinViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,6 +81,8 @@ public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapte
             textViewName = itemView.findViewById(R.id.rv_coin_layout_name);
             textViewPrice = itemView.findViewById(R.id.rv_coin_layout_price);
             imageViewIcon = itemView.findViewById(R.id.rv_coin_layout_icon);
+            progressBar = itemView.findViewById(R.id.rv_coin_progress);
+            progressBar.setVisibility(View.GONE);
             isFavoriteImage = itemView.findViewById(R.id.rv_coin_favorite_image);
             isFavoriteImage.setOnClickListener(v -> {
                 if (getAdapterPosition() >= 0) {

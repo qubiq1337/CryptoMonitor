@@ -19,9 +19,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -31,14 +28,18 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
     private List<CoinInfo> reusultFilterList;
     private Context mContex;
 
+    public Disposable getDisposable() {
+        return disposable;
+    }
+
+    private Disposable disposable;
 
 
     public AutoCompleteAdapter(Context context) {
         mContex = context;
         reusultFilterList = new ArrayList<>();
         coinInfoList = new ArrayList<>();
-
-        Disposable disposable = App
+        disposable = App
                 .getDatabase()
                 .coinInfoDao()
                 .getAll()
