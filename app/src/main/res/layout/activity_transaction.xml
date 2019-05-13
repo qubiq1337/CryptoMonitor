@@ -14,27 +14,26 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
+        android:text="Coin"
         android:textColor="@color/textColorDark"
-        android:textSize="@dimen/transaction_text_size"
-        android:text="Coin" />
+        android:textSize="@dimen/transaction_text_size" />
 
     <AutoCompleteTextView
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:scrollHorizontally="true"
-        android:inputType="textAutoComplete"
-        android:maxLines="1"
         android:id="@+id/transaction_actv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/transaction_currency"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:completionThreshold="1"
+        android:dropDownWidth="300dp"
         android:hint="Name"
+        android:inputType="textAutoComplete"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
         android:textColor="@color/textColorPrimary"
         android:textColorHint="@color/textColorDark"
-        android:textSize="22sp"
-        android:dropDownWidth="300dp"
-        android:completionThreshold="1"
-        />
+        android:textSize="22sp" />
 
     <TableLayout
         android:id="@+id/transaction_tabel_layout"
@@ -67,21 +66,21 @@
         <TableRow>
 
             <EditText
-                android:scrollHorizontally="true"
-                android:inputType="numberDecimal"
-                android:maxLines="1"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
                 android:textColor="@color/textColorPrimary"
                 android:textSize="26sp"
                 tools:text="$ 4656,34" />
 
             <EditText
-                android:scrollHorizontally="true"
-                android:inputType="numberDecimal"
-                android:maxLines="1"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
                 android:textColor="@color/textColorPrimary"
                 android:textSize="26sp"
                 tools:text="10" />
@@ -112,8 +111,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
-            android:textSize="45sp"
-            android:text="$ 45000000000,56" />
+            android:text="$ 45000000000,56"
+            android:textSize="45sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -132,15 +131,20 @@
             android:textColor="@color/textColorDark"
             android:textSize="@dimen/transaction_text_size" />
 
+
         <TextView
-            android:layout_marginTop="15dp"
+            android:id="@+id/transaction_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="15dp"
+            android:hint="Check Date"
             android:textColor="@color/textColorPrimary"
-            android:textSize="20sp"
-            android:text="November 20, 2019" />
-
+            android:textColorHint="@color/textColorDark"
+            android:textSize="20sp" />
+        
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
