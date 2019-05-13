@@ -6,16 +6,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.App;
+import com.example.cryptomonitor.database.coins.CoinDataSource;
+import com.example.cryptomonitor.database.coins.CoinRepo;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.model_cryptocompare.model_chart.ChartData;
 import com.example.cryptomonitor.model_cryptocompare.model_chart.ModelChart;
-import com.example.cryptomonitor.network_api.NetworkHelper;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
@@ -41,10 +41,10 @@ import static com.example.cryptomonitor.activity.MainActivity.EXTRA_CURRENCY_KEY
 import static com.example.cryptomonitor.activity.MainActivity.EXTRA_INDEX_KEY;
 import static com.example.cryptomonitor.activity.MainActivity.EXTRA_POSITION_KEY;
 
-public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnChangeRefreshingListener {
+public class DetailedCoin extends AppCompatActivity {
     private LineChart lineChart;
     private List<String> dateXvalues = new ArrayList<>();
-    private NetworkHelper networkHelper = new NetworkHelper(this);
+    private CoinDataSource networkHelper = new CoinRepo();
     private String mIndex;
     private String mCurrency;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
@@ -80,12 +80,9 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
         low = findViewById(R.id.detailed_low);
         infoURL = findViewById(R.id.detailed_infoURL);
         backButton = findViewById(R.id.detailed_back);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetailedCoin.this,MainActivity.class);
-                startActivity(intent);
-            }
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(DetailedCoin.this, MainActivity.class);
+            startActivity(intent);
         });
         icon = findViewById(R.id.detailed_icon);
 
@@ -115,9 +112,7 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
 
         mCompositeDisposable.add(networkHelper.getChartData(mIndex, mCurrency)
                 .map(this::dataVales)
-                .map(entries -> {
-                    return new LineDataSet(entries, "30 day");
-                })
+                .map(entries -> new LineDataSet(entries, "30 day"))
                 .subscribe(this::getSet, throwable -> Log.e("ER RX", throwable.toString()))
         );
     }
@@ -204,17 +199,6 @@ public class DetailedCoin extends AppCompatActivity implements NetworkHelper.OnC
             change.setTextColor(getResources().getColor(R.color.redColor));
         else if (d == 0)
             change.setTextColor(getResources().getColor(R.color.textColorDark));
-    }
-
-
-    @Override
-    public void startRefreshing() {
-
-    }
-
-    @Override
-    public void stopRefreshing(boolean isSuccess) {
-
     }
 
     @NonNull

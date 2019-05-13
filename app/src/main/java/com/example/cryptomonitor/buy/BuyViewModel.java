@@ -4,11 +4,12 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.example.cryptomonitor.database.PurchaseDataHelper;
 import com.example.cryptomonitor.database.coins.CoinDataSource;
 import com.example.cryptomonitor.database.coins.CoinRepo;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.database.entities.Purchase;
+import com.example.cryptomonitor.database.purchases.PurchaseDataSource;
+import com.example.cryptomonitor.database.purchases.PurchaseRepo;
 import com.example.cryptomonitor.events.Event;
 import com.example.cryptomonitor.events.FinishEvent;
 import com.example.cryptomonitor.events.Message;
@@ -30,6 +31,7 @@ class BuyViewModel extends ViewModel {
     private CoinInfo mCurrentCoinInfo;
     private Purchase mPurchase;
     private CoinDataSource mCoinDataSource = new CoinRepo();
+    private PurchaseDataSource mPurchaseDataSource = new PurchaseRepo();
 
     BuyViewModel() {
         defaultSetup();
@@ -132,7 +134,7 @@ class BuyViewModel extends ViewModel {
                 amount = Double.parseDouble(amountStr);
                 mPurchase.setAmount(amount);
                 mPurchase.setPrice(price);
-                PurchaseDataHelper.insert(mPurchase);
+                mPurchaseDataSource.insert(mPurchase);
                 mEvent.setValue(new FinishEvent());
             } catch (NullPointerException e) {
                 mEvent.setValue(new Message("Select coin"));
