@@ -1,13 +1,15 @@
 package com.example.cryptomonitor.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Guideline;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,12 +47,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferences settings = getSharedPreferences(THEME, 0);
-        int theme = settings.getInt("theme", R.style.AppThemeDark);
-        setTheme(theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
+            Toolbar toolbar = findViewById(R.id.home_and_fav_toolbar);
+            setSupportActionBar(toolbar);
             changeFragment(R.id.top_container, HomeFragment.class.getName());
             changeFragment(R.id.bottom_container, NavigationBarFragment.class.getName());
         } else {
@@ -65,32 +66,33 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         } else {
             isSearchViewExpanded = false;
         }
+
     }
 
     @Override
     public void changeFragment(int container, String fragmentName) {
         Fragment fragment;
+        String tag = fragmentName;
         if (fragmentName.equals(HomeFragment.class.getName())) {
-            changeTheme(R.style.AppThemeDark);
+            Objects.requireNonNull(getSupportActionBar()).show();
             fragment = new HomeFragment();
         } else if (fragmentName.equals(FavoritesFragment.class.getName())) {
-            changeTheme(R.style.AppThemeDark);
+            Objects.requireNonNull(getSupportActionBar()).show();
             fragment = new FavoritesFragment();
         } else if (fragmentName.equals(HistoryFragment.class.getName())) {
-            changeTheme(R.style.HistoryFragmentTheme);
+            Objects.requireNonNull(getSupportActionBar()).hide();
             fragment = new HistoryFragment();
         } else if (fragmentName.equals(NavigationBarFragment.class.getName())) {
-            changeTheme(R.style.AppThemeDark);
             fragment = new NavigationBarFragment();
         } else if (fragmentName.equals(BriefcaseFragment.class.getName())) {
-            changeTheme(R.style.BriefcaseFragmentTheme);
+            Objects.requireNonNull(getSupportActionBar()).hide();
             fragment = new BriefcaseFragment();
         } else {
             Log.e("ERROR", "No such fragment: " + fragmentName);
             return;
         }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(container, fragment);
+        fragmentTransaction.replace(container, fragment, tag);
         fragmentTransaction.commit();
         if (fragment instanceof ToolbarInteractor) {
             mToolbarInteractor = (ToolbarInteractor) fragment;
@@ -98,13 +100,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         }
     }
 
-    private void changeTheme(int theme) {
-        SharedPreferences settings = getSharedPreferences(THEME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putInt("theme", theme);
-        editor.apply();
-        recreate();
-    }
 
     @Override
     public void onBackPressed() {
@@ -116,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.spinner_layout, menu);
+        getMenuInflater().inflate(R.menu.home_and_fav_menu_toolbar, menu);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false); // Dont put app name on bar
         mSpinnerItem = menu.findItem(R.id.action_bar_spinner);
         Spinner spinner = (Spinner) mSpinnerItem.getActionView();
@@ -140,8 +135,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         mSearchView = (SearchView) menu.findItem(R.id.search).getActionView();
         ImageView searchIcon = mSearchView.findViewById(android.support.v7.appcompat.R.id.search_button);
         searchIcon.setColorFilter(R.attr.itemIconTint, PorterDuff.Mode.DST);// Replace color of search icon
-
-
         mSearchView.setOnQueryTextListener(this);
         mSearchView.setOnSearchClickListener(this);
         mSearchView.setOnCloseListener(this);
@@ -149,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             mSearchView.setIconified(false);
             mSearchView.setQuery(savedText, false);
         }
+
 //        mSettingsItem = menu.findItem(R.id.sort);
 //        mSettingsItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 //
@@ -214,15 +208,22 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     }
 
     private void onExpandSearch() {
+        setGuidelinePercentage(1f);
         isSearchViewExpanded = true;
         mSpinnerItem.setVisible(false);
-        getSupportActionBar().setTitle("");
     }
 
     private void onClosedSearch() {
+        setGuidelinePercentage(0.92f);
         isSearchViewExpanded = false;
         mSpinnerItem.setVisible(true);
-        getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
+    }
+
+    private void setGuidelinePercentage(float v) {
+        Guideline guideLine = findViewById(R.id.bottom_nav_guideline);
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) guideLine.getLayoutParams();
+        params.guidePercent = v;
+        guideLine.setLayoutParams(params);
     }
 
     @Override

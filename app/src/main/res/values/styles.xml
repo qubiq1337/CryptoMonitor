@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="AppThemeLight" parent="Theme.AppCompat.Light">
+    <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorLigthPrimary</item>
         <item name="colorPrimaryDark">@color/colorLigthPrimaryDark</item>
         <item name="colorAccent">@color/colorLigthAccent</item>
@@ -10,7 +10,7 @@
         <item name="itemTextColor">@color/black</item>
     </style>
 
-    <style name="AppThemeDark" parent="Theme.AppCompat.DayNight">
+    <style name="AppThemeDark" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorDarkPrimary</item>
         <item name="colorPrimaryDark">@color/colorDarkPrimary</item>
         <item name="colorAccent">@color/colorDarkAccent</item>
