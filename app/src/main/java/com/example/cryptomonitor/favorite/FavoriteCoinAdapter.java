@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapter.CoinViewHolder> {
+    private OnCoinClickListener mOnCoinClickListener;
     private Context mContext;
     private List<CoinInfo> mData;
     private OnStarClickListener onStarClickListener;
@@ -30,6 +31,7 @@ public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapte
 
     void setup(Fragment fragment) {
         this.onStarClickListener = (OnStarClickListener) fragment;
+        this.mOnCoinClickListener = (OnCoinClickListener) fragment;
     }
 
     @NonNull
@@ -66,6 +68,10 @@ public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapte
         void onStarClick(CoinInfo coinInfo);
     }
 
+    public interface OnCoinClickListener {
+        void onCoinClick(String index, int position);
+    }
+
     class CoinViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewPrice;
         private TextView textViewFullName;
@@ -81,13 +87,17 @@ public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapte
             imageViewIcon = itemView.findViewById(R.id.rv_coin_layout_icon);
             isFavoriteImage = itemView.findViewById(R.id.rv_coin_favorite_image);
             isFavoriteImage.setOnClickListener(v -> {
-                if (getAdapterPosition() >= 0) {
-                    CoinInfo coinInfo = mData.get(getAdapterPosition());
+                int position = getAdapterPosition();
+                if (position >= 0) {
+                    CoinInfo coinInfo = mData.get(position);
                     coinInfo.setFavorite(false);
-                    notifyItemRemoved(getAdapterPosition());
-                    onStarClickListener.onStarClick(mData.get(getAdapterPosition()));
+                    notifyItemRemoved(position);
+                    onStarClickListener.onStarClick(mData.get(position));
                 }
             });
+            itemView.setOnClickListener(v ->
+                    mOnCoinClickListener.onCoinClick(mData.get(getAdapterPosition()).getShortName(), getAdapterPosition()));
         }
+
     }
 }

@@ -133,13 +133,14 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             imageViewIcon = itemView.findViewById(R.id.rv_coin_layout_icon);
             isFavoriteImage = itemView.findViewById(R.id.rv_coin_favorite_image);
             isFavoriteImage.setOnClickListener(v -> {
-                if (getAdapterPosition() >= 0) {
-                    CoinInfo clickedCoin = mData.get(getAdapterPosition());
+                int position = getAdapterPosition();
+                if (position >= 0) {
+                    CoinInfo clickedCoin = mData.get(position);
                     if (clickedCoin.isFavorite())
                         clickedCoin.setFavorite(false);
                     else
                         clickedCoin.setFavorite(true);
-                    notifyItemChanged(getAdapterPosition());
+                    notifyItemChanged(position);
                     mOnStarClickListener.onStarClick(clickedCoin);
                 }
             });

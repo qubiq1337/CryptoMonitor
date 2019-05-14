@@ -15,12 +15,15 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
 import com.example.cryptomonitor.R;
+import com.example.cryptomonitor.activity.MainActivity;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.events.Event;
 import com.example.cryptomonitor.events.Message;
 
+import java.util.Objects;
 
-public class FavoritesFragment extends Fragment implements FavoriteCoinAdapter.OnStarClickListener {
+
+public class FavoritesFragment extends Fragment implements FavoriteCoinAdapter.OnStarClickListener, FavoriteCoinAdapter.OnCoinClickListener {
 
     private RecyclerView mRecyclerView;
     private FavoriteCoinAdapter mCoinAdapterHome;
@@ -57,5 +60,10 @@ public class FavoritesFragment extends Fragment implements FavoriteCoinAdapter.O
     @Override
     public void onStarClick(CoinInfo clickedCoinInfo) {
         mViewModel.onStarClicked(clickedCoinInfo);
+    }
+
+    @Override
+    public void onCoinClick(String index, int position) {
+        ((MainActivity) Objects.requireNonNull(getActivity())).onCoinClicked(index, position);
     }
 }

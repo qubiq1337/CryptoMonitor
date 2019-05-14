@@ -251,7 +251,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         intent.putExtra(EXTRA_CURRENCY_KEY, mCurrency);
         intent.putExtra(EXTRA_POSITION_KEY, position + 1);
         startActivity(intent);
-        finish();
     }
 }
 

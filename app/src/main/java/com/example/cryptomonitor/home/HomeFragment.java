@@ -23,6 +23,7 @@ import com.example.cryptomonitor.events.Event;
 import com.example.cryptomonitor.events.Message;
 
 import java.util.List;
+import java.util.Objects;
 
 
 public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener,
@@ -143,6 +144,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
 
     @Override
     public void onCoinClick(String index, int position) {
-        ((MainActivity) getActivity()).onCoinClicked(index, position);
+        ((MainActivity) Objects.requireNonNull(getActivity())).onCoinClicked(index, position);
     }
 }
