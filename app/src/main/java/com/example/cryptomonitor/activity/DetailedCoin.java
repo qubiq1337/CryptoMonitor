@@ -81,8 +81,7 @@ public class DetailedCoin extends AppCompatActivity {
         infoURL = findViewById(R.id.detailed_infoURL);
         backButton = findViewById(R.id.detailed_back);
         backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(DetailedCoin.this, MainActivity.class);
-            startActivity(intent);
+            finish();
         });
         icon = findViewById(R.id.detailed_icon);
 
