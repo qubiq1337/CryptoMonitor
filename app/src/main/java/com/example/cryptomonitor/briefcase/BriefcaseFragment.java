@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +30,12 @@ import java.util.List;
 import io.reactivex.disposables.CompositeDisposable;
 
 
-public class BriefcaseFragment extends Fragment implements View.OnClickListener  {
+public class BriefcaseFragment extends Fragment implements View.OnClickListener,PortfolioAdapter.OnItemClickListener  {
 
     private PortfolioAdapter portfolioAdapter;
     private PieChart mPieChart;
     private BriefcaseViewModel mViewModel;
+    public static final String COIN_INDEX = "COIN_INDEX";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,8 +43,24 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener 
         FloatingActionButton plusButton = view.findViewById(R.id.floatingActionButton);
         plusButton.setOnClickListener(this);
         portfolioAdapter = new PortfolioAdapter(getActivity());
+        portfolioAdapter.setOnItemClickListener(this);
         RecyclerView recyclerView = view.findViewById(R.id.portfolio_recyclerView);
         recyclerView.setAdapter(portfolioAdapter);
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT){
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                //delete from DB -> ViewModel -> Repo
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
         mPieChart = view.findViewById(R.id.portfolio_pie_chart);
         initPieChart();
         mViewModel = ViewModelProviders.of(this).get(BriefcaseViewModel.class);
@@ -55,7 +73,7 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.floatingActionButton:
-                Intent intent = new Intent(this.getContext(), BuyActivity.class);
+                Intent intent = new Intent(this.getContext(), TransactionActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -105,4 +123,10 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener 
         super.onDestroy();
     }
 
+    @Override
+    public void OnItemClick(PurchaseAndCoin purchaseAndCoin) {
+        Intent intent = new Intent(this.getContext(), TransactionActivity.class);
+        intent.putExtra(COIN_INDEX,purchaseAndCoin.getPurchase().getId());
+        startActivity(intent);
+    }
 }

@@ -19,6 +19,12 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
     private Context mContext;
     private List<PurchaseAndCoin> mPortfolioItemList;
 
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    private OnItemClickListener onItemClickListener;
+
     public PortfolioAdapter(Context context) {
         mContext = context;
         mPortfolioItemList = new ArrayList<>();
@@ -60,6 +66,12 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
             price = itemView.findViewById(R.id.portfolio_price);
             amount = itemView.findViewById(R.id.portfolio_amount);
             fullName = itemView.findViewById(R.id.portfolio_fullname);
+
+            itemView.setOnClickListener(v -> onItemClickListener.OnItemClick(mPortfolioItemList.get(getAdapterPosition())));
         }
+    }
+
+    public interface OnItemClickListener {
+        void OnItemClick(PurchaseAndCoin purchaseAndCoin);
     }
 }

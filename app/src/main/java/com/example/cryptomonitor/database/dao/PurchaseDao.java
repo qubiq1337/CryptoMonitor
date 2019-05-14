@@ -35,6 +35,9 @@ public interface PurchaseDao {
     @Delete
     void remove(Purchase purchase);
 
+    @Query("select * from purchase where id = :id")
+    Flowable<List<Purchase>> getById(long id);
+
     @Query("delete from purchase where id = :id")
     void removeById(long id);
 }

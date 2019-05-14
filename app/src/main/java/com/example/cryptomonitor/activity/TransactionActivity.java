@@ -1,24 +1,33 @@
 package com.example.cryptomonitor.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.example.cryptomonitor.AutoCompleteAdapter;
 import com.example.cryptomonitor.R;
+import com.example.cryptomonitor.database.App;
+import com.example.cryptomonitor.database.entities.Purchase;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 import static com.example.cryptomonitor.Utilities.round;
+import static com.example.cryptomonitor.briefcase.BriefcaseFragment.COIN_INDEX;
+
 public class TransactionActivity extends AppCompatActivity {
 
     private Disposable disposable;
     private AutoCompleteAdapter autoCompleteAdapter;
-
+    private long coinId ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +39,15 @@ public class TransactionActivity extends AppCompatActivity {
         autoCompleteAdapter = new AutoCompleteAdapter(this);
         autoCompleteTextView.setAdapter(autoCompleteAdapter);
 
+        Intent intent = getIntent();
+        if (intent != null) {
+            long l = 0;
+            coinId = intent.getLongExtra(COIN_INDEX,l);
+            Log.e("CoinID",coinId+"");
+        }
+
+
+        //умножение Цены на колличество
         disposable = Observable.combineLatest(
                 RxTextView
                         .textChangeEvents(editPrice)
@@ -48,7 +66,7 @@ public class TransactionActivity extends AppCompatActivity {
                     totalCost.setText(formatTotalCost(d));
                 });
     }
-
+    //Форматирование текста в Тотал
     private String formatTotalCost(Double d) {
         String result;
         if (d < 1) {
