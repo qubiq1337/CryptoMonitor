@@ -23,7 +23,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.cryptomonitor.R;
-import com.example.cryptomonitor.ToolbarInteractor;
 import com.example.cryptomonitor.activity.MainActivity;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.events.Event;
@@ -35,14 +34,15 @@ import com.jakewharton.rxbinding2.widget.TextViewTextChangeEvent;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 import static android.content.Context.MODE_PRIVATE;
 
 
 public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClickListener,
-        ToolbarInteractor,
         SwipeRefreshLayout.OnRefreshListener,
         CoinAdapterHome.OnCoinClickListener {
 
@@ -70,7 +70,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup
             container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
 
 
         mRecyclerView = view.findViewById(R.id.rv_coin_itemlist);
@@ -103,6 +102,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         mSearchOn.setOnClickListener(v -> {
             mLinearSpinner.setVisibility(View.GONE);
             mLinearSearch.setVisibility(View.VISIBLE);
+            mHomeViewModel.onSearchClicked();
             mSearch.requestFocus();
         });
         mSearchOff.setOnClickListener(v -> {
@@ -112,25 +112,30 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
             mHomeViewModel.onSearchDeactivated();
         });
 
-
         disposableSearch = RxTextView
                 .textChangeEvents(mSearch)
                 .skipInitialValue()
                 .map(TextViewTextChangeEvent::text)
                 .map(CharSequence::toString)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(s -> {
+                    if (s.isEmpty() & mLinearSearch.getVisibility() == View.VISIBLE)
+                        mHomeViewModel.onSearchClicked();
+
+                })
                 .debounce(500, TimeUnit.MILLISECONDS)
                 .filter(s -> !s.isEmpty())
+                .distinctUntilChanged()
                 .doOnNext(s -> Log.e("Check stream", s))
                 .subscribe(s -> mHomeViewModel.onTextChanged(s));
-
 
         disposableSpinner = RxAdapterView
                 .itemSelections(mSpinner)
                 .skipInitialValue()
-                .skip(2)
                 .subscribe(position -> {
-                    String currency = spinnerArray[position];
-                    mHomeViewModel.refresh(currency);
+                    mCurrency = spinnerArray[position];
+                    Log.e("Spinner", mCurrency);
+                    mHomeViewModel.refresh(mCurrency);
                 });
 
         return view;
@@ -141,32 +146,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         mHomeViewModel.onStarClicked(clickedCoinInfo);
     }
 
-
-    @Override
-    public boolean onQueryTextSubmit(String s) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String currentText) {
-        mHomeViewModel.onTextChanged(currentText);
-        return false;
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.search:
-                mHomeViewModel.onSearchClicked();
-                break;
-        }
-    }
-
-    @Override
-    public boolean onClose() {
-        mHomeViewModel.onSearchDeactivated();
-        return false;
-    }
 
     @Override
     public void onDestroy() {
@@ -210,15 +189,9 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
 
 
     @Override
-    public void setCurrency(String currency) {
-        mCurrency = currency;
-        onRefresh();
-    }
-
-    @Override
     public void onRefresh() {
-       /* if (mHomeViewModel != null)
-            mHomeViewModel.refresh(mCurrency);*/
+        if (mHomeViewModel != null)
+            mHomeViewModel.refresh(mCurrency);
     }
 
     @Override
