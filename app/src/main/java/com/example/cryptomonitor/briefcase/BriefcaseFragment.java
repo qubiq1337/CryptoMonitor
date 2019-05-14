@@ -17,7 +17,6 @@ import com.example.cryptomonitor.activity.TransactionActivity;
 import com.example.cryptomonitor.adapters.PortfolioAdapter;
 import com.example.cryptomonitor.buy.BuyActivity;
 import com.example.cryptomonitor.database.purchases.PurchaseAndCoin;
-import com.example.cryptomonitor.test_package.TestActivity;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -34,7 +33,6 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener 
 
     private PortfolioAdapter portfolioAdapter;
     private PieChart mPieChart;
-    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private BriefcaseViewModel mViewModel;
 
     @Override
@@ -57,7 +55,7 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.floatingActionButton:
-                Intent intent = new Intent(this.getContext(), TestActivity.class);
+                Intent intent = new Intent(this.getContext(), BuyActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -104,7 +102,6 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener 
 
     @Override
     public void onDestroy() {
-        mCompositeDisposable.dispose();
         super.onDestroy();
     }
 

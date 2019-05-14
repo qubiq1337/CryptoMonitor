@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] spinnerArray = getResources().getStringArray(R.array.spinner);
+                Log.e("Main",spinnerArray[position]+"");
                 setCurrency(spinnerArray[position]);
             }
 
