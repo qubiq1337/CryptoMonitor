@@ -56,7 +56,8 @@ class HomeViewModel extends ViewModel {
     }
 
     void onSearchDeactivated() {
-        if(!mCoinRepository.getDisposableSubscription().isDisposed()) mCoinRepository.getDisposableSubscription().dispose();
+        if (mCoinRepository.getDisposableSubscription() != null && !mCoinRepository.getDisposableSubscription().isDisposed())
+            mCoinRepository.getDisposableSubscription().dispose();
         mSearchModeLiveData.setValue(null);
     }
 
