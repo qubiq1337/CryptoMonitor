@@ -11,9 +11,13 @@
         <item>CNY</item>
         <item>GBP</item>
     </string-array>
+    <string-array name="settings_spinner">
+        <item>Сортировка </item>
+        <item>Настройки  </item>
+    </string-array>
     <string name="briefcase">Briefcase</string>
     <string name="find">Find</string>
-    <string name="action_bar_spinner">Action Bar Spinner</string>
+    <string name="currency_spinner">Currency Spinner</string>
     <string name="search_line">Search</string>
     <string name="close">Close</string>
     <string name="buy">Buy</string>
@@ -29,5 +33,12 @@
     <string name="sort_by_rank">Сортировка по рейтингу</string>
     <string name="sort_by_name">Сортировка по имени</string>
     <string name="sort_by_value">Сортировка по цене</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="language_header">Language</string>
+    <string name="language_title">Language</string>
+    <string name="currency_header">Currency</string>
+    <string name="theme_header">Theme</string>
+    <string name="currency_title">Currency</string>
+    <string name="theme_title">Theme</string>
 
 </resources>

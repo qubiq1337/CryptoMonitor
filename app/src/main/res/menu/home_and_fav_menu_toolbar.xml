@@ -5,8 +5,8 @@
     android:layout_height="0dp"
     tools:context=".activity.MainActivity">
     <item
-        android:id="@+id/action_bar_spinner"
-        android:title="@string/action_bar_spinner"
+        android:id="@+id/currency_spinner"
+        android:title="@string/currency_spinner"
         app:actionViewClass="android.widget.Spinner"
         app:showAsAction="always" />
 
@@ -15,4 +15,14 @@
         android:title="@string/find"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_dots_vertical"
+        android:iconTint="?attr/itemIconTint"
+        android:title="@string/settings"
+        app:showAsAction="never"
+        />
+
+
+
 </menu>

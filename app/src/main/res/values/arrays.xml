@@ -1,0 +1,19 @@
+<resources>
+    <string-array name="language_entries">
+        <item>Russian</item>
+        <item>English</item>
+    </string-array>
+
+    <string-array name="language_values">
+        <item>russian</item>
+        <item>english</item>
+    </string-array>
+
+    <string-array name="spinner_pref">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>RUB</item>
+        <item>CNY</item>
+        <item>GBP</item>
+    </string-array>
+</resources>
