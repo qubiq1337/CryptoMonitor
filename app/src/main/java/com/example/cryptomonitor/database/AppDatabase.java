@@ -1,7 +1,7 @@
 package com.example.cryptomonitor.database;
 
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.RoomDatabase;
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
 
 import com.example.cryptomonitor.database.dao.CoinInfoDao;
 import com.example.cryptomonitor.database.dao.PurchaseDao;

@@ -3,13 +3,13 @@ package com.example.cryptomonitor.activity;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.Guideline;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Guideline;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             }
         });
         mSearchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        ImageView searchIcon = mSearchView.findViewById(android.support.v7.appcompat.R.id.search_button);
+        ImageView searchIcon = mSearchView.findViewById(R.id.search_button);
         searchIcon.setColorFilter(R.attr.itemIconTint, PorterDuff.Mode.DST);// Replace color of search icon
         mSearchView.setOnQueryTextListener(this);
         mSearchView.setOnSearchClickListener(this);
