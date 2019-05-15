@@ -82,12 +82,7 @@ public class CoinRepo implements CoinDataSource {
         }
     }
 
-    @Override
-    public Observable<ModelChart> getChartData(String symbol, String currency) {
-        return Network.getInstance().getApiCryptoCompare().getChartData(symbol, currency)
-                .subscribeOn(Schedulers.io()) // "work" on io thread
-                .observeOn(AndroidSchedulers.mainThread());
-    }
+
 
     @Override
     public void refreshCoins(String currency, RefreshCallback callback) {

@@ -31,5 +31,4 @@ public interface CoinDataSource {
 
     void updateAll(List<CoinInfo> coinInfoList);
 
-    public Observable<ModelChart> getChartData(String symbol, String currency);
 }
