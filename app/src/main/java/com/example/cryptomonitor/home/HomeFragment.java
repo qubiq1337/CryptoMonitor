@@ -58,7 +58,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     private Spinner mSpinner;
     private LinearLayout mLinearSpinner;
     private LinearLayout mLinearSearch;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private Disposable disposableSearch;
     private Disposable disposableSpinner;
     private String[] spinnerArray;
@@ -119,13 +118,11 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
                 .map(CharSequence::toString)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(s -> {
-                    if (s.isEmpty() & mLinearSearch.getVisibility() == View.VISIBLE)
+                    if (mLinearSearch.getVisibility() == View.VISIBLE && s.isEmpty())
                         mHomeViewModel.onSearchClicked();
-
                 })
                 .debounce(500, TimeUnit.MILLISECONDS)
                 .filter(s -> !s.isEmpty())
-                .distinctUntilChanged()
                 .doOnNext(s -> Log.e("Check stream", s))
                 .subscribe(s -> mHomeViewModel.onTextChanged(s));
 
