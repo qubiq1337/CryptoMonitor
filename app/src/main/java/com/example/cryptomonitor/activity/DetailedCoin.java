@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -102,6 +103,7 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
             String mRank = "#" + intent.getIntExtra(EXTRA_POSITION_KEY, position);
             rank.setText(mRank);
             initChart();
+            Log.e("Detailed",mIndex+" "+mCurrency);
         }
 
         mDetailedViewModel = ViewModelProviders.of(this).get(DetailedViewModel.class);

@@ -31,6 +31,10 @@ public class CoinRepo implements CoinDataSource {
     private Disposable mDisposableSubscription;
     private static Executor dbExecutor = AppExecutors.getInstance().getDbExecutor();
 
+    public Disposable getDisposableSubscription() {
+        return mDisposableSubscription;
+    }
+
     @Override
     public void updateAll(List<CoinInfo> coinInfoList) {
         List<CoinInfo> insertList = new ArrayList<>();

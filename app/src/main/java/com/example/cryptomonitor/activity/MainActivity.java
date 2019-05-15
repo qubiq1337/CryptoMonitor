@@ -97,10 +97,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
 //            }
 //        });
 
-    public void onCoinClicked(String index, int position) {
+    public void onCoinClicked(String index, int position,String currency) {
         Intent intent = new Intent(this, DetailedCoin.class);
         intent.putExtra(EXTRA_INDEX_KEY, index);
+        intent.putExtra(EXTRA_CURRENCY_KEY, currency);
         intent.putExtra(EXTRA_POSITION_KEY, position + 1);
+        Log.e("OnCoinClickMain",index+" "+position);
         startActivity(intent);
     }
 }

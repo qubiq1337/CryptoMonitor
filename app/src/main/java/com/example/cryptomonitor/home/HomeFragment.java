@@ -196,7 +196,8 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
 
     @Override
     public void onCoinClick(String index, int position) {
-        ((MainActivity) getActivity()).onCoinClicked(index, position);
+        Log.e("OnCoinClick",index+" "+position);
+        ((MainActivity) getActivity()).onCoinClicked(index, position,mCurrency);
     }
 
     @Override

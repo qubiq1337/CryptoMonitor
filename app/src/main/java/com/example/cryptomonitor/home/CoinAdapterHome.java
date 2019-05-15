@@ -164,8 +164,10 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
                     mOnStarClickListener.onStarClick(clickedCoin);
                 }
             });
-            itemView.setOnClickListener(v ->
-                    mOnCoinClickListener.onCoinClick(mData.get(getAdapterPosition()).getShortName(), getAdapterPosition()));
+            itemView.setOnClickListener(v ->{
+                    Log.e("Adapter",getAdapterPosition()+"");
+                    mOnCoinClickListener.onCoinClick(mData.get(getAdapterPosition()).getShortName(), getAdapterPosition());
+            });
         }
 
     }

@@ -6,6 +6,7 @@ import com.example.cryptomonitor.model_cryptocompare.model_chart.ModelChart;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 
 public interface CoinDataSource {
 
@@ -30,6 +31,8 @@ public interface CoinDataSource {
     void updateCoin(CoinInfo coinInfo);
 
     void updateAll(List<CoinInfo> coinInfoList);
+
+    Disposable getDisposableSubscription();
 
 
 }
