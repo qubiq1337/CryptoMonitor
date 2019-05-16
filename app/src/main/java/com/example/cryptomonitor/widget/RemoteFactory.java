@@ -7,9 +7,13 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+import android.widget.Toast;
 
+import com.example.cryptomonitor.AppExecutors;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.App;
+import com.example.cryptomonitor.database.coins.CoinDataSource;
+import com.example.cryptomonitor.database.coins.CoinRepo;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -18,6 +22,7 @@ import java.util.List;
 
 public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
 
+    private CoinDataSource repository = new CoinRepo();
     private Context mContext;
     private List<SmallCoin> mData = new ArrayList<>();
     private int mAppWidgetId;
@@ -33,9 +38,27 @@ public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
         mData = App.getDatabase().coinInfoDao().getWidgetList();
     }
 
+    //TODO: normal refreshing (method in NetApi)
     @Override
     public void onDataSetChanged() {
         mData = App.getDatabase().coinInfoDao().getWidgetList();
+        repository.refreshCoins("USD", new CoinDataSource.RefreshCallback() {
+            @Override
+            public void onSuccess() {
+                AppExecutors.getInstance().getMainThreadExecutor().execute(() ->
+                        Toast.makeText(mContext, "Refreshed", Toast.LENGTH_SHORT).show()
+                );
+            }
+
+            @Override
+            public void onFailed() {
+                AppExecutors.getInstance().getMainThreadExecutor().execute(() ->
+                        Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show()
+                );
+            }
+        });
+
+
     }
 
     @Override
