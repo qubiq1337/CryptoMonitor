@@ -17,8 +17,8 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".activity.DetailedCoin"
-            android:screenOrientation="portrait"
             android:parentActivityName=".activity.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/DetailedActivityTheme" />
         <activity
             android:name=".buy.BuyActivity"
@@ -36,16 +36,21 @@
         <activity android:name=".activity.MainActivity" />
 
         <receiver
-            android:name=".Widget"
-            android:icon="@android:drawable/star_big_on"
-            android:label="@string/app_name">
+            android:name=".widget.WidgetProvider"
+            android:label="@string/favorites">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"></action>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_metadata"></meta-data>
+                android:resource="@xml/widget_metadata" />
         </receiver>
+
+        <service
+            android:name=".widget.WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS">
+
+        </service>
     </application>
 
 </manifest>

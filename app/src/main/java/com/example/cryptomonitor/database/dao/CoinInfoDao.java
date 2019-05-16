@@ -7,6 +7,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.example.cryptomonitor.database.entities.CoinInfo;
+import com.example.cryptomonitor.widget.SmallCoin;
 
 import java.util.List;
 
@@ -20,6 +21,9 @@ public interface CoinInfoDao {
 
     @Query("select * from coininfo where id=:id")
     CoinInfo getById(long id);
+
+    @Query("select fullName, shortName, imageURL, priceDisplay, symbol from coininfo where isFavorite = 1")
+    List<SmallCoin> getWidgetList();
 
     @Query("select * from coininfo where shortName=:shortName")
     Flowable<List<CoinInfo>> getByShortName(String shortName);

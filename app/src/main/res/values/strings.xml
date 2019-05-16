@@ -29,5 +29,6 @@
     <string name="sort_by_rank">Сортировка по рейтингу</string>
     <string name="sort_by_name">Сортировка по имени</string>
     <string name="sort_by_value">Сортировка по цене</string>
+    <string name="updated_at">Updated at</string>
 
 </resources>
