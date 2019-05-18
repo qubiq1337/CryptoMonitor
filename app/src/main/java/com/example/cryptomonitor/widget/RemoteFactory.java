@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
 public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
@@ -38,7 +39,7 @@ public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onCreate() {
-        mData = App.getDatabase().coinInfoDao().getWidgetList();
+        mData = App.getDatabase().coinInfoDao().getWidgetList().subscribeOn(Schedulers.io()).blockingGet();
     }
 
     //TODO: normal refreshing (method in NetApi)
@@ -68,7 +69,7 @@ public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
                 .toList()
                 .blockingGet();
         App.getDatabase().coinInfoDao().update(coinList);
-        mData = App.getDatabase().coinInfoDao().getWidgetList();
+        mData = App.getDatabase().coinInfoDao().getWidgetList().subscribeOn(Schedulers.io()).blockingGet();
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.example.cryptomonitor.widget.SmallCoin;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 @Dao
 public interface CoinInfoDao {
@@ -23,7 +24,7 @@ public interface CoinInfoDao {
     CoinInfo getById(long id);
 
     @Query("select fullName, shortName, imageURL, priceDisplay, symbol from coininfo where isFavorite = 1")
-    List<SmallCoin> getWidgetList();
+    Single<List<SmallCoin>> getWidgetList();
 
     @Query("select * from coininfo where shortName=:shortName")
     Flowable<List<CoinInfo>> getByShortName(String shortName);
