@@ -1,5 +1,6 @@
 package com.example.cryptomonitor.widget;
 
+import android.accounts.NetworkErrorException;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -7,22 +8,24 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
-import android.widget.Toast;
 
-import com.example.cryptomonitor.AppExecutors;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.App;
-import com.example.cryptomonitor.database.coins.CoinDataSource;
-import com.example.cryptomonitor.database.coins.CoinRepo;
+import com.example.cryptomonitor.database.entities.CoinInfo;
+import com.example.cryptomonitor.model_cryptocompare.model_coins.CoinCryptoCompare;
+import com.example.cryptomonitor.model_cryptocompare.model_coins.CoinsData;
+import com.example.cryptomonitor.network_api.Network;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import retrofit2.Response;
+
 public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    private CoinDataSource repository = new CoinRepo();
     private Context mContext;
     private List<SmallCoin> mData = new ArrayList<>();
     private int mAppWidgetId;
@@ -41,24 +44,31 @@ public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
     //TODO: normal refreshing (method in NetApi)
     @Override
     public void onDataSetChanged() {
+        ArrayList<CoinCryptoCompare> dataList = new ArrayList<>();
+        try {
+            for (int page = 1; page <= 19; page++) {
+                Response<CoinCryptoCompare> response = Network.getInstance()
+                        .getApiCryptoCompare().getAllCoinsToWidget(page, "USD").execute();
+                CoinCryptoCompare coinCryptoCompare = null;
+                if (response.body() != null)
+                    coinCryptoCompare = response.body();
+                else
+                    throw new NetworkErrorException();
+                dataList.add(coinCryptoCompare);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+        List<CoinInfo> coinList = Observable.fromIterable(dataList)
+                .map(CoinCryptoCompare::getData)
+                .flatMap(Observable::fromIterable)
+                .filter(coinsData -> coinsData.getRAW() != null && coinsData.getDISPLAY() != null)
+                .map(this::toCoinInfo)
+                .toList()
+                .blockingGet();
+        App.getDatabase().coinInfoDao().update(coinList);
         mData = App.getDatabase().coinInfoDao().getWidgetList();
-        repository.refreshCoins("USD", new CoinDataSource.RefreshCallback() {
-            @Override
-            public void onSuccess() {
-                AppExecutors.getInstance().getMainThreadExecutor().execute(() ->
-                        Toast.makeText(mContext, "Refreshed", Toast.LENGTH_SHORT).show()
-                );
-            }
-
-            @Override
-            public void onFailed() {
-                AppExecutors.getInstance().getMainThreadExecutor().execute(() ->
-                        Toast.makeText(mContext, "Failed", Toast.LENGTH_SHORT).show()
-                );
-            }
-        });
-
-
     }
 
     @Override
@@ -83,12 +93,13 @@ public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
             e.printStackTrace();
         }
         Bundle extras = new Bundle();
-        extras.putInt(WidgetProvider.POSITION_EXTRA, position);
-        extras.putString(WidgetProvider.SYMBOL_EXTRA, mData.get(position).getSymbol());
+        extras.putInt(WidgetProvider.POSITION_EXTRA, position + 1);
+        //TODO: get normal currency
+        extras.putString(WidgetProvider.SYMBOL_EXTRA, "USD");
         extras.putString(WidgetProvider.SHORT_NAME_EXTRA, mData.get(position).getShortName());
         Intent fillInIntent = new Intent();
         fillInIntent.putExtras(extras);
-        remoteViews.setOnClickFillInIntent(R.layout.widget_list_item, fillInIntent);
+        remoteViews.setOnClickFillInIntent(R.id.widget_layout, fillInIntent);
 
         return remoteViews;
     }
@@ -111,5 +122,25 @@ public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public boolean hasStableIds() {
         return true;
+    }
+
+    private CoinInfo toCoinInfo(CoinsData coinsData) {
+        final String baseImageUrl = "https://www.cryptocompare.com";
+        return new CoinInfo(coinsData.getCoinInfo().getFullName(),
+                coinsData.getCoinInfo().getName(),
+                coinsData.getRAW().getUSD().getPRICE(), coinsData.getDISPLAY().getUSD().getPRICE(),
+                coinsData.getDISPLAY().getUSD().getTOSYMBOL(),
+                baseImageUrl + coinsData.getCoinInfo().getImageUrl(),
+                coinsData.getDISPLAY().getUSD().getCHANGEDAY(),
+                coinsData.getRAW().getUSD().getCHANGEDAY(),
+                coinsData.getDISPLAY().getUSD().getCHANGEPCTDAY(),
+                coinsData.getDISPLAY().getUSD().getSUPPLY(),
+                coinsData.getDISPLAY().getUSD().getMKTCAP(),
+                coinsData.getDISPLAY().getUSD().getVOLUME24HOUR(),
+                coinsData.getDISPLAY().getUSD().getTOTALVOLUME24HTO(),
+                coinsData.getDISPLAY().getUSD().getHIGHDAY(),
+                coinsData.getDISPLAY().getUSD().getLOWDAY(),
+                baseImageUrl + coinsData.getCoinInfo().getUrl()
+        );
     }
 }

@@ -4,13 +4,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.example.cryptomonitor.DetailedViewModel;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.entities.CoinInfo;
@@ -26,18 +28,20 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.squareup.picasso.Picasso;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 
-import static com.example.cryptomonitor.activity.MainActivity.EXTRA_CURRENCY_KEY;
-import static com.example.cryptomonitor.activity.MainActivity.EXTRA_INDEX_KEY;
-import static com.example.cryptomonitor.activity.MainActivity.EXTRA_POSITION_KEY;
 public class DetailedCoin extends AppCompatActivity implements View.OnClickListener {
+    public static final String EXTRA_INDEX_KEY = "INDEX";
+    public static final String EXTRA_CURRENCY_KEY = "CURRENCY";
+    public static final String EXTRA_POSITION_KEY = "POSITION";
     private LineChart lineChart;
     private String mIndex;
     private String mCurrency;

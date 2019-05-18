@@ -3,13 +3,6 @@ package com.example.cryptomonitor.activity;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.Guideline;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +11,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Guideline;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cryptomonitor.ExitClass;
 import com.example.cryptomonitor.R;
@@ -30,12 +31,14 @@ import com.example.cryptomonitor.home.HomeFragment;
 
 import java.util.Objects;
 
+import static com.example.cryptomonitor.activity.DetailedCoin.EXTRA_CURRENCY_KEY;
+import static com.example.cryptomonitor.activity.DetailedCoin.EXTRA_INDEX_KEY;
+import static com.example.cryptomonitor.activity.DetailedCoin.EXTRA_POSITION_KEY;
+
 public class MainActivity extends AppCompatActivity implements NavigationBarFragment.NavigationBarListener,
         ToolbarInteractor {
 
-    public static final String EXTRA_INDEX_KEY = "INDEX";
-    public static final String EXTRA_CURRENCY_KEY = "CURRENCY";
-    public static final String EXTRA_POSITION_KEY = "POSITION";
+
     public static final String THEME = "THEME";
     private static final String SEARCH_TEXT_KEY = "searchKey";
     private String mCurrency;

@@ -5,10 +5,10 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.example.cryptomonitor.R;
+import com.example.cryptomonitor.activity.DetailedCoin;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,7 +26,21 @@ public class WidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("MyLogs", "onReceive: ");
+        if (intent.getAction() != null && intent.getAction().equalsIgnoreCase(ACTION_ON_CLICK)) {
+            Intent activityIntent = new Intent(context, DetailedCoin.class);
+            int position = intent.getIntExtra(POSITION_EXTRA, -1);
+            String index = intent.getStringExtra(SHORT_NAME_EXTRA);
+            String currency = intent.getStringExtra(SYMBOL_EXTRA);
+            activityIntent.putExtra(DetailedCoin.EXTRA_POSITION_KEY, position);
+            activityIntent.putExtra(DetailedCoin.EXTRA_INDEX_KEY, index);
+            activityIntent.putExtra(DetailedCoin.EXTRA_CURRENCY_KEY, currency);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
+            try {
+                pendingIntent.send();
+            } catch (PendingIntent.CanceledException e) {
+                e.printStackTrace();
+            }
+        }
         super.onReceive(context, intent);
     }
 
