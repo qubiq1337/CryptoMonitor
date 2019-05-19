@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.activity.DetailedCoin;
@@ -21,6 +22,8 @@ public class WidgetProvider extends AppWidgetProvider {
 
     final static String ACTION_ON_CLICK = "onItemClick";
     final static String ITEM_POSITION = "itemPosition";
+    public static final String ACTION_SHOW_TOAST = "showToast";
+    public static final String EXTRA_MESSAGE = "extraMessage";
 
     private SimpleDateFormat mDateFormat = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.getDefault());
 
@@ -34,12 +37,17 @@ public class WidgetProvider extends AppWidgetProvider {
             activityIntent.putExtra(DetailedCoin.EXTRA_POSITION_KEY, position);
             activityIntent.putExtra(DetailedCoin.EXTRA_INDEX_KEY, index);
             activityIntent.putExtra(DetailedCoin.EXTRA_CURRENCY_KEY, currency);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, 0);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             try {
                 pendingIntent.send();
             } catch (PendingIntent.CanceledException e) {
                 e.printStackTrace();
             }
+        }
+
+        if (intent.getAction() != null && intent.getAction().equalsIgnoreCase(ACTION_SHOW_TOAST)) {
+            String message = intent.getStringExtra(EXTRA_MESSAGE);
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         }
         super.onReceive(context, intent);
     }

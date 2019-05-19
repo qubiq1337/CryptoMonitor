@@ -1,6 +1,7 @@
 package com.example.cryptomonitor.widget;
 
 import android.accounts.NetworkErrorException;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -11,13 +12,13 @@ import android.widget.RemoteViewsService;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.App;
+import com.example.cryptomonitor.database.dao.CoinInfoDao;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.model_cryptocompare.model_coins.CoinCryptoCompare;
 import com.example.cryptomonitor.model_cryptocompare.model_coins.CoinsData;
 import com.example.cryptomonitor.network_api.Network;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private Context mContext;
     private List<SmallCoin> mData = new ArrayList<>();
+    private CoinInfoDao dao = App.getDatabase().coinInfoDao();
     private int mAppWidgetId;
 
     RemoteFactory(Context context, Intent intent) {
@@ -39,15 +41,15 @@ public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onCreate() {
-        mData = App.getDatabase().coinInfoDao().getWidgetList().subscribeOn(Schedulers.io()).blockingGet();
+        mData = dao.getWidgetList().subscribeOn(Schedulers.io()).blockingGet();
     }
 
-    //TODO: normal refreshing (method in NetApi)
     @Override
     public void onDataSetChanged() {
+        sendMessageIntent(mContext.getString(R.string.updating));
         ArrayList<CoinCryptoCompare> dataList = new ArrayList<>();
         try {
-            for (int page = 1; page <= 19; page++) {
+            for (int page = 0; page <= 19; page++) {
                 Response<CoinCryptoCompare> response = Network.getInstance()
                         .getApiCryptoCompare().getAllCoinsToWidget(page, "USD").execute();
                 CoinCryptoCompare coinCryptoCompare = null;
@@ -58,6 +60,7 @@ public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
                 dataList.add(coinCryptoCompare);
             }
         } catch (Exception e) {
+            sendMessageIntent(mContext.getString(R.string.updating_failed));
             e.printStackTrace();
             return;
         }
@@ -68,8 +71,9 @@ public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
                 .map(this::toCoinInfo)
                 .toList()
                 .blockingGet();
-        App.getDatabase().coinInfoDao().update(coinList);
-        mData = App.getDatabase().coinInfoDao().getWidgetList().subscribeOn(Schedulers.io()).blockingGet();
+        updateAll(coinList);
+        mData = dao.getWidgetList().subscribeOn(Schedulers.io()).blockingGet();
+        sendMessageIntent(mContext.getString(R.string.update_success));
     }
 
     @Override
@@ -90,7 +94,7 @@ public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
         try {
             Bitmap bitmap = Picasso.with(mContext).load(mData.get(position).getImageURL()).get();
             remoteViews.setImageViewBitmap(R.id.coin_icon, bitmap);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         Bundle extras = new Bundle();
@@ -143,5 +147,35 @@ public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
                 coinsData.getDISPLAY().getUSD().getLOWDAY(),
                 baseImageUrl + coinsData.getCoinInfo().getUrl()
         );
+    }
+
+    private void sendMessageIntent(String message) {
+        Intent toastIntent = new Intent(mContext, WidgetProvider.class);
+        toastIntent.setAction(WidgetProvider.ACTION_SHOW_TOAST);
+        toastIntent.putExtra(WidgetProvider.EXTRA_MESSAGE, message);
+        PendingIntent updPIntent = PendingIntent.getBroadcast(mContext, 0, toastIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        try {
+            updPIntent.send();
+        } catch (PendingIntent.CanceledException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateAll(List<CoinInfo> coinInfoList) {
+        List<CoinInfo> insertList = new ArrayList<>();
+        List<CoinInfo> updateList = new ArrayList<>();
+        for (CoinInfo coinInfo : coinInfoList) {
+            List<CoinInfo> dbInfoList = dao.getByFullName(coinInfo.getFullName());
+            if (dbInfoList.isEmpty()) {
+                insertList.add(coinInfo);
+            } else {
+                CoinInfo dbCoinInfo = dbInfoList.get(0);
+                coinInfo.setId(dbCoinInfo.getId());
+                coinInfo.setFavorite(dbCoinInfo.isFavorite());
+                updateList.add(coinInfo);
+            }
+        }
+        dao.insert(insertList);
+        dao.update(updateList);
     }
 }
