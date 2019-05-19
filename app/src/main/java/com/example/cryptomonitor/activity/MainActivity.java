@@ -58,9 +58,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fragmentContainer = findViewById(R.id.top_container);
+        Toolbar toolbar = findViewById(R.id.home_and_fav_toolbar);
+        setSupportActionBar(toolbar);
         if (savedInstanceState == null) {
-            Toolbar toolbar = findViewById(R.id.home_and_fav_toolbar);
-            setSupportActionBar(toolbar);
             changeFragment(R.id.top_container, HomeFragment.class.getName());
             setupBottomNavBar();
         } else {

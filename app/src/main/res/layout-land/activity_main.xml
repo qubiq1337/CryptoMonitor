@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context="com.example.cryptomonitor.activity.MainActivity">
 
+    <include
+        android:id="@+id/home_and_fav_toolbar"
+        layout="@layout/home_and_fav_toolbar"
+        app:layout_constraintBottom_toTopOf="@+id/top_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
         android:id="@+id/top_container"
@@ -14,7 +21,7 @@
         app:layout_constraintBottom_toTopOf="@id/bottom_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/home_and_fav_toolbar" />
 
 
     <FrameLayout

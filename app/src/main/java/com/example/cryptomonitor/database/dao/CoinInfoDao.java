@@ -38,6 +38,9 @@ public interface CoinInfoDao {
     @Query("select * from coininfo where fullName like :search || '%' order by fullName")
     Flowable<List<CoinInfo>> getSearchCoins(String search);
 
+    @Query("select * from coininfo where fullName like :search || '%' and isFavorite = 1 order by fullName")
+    Flowable<List<CoinInfo>> getSearchFavoriteCoins(String search);
+
     @Query("select count(*) from coininfo")
     int getDatabaseSize();
 
@@ -58,4 +61,6 @@ public interface CoinInfoDao {
 
     @Delete
     int delete(CoinInfo coinInfo);
+
+
 }
