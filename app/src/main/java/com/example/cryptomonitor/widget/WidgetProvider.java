@@ -127,7 +127,7 @@ public class WidgetProvider extends AppWidgetProvider {
     }
 
     private void updateDB(Context context, int[] ids) {
-        AppExecutors.getInstance().getNetworkExecutor().execute(() -> {
+        AppExecutors.getInstance().getDbExecutor().execute(() -> {
             ArrayList<CoinCryptoCompare> dataList = new ArrayList<>();
             try {
                 for (int page = 0; page <= 19; page++) {

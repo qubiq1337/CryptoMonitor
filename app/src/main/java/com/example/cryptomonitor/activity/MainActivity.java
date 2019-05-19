@@ -7,8 +7,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewPropertyAnimator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
@@ -41,22 +43,26 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
 
     public static final String THEME = "THEME";
     private static final String SEARCH_TEXT_KEY = "searchKey";
+    private static final long ANIM_DURATION = 150;
     private String mCurrency;
     private String savedText;
     private SearchView mSearchView;
     private MenuItem mSpinnerItem;
     private ToolbarInteractor mToolbarInteractor;
+    private FrameLayout fragmentContainer;
+    private ViewPropertyAnimator animator;
     private boolean isSearchViewExpanded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fragmentContainer = findViewById(R.id.top_container);
         if (savedInstanceState == null) {
             Toolbar toolbar = findViewById(R.id.home_and_fav_toolbar);
             setSupportActionBar(toolbar);
             changeFragment(R.id.top_container, HomeFragment.class.getName());
-            changeFragment(R.id.bottom_container, NavigationBarFragment.class.getName());
+            setupBottomNavBar();
         } else {
             Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.top_container);
             if (fragment instanceof ToolbarInteractor) {
@@ -74,35 +80,53 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
 
     @Override
     public void changeFragment(int container, String fragmentName) {
-        Fragment fragment;
-        String tag = fragmentName;
-        if (fragmentName.equals(HomeFragment.class.getName())) {
-            Objects.requireNonNull(getSupportActionBar()).show();
-            fragment = new HomeFragment();
-        } else if (fragmentName.equals(FavoritesFragment.class.getName())) {
-            Objects.requireNonNull(getSupportActionBar()).show();
-            fragment = new FavoritesFragment();
-        } else if (fragmentName.equals(HistoryFragment.class.getName())) {
-            Objects.requireNonNull(getSupportActionBar()).hide();
-            fragment = new HistoryFragment();
-        } else if (fragmentName.equals(NavigationBarFragment.class.getName())) {
-            fragment = new NavigationBarFragment();
-        } else if (fragmentName.equals(BriefcaseFragment.class.getName())) {
-            Objects.requireNonNull(getSupportActionBar()).hide();
-            fragment = new BriefcaseFragment();
-        } else {
-            Log.e("ERROR", "No such fragment: " + fragmentName);
-            return;
-        }
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(container, fragment, tag);
-        fragmentTransaction.commit();
-        if (fragment instanceof ToolbarInteractor) {
-            mToolbarInteractor = (ToolbarInteractor) fragment;
-            mToolbarInteractor.setCurrency(mCurrency);
-        }
+
+        animator = fragmentContainer
+                .animate()
+                .setDuration(ANIM_DURATION)
+                .alpha(0f)
+                .withEndAction(() -> {
+                    Fragment fragment;
+                    String tag = fragmentName;
+                    if (fragmentName.equals(HomeFragment.class.getName())) {
+                        Objects.requireNonNull(getSupportActionBar()).show();
+                        fragment = new HomeFragment();
+                    } else if (fragmentName.equals(FavoritesFragment.class.getName())) {
+                        Objects.requireNonNull(getSupportActionBar()).show();
+                        fragment = new FavoritesFragment();
+                    } else if (fragmentName.equals(HistoryFragment.class.getName())) {
+                        Objects.requireNonNull(getSupportActionBar()).hide();
+                        fragment = new HistoryFragment();
+                    } else if (fragmentName.equals(BriefcaseFragment.class.getName())) {
+                        Objects.requireNonNull(getSupportActionBar()).hide();
+                        fragment = new BriefcaseFragment();
+                    } else {
+                        Log.e("ERROR", "No such fragment: " + fragmentName);
+                        return;
+                    }
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(container, fragment, tag);
+                    fragmentTransaction.commit();
+                    if (fragment instanceof ToolbarInteractor) {
+                        mToolbarInteractor = (ToolbarInteractor) fragment;
+                        mToolbarInteractor.setCurrency(mCurrency);
+                    }
+                    animator = fragmentContainer
+                            .animate()
+                            .setDuration(ANIM_DURATION)
+                            .alpha(1f);
+                    animator.start();
+                });
+        animator.start();
+
     }
 
+    private void setupBottomNavBar() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.bottom_container, new NavigationBarFragment())
+                .commit();
+    }
 
     @Override
     public void onBackPressed() {
