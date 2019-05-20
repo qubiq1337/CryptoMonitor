@@ -43,14 +43,6 @@ class BriefcaseViewModel extends ViewModel {
             public void onLoaded(List<PurchaseAndCoin> purchaseList) {
                 mPurchaseAndCoinLive.setValue(purchaseList);
                 compositeDisposable.add(Observable.fromIterable(purchaseList)
-                        .doOnNext(purchaseAndCoin -> {
-                            Log.e("PurchaseAndCoin", purchaseAndCoin.getCoinFullName() + " "
-                                    + purchaseAndCoin.getPurchase().getPrice_purchase() + " "
-                                    + purchaseAndCoin.getPurchase().getAmount() + " "
-                                    + purchaseAndCoin.getPurchase().getDateStr()
-                            );
-                            Log.e("PurchaseAndCoin", "Double coin price" + purchaseAndCoin.getDouble_price());
-                        })
                         .groupBy(PurchaseAndCoin::getCoinFullName)
                         .flatMapSingle(group ->
                                 group.map(purchaseAndCoin -> purchaseAndCoin.getPurchase().getAmount() * purchaseAndCoin.getPurchase().getPrice_purchase())
@@ -62,7 +54,6 @@ class BriefcaseViewModel extends ViewModel {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(pieEntries -> mPieLiveData.setValue(pieEntries)));
             }
-
             @Override
             public void onFailed() {
                 //ignored
@@ -85,7 +76,7 @@ class BriefcaseViewModel extends ViewModel {
         return currenciesLiveData;
     }
 
-    public void itemSwiped (Purchase purchase){
+    public void removeSwipedItem(Purchase purchase){
         mPurchaseRepo.remove(purchase);
     }
 

@@ -10,7 +10,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 
 import com.example.cryptomonitor.activity.TransactionActivity;
-import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.entities.Purchase;
 import com.example.cryptomonitor.model_cryptocompare.model_currencies.CurrenciesData;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -19,14 +18,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.PortfolioAdapter;
-import com.example.cryptomonitor.buy.BuyActivity;
 import com.example.cryptomonitor.database.purchases.PurchaseAndCoin;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -35,10 +32,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
-
 import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
 
@@ -76,7 +70,7 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 Purchase purchase = portfolioAdapter.getmPortfolioItemList().get(viewHolder.getAdapterPosition()).getPurchase();
-                mViewModel.itemSwiped(purchase);
+                mViewModel.removeSwipedItem(purchase);
             }
             @Override
             public int getSwipeDirs(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
