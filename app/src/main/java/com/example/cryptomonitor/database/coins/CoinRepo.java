@@ -9,6 +9,7 @@ import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.model_cryptocompare.model_chart.ModelChart;
 import com.example.cryptomonitor.model_cryptocompare.model_coins.CoinCryptoCompare;
 import com.example.cryptomonitor.model_cryptocompare.model_coins.CoinsData;
+import com.example.cryptomonitor.model_cryptocompare.model_currencies.CurrenciesData;
 import com.example.cryptomonitor.network_api.ApiCryptoCompare;
 import com.example.cryptomonitor.network_api.Network;
 
@@ -17,9 +18,12 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class CoinRepo implements CoinDataSource {
@@ -95,8 +99,8 @@ public class CoinRepo implements CoinDataSource {
     }
 
     private void testRxLoadCoins(String currency, RefreshCallback callback) {
-        compositeDisposable = new CompositeDisposable();
-        compositeDisposable.add(concatObservable(currency)
+
+        /*compositeDisposable.add(concatObservable(currency)
                 .subscribeOn(Schedulers.io()) // "work" on io thread
                 .map(CoinCryptoCompare::getData)
                 .flatMap(Observable::fromIterable)
@@ -115,12 +119,47 @@ public class CoinRepo implements CoinDataSource {
                         }
                 ));
 
+        compositeDisposable.add(mCoinInfoApi
+                .getAllCurrencies(currency)
+                .subscribeOn(Schedulers.io())
+                .subscribe(this::updateCurrencies)
+        );*/
+
+        Single<List<CoinInfo>> test1 = concatObservable(currency)
+                .subscribeOn(Schedulers.io()) // "work" on io thread
+                .map(CoinCryptoCompare::getData)
+                .flatMap(Observable::fromIterable)
+                .filter(coinsData -> coinsData.getRAW() != null && coinsData.getDISPLAY() != null)
+                .map(this::toCoinInfo)
+                .toList();
+
+        Single<CurrenciesData> test2 = mCoinInfoApi
+                .getAllCurrencies(currency)
+                .subscribeOn(Schedulers.io());
+
+        compositeDisposable.add(Observable
+                .combineLatest(test1.toObservable(), test2.toObservable(), (coinInfoList, currenciesData) -> {
+                    updateCurrencies(currenciesData);
+                    return coinInfoList;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(coinInfoList -> {
+                            Log.e("testRxLoadCoins", "coinInfoList size:" + coinInfoList.size());
+                            callback.onSuccess();
+                            updateAll(coinInfoList);
+                        }, e -> {
+                            Log.e("testRxLoadCoins", "FAILED DOWNLOAD: ", e);
+                            callback.onFailed();
+                        }
+                ));
     }
 
+    //Rename concatObs to merge
     private Observable<CoinCryptoCompare> concatObservable(String currency) {
         Observable<CoinCryptoCompare> concatObs = mCoinInfoApi.getAllCoins(0, currency);
         for (int i = 0; i < 19; i++)
-            concatObs = Observable.concat(concatObs, mCoinInfoApi.getAllCoins(i + 1, currency));
+            concatObs = Observable.merge(concatObs, mCoinInfoApi.getAllCoins(i + 1, currency));
         return concatObs;
     }
 
@@ -139,7 +178,22 @@ public class CoinRepo implements CoinDataSource {
                 coinsData.getDISPLAY().getUSD().getTOTALVOLUME24HTO(),
                 coinsData.getDISPLAY().getUSD().getHIGHDAY(),
                 coinsData.getDISPLAY().getUSD().getLOWDAY(),
-                BASE_IMAGE_URL + coinsData.getCoinInfo().getUrl()
+                BASE_IMAGE_URL + coinsData.getCoinInfo().getUrl(),
+                coinsData.getRAW().getUSD().getMKTCAP()
         );
     }
+
+
+    private void updateCurrencies(CurrenciesData currenciesData) {
+        CurrenciesData dbCurrencies = App.getDatabase().currenciesDao().getAll();
+        if (dbCurrencies == null) {
+            App.getDatabase().currenciesDao().insert(currenciesData);
+            Log.e("updateCurrencies", "insert " + currenciesData.getRUB());
+        } else {
+            currenciesData.setId_currency(dbCurrencies.getId_currency());
+            App.getDatabase().currenciesDao().update(currenciesData);
+            Log.e("updateCurrencies", "update " + currenciesData.getRUB());
+        }
+    }
+
 }

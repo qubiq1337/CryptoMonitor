@@ -29,5 +29,7 @@
     <string name="sort_by_rank">Сортировка по рейтингу</string>
     <string name="sort_by_name">Сортировка по имени</string>
     <string name="sort_by_value">Сортировка по цене</string>
+    <string name="transaction_price_in">Price in %1$s</string>
+    <string name="transaction_total_cost">Total cost in %1$s</string>
 
 </resources>

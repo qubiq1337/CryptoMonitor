@@ -37,6 +37,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 
+import static com.example.cryptomonitor.Utilities.formatToMillion;
 import static com.example.cryptomonitor.activity.MainActivity.EXTRA_CURRENCY_KEY;
 import static com.example.cryptomonitor.activity.MainActivity.EXTRA_INDEX_KEY;
 import static com.example.cryptomonitor.activity.MainActivity.EXTRA_POSITION_KEY;
@@ -180,8 +181,8 @@ public class DetailedCoin extends AppCompatActivity {
         String changeConcat = coinInfo.getChangeDayDispaly() + " (" + coinInfo.getChangePctDay() + "%)";
         change.setText(changeConcat);
         mkt.setText(coinInfo.getMktcap());
-        supply.setText(coinInfo.getSupply());
-        volume.setText(coinInfo.getVolume());
+        supply.setText(formatToMillion(coinInfo.getSupply()));
+        volume.setText(formatToMillion(coinInfo.getVolume()));
         total_volme.setText(coinInfo.getTotalVolume24hTo());
         high.setText(coinInfo.getHigh());
         low.setText(coinInfo.getLow());

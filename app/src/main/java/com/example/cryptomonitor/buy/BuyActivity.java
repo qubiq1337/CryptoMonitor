@@ -131,8 +131,8 @@ public class BuyActivity extends AppCompatActivity implements MinCoinAdapter.OnI
                 mViewModel.exit();
                 break;
             case R.id.ready_image:
-                mViewModel.ready(mPriceEdit.getText().toString(),
-                        mAmountEdit.getText().toString());
+                mViewModel.ready(mPriceEdit.getText().toString(), mAmountEdit.getText().toString());
+
                 break;
             case R.id.date_edit:
                 DialogFragment newFragment = new DatePickerFragment();

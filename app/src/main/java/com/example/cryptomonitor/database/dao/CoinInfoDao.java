@@ -24,6 +24,9 @@ public interface CoinInfoDao {
     @Query("select * from coininfo where shortName=:shortName")
     Flowable<List<CoinInfo>> getByShortName(String shortName);
 
+    @Query("select * from coininfo ")
+    Flowable<List<CoinInfo>> getAll();
+
     @Query("select * from coininfo where fullName=:fullName")
     List<CoinInfo> getByFullName(String fullName);
 

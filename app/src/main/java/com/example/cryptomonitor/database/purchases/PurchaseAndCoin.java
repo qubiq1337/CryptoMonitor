@@ -16,6 +16,9 @@ public class PurchaseAndCoin {
     @ColumnInfo(name = "coin_full_name")
     private String coinFullName;
 
+    @ColumnInfo(name = "coin_price")
+    private Double double_price;
+
     @ColumnInfo(name = "coin_short_name")
     private String coinIndex;
 
@@ -60,5 +63,13 @@ public class PurchaseAndCoin {
 
     public void setPurchase(Purchase purchase) {
         mPurchase = purchase;
+    }
+
+    public Double getDouble_price() {
+        return double_price;
+    }
+
+    public void setDouble_price(Double double_price) {
+        this.double_price = double_price;
     }
 }

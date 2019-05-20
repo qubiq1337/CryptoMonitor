@@ -15,10 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeDark"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activity.TransactionActivity"></activity>
         <activity
             android:name=".activity.DetailedCoin"
-            android:screenOrientation="portrait"
             android:parentActivityName=".activity.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/DetailedActivityTheme" />
         <activity
             android:name=".buy.BuyActivity"
