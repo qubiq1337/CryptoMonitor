@@ -38,6 +38,8 @@ import java.util.Locale;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
 
+import static com.example.cryptomonitor.Utilities.formatToMillion;
+
 public class DetailedCoin extends AppCompatActivity implements View.OnClickListener {
     public static final String EXTRA_INDEX_KEY = "INDEX";
     public static final String EXTRA_CURRENCY_KEY = "CURRENCY";
@@ -175,8 +177,8 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
         String changeConcat = coinInfo.getChangeDayDispaly() + " (" + coinInfo.getChangePctDay() + "%)";
         change.setText(changeConcat);
         mkt.setText(coinInfo.getMktcap());
-        supply.setText(coinInfo.getSupply());
-        volume.setText(coinInfo.getVolume());
+        supply.setText(formatToMillion(coinInfo.getSupply()));
+        volume.setText(formatToMillion(coinInfo.getVolume()));
         total_volume.setText(coinInfo.getTotalVolume24hTo());
         high.setText(coinInfo.getHigh());
         low.setText(coinInfo.getLow());

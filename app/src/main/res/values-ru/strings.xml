@@ -29,6 +29,8 @@
     <string name="date">Дата</string>
     <string name="settings">Настройки</string>
     <string name="sort">Сортировка</string>
+    <string name="transaction_price_in">Цена в %1$s</string>
+    <string name="transaction_total_cost">Итоговая цена в %1$s</string>
     <string name="sort_by_rank">Сортировка по рейтингу</string>
     <string name="sort_by_name">Сортировка по имени</string>
     <string name="sort_by_value">Сортировка по цене</string>

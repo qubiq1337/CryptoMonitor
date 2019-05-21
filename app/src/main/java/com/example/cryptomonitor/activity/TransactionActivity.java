@@ -30,11 +30,9 @@ import com.example.cryptomonitor.fragment.DatePickerFragment;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 
 import static com.example.cryptomonitor.TransactionViewModel.coinSymbols;
 import static com.example.cryptomonitor.Utilities.cashFormatting;
@@ -60,7 +58,7 @@ public class TransactionActivity extends AppCompatActivity implements View.OnCli
     private TextView mCancelButton;
     private long coinId;
     private Disposable disposable;
-    private TextView mPriceSimbol;
+    private TextView mPriceSymbol;
     private TextView mTotalCostSymbol;
     private TextView mTotalCostText;
 
@@ -81,7 +79,7 @@ public class TransactionActivity extends AppCompatActivity implements View.OnCli
         mSellRadioButton = findViewById(R.id.transaction_sell_button);
         mReadyButton = findViewById(R.id.transaction_ready);
         mCancelButton = findViewById(R.id.transaction_cancel);
-        mPriceSimbol = findViewById(R.id.transaction_price_symbol);
+        mPriceSymbol = findViewById(R.id.transaction_price_symbol);
         mTotalCostSymbol = findViewById(R.id.transaction_total_cost_symbol);
         mTotalCostText = findViewById(R.id.transaction_total_cost_text);
         mCancelButton.setOnClickListener(this);
@@ -235,7 +233,7 @@ public class TransactionActivity extends AppCompatActivity implements View.OnCli
         mPriceIn.setText(getString(R.string.transaction_price_in, currency));
         mTotalCostText.setText(getString(R.string.transaction_total_cost, currency));
         mTotalCostSymbol.setText(s);
-        mPriceSimbol.setText(s);
+        mPriceSymbol.setText(s);
     };
 
     @Override

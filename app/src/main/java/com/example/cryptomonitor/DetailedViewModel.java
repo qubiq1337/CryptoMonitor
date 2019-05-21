@@ -61,7 +61,7 @@ public class DetailedViewModel extends ViewModel {
                 .getChartData1M(symbol, currency)
                 .subscribe(modelChart ->
                                 mChartLiveData.setValue(modelChart),
-                        throwable -> Log.e("chartRepo", "Eror", throwable)
+                        throwable -> Log.e("chartRepo", "Error", throwable)
                 );
     }
 

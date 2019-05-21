@@ -12,8 +12,7 @@ import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.database.entities.Purchase;
 import com.example.cryptomonitor.model_cryptocompare.model_currencies.CurrenciesData;
 
-@Database(entities = {CoinInfo.class, Purchase.class, CurrenciesData.class}, version = 1, exportSchema = false)
-@Database(entities = {CoinInfo.class, Purchase.class, Bill.class}, version = 1, exportSchema = false)
+@Database(entities = {CoinInfo.class, Purchase.class, CurrenciesData.class, Bill.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract CoinInfoDao coinInfoDao();
 

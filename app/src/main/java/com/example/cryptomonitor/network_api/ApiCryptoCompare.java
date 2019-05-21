@@ -7,6 +7,7 @@ import com.example.cryptomonitor.model_cryptocompare.model_currencies.Currencies
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -28,6 +29,7 @@ public interface ApiCryptoCompare {
 
     @GET ("/data/price?&tsyms=USD,EUR,RUB,CNY,GBP")
     Single<CurrenciesData> getAllCurrencies (@Query("fsym") String currency);
+
     @GET("/data/top/mktcapfull?limit=100")
     Call<CoinCryptoCompare> getAllCoinsToWidget(@Query("page") int page, @Query("tsym") String currency);
 

@@ -182,7 +182,8 @@ public class WidgetProvider extends AppWidgetProvider {
                 coinsData.getDISPLAY().getUSD().getTOTALVOLUME24HTO(),
                 coinsData.getDISPLAY().getUSD().getHIGHDAY(),
                 coinsData.getDISPLAY().getUSD().getLOWDAY(),
-                baseImageUrl + coinsData.getCoinInfo().getUrl()
+                baseImageUrl + coinsData.getCoinInfo().getUrl(),
+                coinsData.getRAW().getUSD().getMKTCAP()
         );
     }
 
