@@ -3,6 +3,7 @@ package com.example.cryptomonitor;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -51,16 +52,19 @@ public class Utilities {
             BigDecimal bigDecimal = BigDecimal.valueOf(round(d, 2));
             result = bigDecimal.toPlainString();
         } else {
-            DecimalFormat decimalFormat = new DecimalFormat(".##");
+            //Смена Local ставиться точка пример 89.9
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat decimalFormat = new DecimalFormat(".##",symbols);
             decimalFormat.setRoundingMode(RoundingMode.CEILING);
-            decimalFormat.format(d);
+
             result = decimalFormat.format(d);
         }
         return result;
     }
     public static Double simplePercentFormatting(Double d) {
         String result;
-            DecimalFormat decimalFormat = new DecimalFormat(".#");
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat decimalFormat = new DecimalFormat(".#",symbols);
             decimalFormat.setRoundingMode(RoundingMode.CEILING);
             decimalFormat.format(d);
             result = decimalFormat.format(d);
@@ -73,7 +77,8 @@ public class Utilities {
             BigDecimal bigDecimal = BigDecimal.valueOf(round(d, 2));
             result = bigDecimal.toPlainString();
         } else {
-            DecimalFormat decimalFormat = new DecimalFormat("##,###.##");
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat decimalFormat = new DecimalFormat("##,###.##",symbols);
             decimalFormat.setRoundingMode(RoundingMode.CEILING);
             decimalFormat.format(d);
             result = decimalFormat.format(d);
