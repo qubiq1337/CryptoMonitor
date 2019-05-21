@@ -21,6 +21,7 @@ import com.example.cryptomonitor.events.Message;
 import com.example.cryptomonitor.events.PriceEvent;
 import com.example.cryptomonitor.model_cryptocompare.model_currencies.CurrenciesData;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -171,6 +172,12 @@ public class TransactionViewModel extends ViewModel {
                         mBill.setBuy_currency_symbol(mPurchase.getBuyCurrencySymbol());
                         mBill.setImage_url(mCurrentPurchaseAndCoin.getIconURL());
 
+                        //Возвращение прежнего значения даты покупки
+                        int[] dates = strToDate(buyDatePurchase);
+                        mPurchase.setDay(dates[0]);
+                        mPurchase.setMonth(dates[1]);
+                        mPurchase.setYear(dates[2]);
+
                         double purchaseAmount = mPurchase.getAmount();
                         if (amount < purchaseAmount) {
                             billDataSource.insert(mBill);
@@ -227,6 +234,7 @@ public class TransactionViewModel extends ViewModel {
         mPurchase = mCurrentPurchaseAndCoin.getPurchase();
         //Сохраняем дату покупки Purchase
         buyDatePurchase = mPurchase.getDateStr();
+
         mAutoCompleteTextViewEnabled.setValue(false);
         mAutoCompleteTextLiveData.setValue(mCurrentPurchaseAndCoin.getCoinFullName());
         mSymbolLiveData.setValue(mCurrentPurchaseAndCoin.getPurchase().getBuyCurrencySymbol());
@@ -328,13 +336,19 @@ public class TransactionViewModel extends ViewModel {
     }
 
     private int[] strToDate(String dateStr) {
+
         int[] date = new int[3];
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy",Locale.US);
         SimpleDateFormat dayf = new SimpleDateFormat("dd", Locale.US);
         SimpleDateFormat monf = new SimpleDateFormat("MM", Locale.US);
-        SimpleDateFormat yearf = new SimpleDateFormat("YYYY", Locale.US);
-        date[0]=Integer.parseInt(dayf.format(dateStr));
-        date[1] = Integer.parseInt(monf.format(dateStr));
-        date[2] = Integer.parseInt(yearf.format(dateStr));
+        SimpleDateFormat yearf = new SimpleDateFormat("yyyy", Locale.US);
+        try {
+            date[0] = Integer.parseInt(dayf.format(simpleDateFormat.parse(dateStr)));
+            date[1] = Integer.parseInt(monf.format(simpleDateFormat.parse(dateStr)));
+            date[2] = Integer.parseInt(yearf.format(simpleDateFormat.parse(dateStr)));
+        }catch (ParseException e) {
+            e.printStackTrace();
+        }
         return date;
     }
 
