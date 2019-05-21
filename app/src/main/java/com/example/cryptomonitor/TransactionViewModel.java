@@ -64,8 +64,8 @@ public class TransactionViewModel extends ViewModel {
         coinSymbols.put("\u0024", "USD");
         coinSymbols.put("\u20AC", "EUR");
         coinSymbols.put("\u20BD", "RUB");
-        coinSymbols.put("\u5713", "CNY");
-        coinSymbols.put("\uFFE1", "GBP");
+        coinSymbols.put("\u00a5", "CNY");
+        coinSymbols.put("\u00a3", "GBP");
     }
 
     public LiveData<String> getSymbolLiveData() {
