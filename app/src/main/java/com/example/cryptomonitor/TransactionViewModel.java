@@ -7,6 +7,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.cryptomonitor.database.bills.BillDataSource;
+import com.example.cryptomonitor.database.bills.BillRepo;
+import com.example.cryptomonitor.database.entities.Bill;
 import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.database.entities.Purchase;
 import com.example.cryptomonitor.database.purchases.PurchaseAndCoin;
@@ -18,7 +21,10 @@ import com.example.cryptomonitor.events.Message;
 import com.example.cryptomonitor.events.PriceEvent;
 import com.example.cryptomonitor.model_cryptocompare.model_currencies.CurrenciesData;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import io.reactivex.disposables.Disposable;
 
@@ -47,6 +53,10 @@ public class TransactionViewModel extends ViewModel {
     private Disposable disposable;
     private String MODE = "BUY MODE";
     private CurrenciesData mCurrencies;
+    private BillDataSource billDataSource = new BillRepo();
+    private Bill mBill;
+    private String nowDate = "";
+    private String buyDatePurchase = "";
     public static final HashMap<String, String> coinSymbols = new HashMap<>();
 
     static {
@@ -57,7 +67,7 @@ public class TransactionViewModel extends ViewModel {
         coinSymbols.put("\uFFE1", "GBP");
     }
 
-    public LiveData<String> getSymbolLiveData(){
+    public LiveData<String> getSymbolLiveData() {
         return mSymbolLiveData;
     }
 
@@ -105,6 +115,7 @@ public class TransactionViewModel extends ViewModel {
         defaultSetup();
     }
 
+
     public void coinSelected(CoinInfo coinInfo) {
         mCurrentCoinInfo = coinInfo;
         mSelectedCoin.setValue(coinInfo);
@@ -126,6 +137,8 @@ public class TransactionViewModel extends ViewModel {
         mPurchase.setDay(day);
         mPurchase.setMonth(month + 1);
         mPurchase.setYear(year);
+        if (nowDate.isEmpty()) nowDate = mPurchase.getDateStr();
+        mBill.setSell_date(mPurchase.getDateStr());
         mDateSet.setValue(dateFormatting(mPurchase.getDateStr()));
     }
 
@@ -140,28 +153,48 @@ public class TransactionViewModel extends ViewModel {
             try {
                 price = Double.parseDouble(priceStr);
                 amount = Double.parseDouble(amountStr);
-                mPurchase.setAmount(amount);
-                mPurchase.setPrice_purchase(price);
 
                 switch (MODE) {
                     case (EDIT_MODE):
+                        mPurchase.setAmount(amount);
+                        mPurchase.setPrice_purchase(price);
                         mPurchaseDataSource.update(mPurchase);
+                        mEvent.setValue(new FinishEvent());
                         break;
                     case (SELL_MODE):
-                        // set History true
-                        // update
+                        mBill.setAmount(amount);
+                        mBill.setSellPrice(price);
+                        mBill.setBuyPrice(mPurchase.getPrice_purchase());
+                        mBill.setFull_name(mCurrentPurchaseAndCoin.getCoinFullName());
+                        mBill.setShort_name(mCurrentPurchaseAndCoin.getCoinIndex());
+                        mBill.setBuy_date(buyDatePurchase);
+                        mBill.setBuy_currency_symbol(mPurchase.getBuyCurrencySymbol());
+                        mBill.setImage_url(mCurrentPurchaseAndCoin.getIconURL());
+
+                        double purchaseAmount = mPurchase.getAmount();
+                        if (amount < purchaseAmount) {
+                            billDataSource.insert(mBill);
+                            mPurchase.setAmount(purchaseAmount - amount);
+                            mEvent.setValue(new FinishEvent());
+                            mPurchaseDataSource.update(mPurchase);
+                        } else if (amount == purchaseAmount) {
+                            billDataSource.insert(mBill);
+                            mEvent.setValue(new FinishEvent());
+                            mPurchaseDataSource.remove(mPurchase);
+                        } else mEvent.setValue(new Message("You can`t sell more then you have"));
                         break;
                     default:
+                        mPurchase.setAmount(amount);
+                        mPurchase.setPrice_purchase(price);
                         //Добавление символа $
                         mPurchase.setBuyCurrencySymbol(mCurrentCoinInfo.getSymbol());
                         // Добавления валюты USD
                         mPurchase.setBuyCurrency(coinSymbols.get(mCurrentCoinInfo.getSymbol()));
                         mPurchase.setCoinId(mCurrentCoinInfo.getId());
                         mPurchaseDataSource.insert(mPurchase);
+                        mEvent.setValue(new FinishEvent());
                         break;
                 }
-
-                mEvent.setValue(new FinishEvent());
             } catch (NullPointerException e) {
                 mEvent.setValue(new Message("Select coin"));
             } catch (NumberFormatException e) {
@@ -171,6 +204,7 @@ public class TransactionViewModel extends ViewModel {
 
     // дефолтное состояние при Buy режиме
     private void defaultSetup() {
+        mBill = new Bill();
         mPurchase = new Purchase();
         mCurrentPurchaseAndCoin = null;
         mAutoCompleteTextLiveData.setValue("");
@@ -191,6 +225,8 @@ public class TransactionViewModel extends ViewModel {
     private void initMode(PurchaseAndCoin purchaseAndCoin) {
         mCurrentPurchaseAndCoin = purchaseAndCoin;
         mPurchase = mCurrentPurchaseAndCoin.getPurchase();
+        //Сохраняем дату покупки Purchase
+        buyDatePurchase = mPurchase.getDateStr();
         mAutoCompleteTextViewEnabled.setValue(false);
         mAutoCompleteTextLiveData.setValue(mCurrentPurchaseAndCoin.getCoinFullName());
         mSymbolLiveData.setValue(mCurrentPurchaseAndCoin.getPurchase().getBuyCurrencySymbol());
@@ -237,17 +273,17 @@ public class TransactionViewModel extends ViewModel {
     //Если EditMode = On
     private void initEditMode() {
         MODE = EDIT_MODE;
-        String price = simpleNumberFormatting(mCurrentPurchaseAndCoin.getPurchase().getPrice_purchase());
-        //добавить поле для валюты USD/Eur и тд
-        String symbol = "$";
+        String price = simpleNumberFormatting(mPurchase.getPrice_purchase());
+        String symbol = mPurchase.getBuyCurrencySymbol();
         mPriceEventLiveData.setValue(new PriceEvent(symbol, price));
         mAmountLiveData.setValue(simpleNumberFormatting(mCurrentPurchaseAndCoin.getPurchase().getAmount()));
-        mDateSet.setValue(dateFormatting(mCurrentPurchaseAndCoin.getPurchase().getDateStr()));
+        mDateSet.setValue(dateFormatting(buyDatePurchase));
         mReadyButtonName.setValue("Update");
     }
 
     //Если SellMode = On
     private void initSellMode() {
+        Log.e("initSellMode", "initSellMode");
         MODE = SELL_MODE;
         // Символ валюты в которой была произведена покупка $...
         String buyCurrencySymbol = mCurrentPurchaseAndCoin.getPurchase().getBuyCurrencySymbol();
@@ -257,9 +293,12 @@ public class TransactionViewModel extends ViewModel {
         Double currentPrice = mCurrentPurchaseAndCoin.getDouble_price();
         // Конвертирование текущей цены монеты в валюту в которой происходила покупка
         Double convertedCurrentPrice = convert(currentPrice, getBuyCurrencyPrice(buyCurrency));
-        Log.e("TEST CONVERT", currentPrice + " " + convertedCurrentPrice + " " + getBuyCurrencyPrice(buyCurrency));
+
         mPriceEventLiveData.setValue(new PriceEvent(buyCurrencySymbol, simpleNumberFormatting(convertedCurrentPrice)));
         mAmountLiveData.setValue(simpleNumberFormatting(mCurrentPurchaseAndCoin.getPurchase().getAmount()));
+        //Дата now
+        mDateSet.setValue(dateFormatting(nowDate));
+
         mReadyButtonName.setValue("Sell");
     }
 
@@ -287,4 +326,16 @@ public class TransactionViewModel extends ViewModel {
         }
         return 1D;
     }
+
+    private int[] strToDate(String dateStr) {
+        int[] date = new int[3];
+        SimpleDateFormat dayf = new SimpleDateFormat("dd", Locale.US);
+        SimpleDateFormat monf = new SimpleDateFormat("MM", Locale.US);
+        SimpleDateFormat yearf = new SimpleDateFormat("YYYY", Locale.US);
+        date[0]=Integer.parseInt(dayf.format(dateStr));
+        date[1] = Integer.parseInt(monf.format(dateStr));
+        date[2] = Integer.parseInt(yearf.format(dateStr));
+        return date;
+    }
+
 }

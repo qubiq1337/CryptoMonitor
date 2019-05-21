@@ -6,6 +6,7 @@ import com.example.cryptomonitor.model_cryptocompare.model_currencies.Currencies
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 public interface PurchaseDataSource {
 
@@ -28,7 +29,7 @@ public interface PurchaseDataSource {
 
     void remove(Purchase purchase);
 
-    Flowable<List<PurchaseAndCoin>> getPurchase(long id);
+    Single<List<PurchaseAndCoin>> getPurchase(long id);
 
     void getCurrencyData(GetCurrenciesCallBack getCurrenciesCallBack);
 }

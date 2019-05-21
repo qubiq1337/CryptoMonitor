@@ -12,6 +12,7 @@ import com.example.cryptomonitor.database.purchases.PurchaseAndCoin;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 @Dao
 public interface PurchaseDao {
@@ -37,6 +38,14 @@ public interface PurchaseDao {
             ", coinInfo.price as coin_price" +
             " from purchase, coinInfo where purchase.coinId == coinInfo.id and purchase.purchase_id = :id")
     Flowable<List<PurchaseAndCoin>> getById(long id);
+
+    @Query("select *, coinInfo.priceDisplay as coin_price_display" +
+            ", coinInfo.fullName as coin_full_name" +
+            ", coinInfo.shortName as coin_short_name" +
+            ", coinInfo.imageURL as coin_url" +
+            ", coinInfo.price as coin_price" +
+            " from purchase, coinInfo where purchase.coinId == coinInfo.id and purchase.purchase_id = :id")
+    Single<List<PurchaseAndCoin>> getByIdSingle(long id);
 
     @Update
     void update(Purchase purchase);

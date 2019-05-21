@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -60,9 +61,9 @@ public class PurchaseRepo implements PurchaseDataSource {
     }
 
     @Override
-    public Flowable<List<PurchaseAndCoin>> getPurchase(long id) {
+    public Single<List<PurchaseAndCoin>> getPurchase(long id) {
         return mDao
-                .getById(id)
+                .getByIdSingle(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

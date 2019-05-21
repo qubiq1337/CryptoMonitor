@@ -6,9 +6,10 @@
     android:background="@color/backgroundChartColor"
     tools:context=".fragment.HistoryFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/history_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/history" />
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
 
 </FrameLayout>

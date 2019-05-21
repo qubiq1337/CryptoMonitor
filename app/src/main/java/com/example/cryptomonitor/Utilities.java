@@ -85,8 +85,7 @@ public class Utilities {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy",Locale.US);
         SimpleDateFormat sm = new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
         try {
-            String reformattedStr = sm.format(simpleDateFormat.parse(date));
-            return reformattedStr;
+            return sm.format(simpleDateFormat.parse(date));
         } catch (ParseException e) {
             e.printStackTrace();
         }
