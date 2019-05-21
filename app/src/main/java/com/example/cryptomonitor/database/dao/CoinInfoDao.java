@@ -7,10 +7,12 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.cryptomonitor.database.entities.CoinInfo;
+import com.example.cryptomonitor.widget.SmallCoin;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 @Dao
 public interface CoinInfoDao {
@@ -20,6 +22,9 @@ public interface CoinInfoDao {
 
     @Query("select * from coininfo where id=:id")
     CoinInfo getById(long id);
+
+    @Query("select fullName, shortName, imageURL, priceDisplay, symbol from coininfo where isFavorite = 1")
+    Single<List<SmallCoin>> getWidgetList();
 
     @Query("select * from coininfo where shortName=:shortName")
     Flowable<List<CoinInfo>> getByShortName(String shortName);
@@ -35,6 +40,9 @@ public interface CoinInfoDao {
 
     @Query("select * from coininfo where fullName like :search || '%' order by fullName")
     Flowable<List<CoinInfo>> getSearchCoins(String search);
+
+    @Query("select * from coininfo where fullName like :search || '%' and isFavorite = 1 order by fullName")
+    Flowable<List<CoinInfo>> getSearchFavoriteCoins(String search);
 
     @Query("select count(*) from coininfo")
     int getDatabaseSize();
@@ -56,4 +64,6 @@ public interface CoinInfoDao {
 
     @Delete
     int delete(CoinInfo coinInfo);
+
+
 }

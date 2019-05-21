@@ -6,7 +6,6 @@ import com.example.cryptomonitor.AppExecutors;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.dao.CoinInfoDao;
 import com.example.cryptomonitor.database.entities.CoinInfo;
-import com.example.cryptomonitor.model_cryptocompare.model_chart.ModelChart;
 import com.example.cryptomonitor.model_cryptocompare.model_coins.CoinCryptoCompare;
 import com.example.cryptomonitor.model_cryptocompare.model_coins.CoinsData;
 import com.example.cryptomonitor.model_cryptocompare.model_currencies.CurrenciesData;
@@ -34,6 +33,20 @@ public class CoinRepo implements CoinDataSource {
     private ApiCryptoCompare mCoinInfoApi = Network.getInstance().getApiCryptoCompare();
     private Disposable mDisposableSubscription;
     private static Executor dbExecutor = AppExecutors.getInstance().getDbExecutor();
+
+    @Override
+    public void getSearchFavoriteCoins(String word, GetCoinCallback coinCallback) {
+        if (mDisposableSubscription != null)
+            mDisposableSubscription.dispose();
+        if (word.isEmpty()) {
+            coinCallback.onLoaded(new ArrayList<>());
+        } else {
+            mDisposableSubscription = mCoinInfoDao.getSearchFavoriteCoins(word)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(coinCallback::onLoaded, error -> coinCallback.onFailed());
+        }
+    }
 
     @Override
     public void updateAll(List<CoinInfo> coinInfoList) {
@@ -86,12 +99,7 @@ public class CoinRepo implements CoinDataSource {
         }
     }
 
-    @Override
-    public Observable<ModelChart> getChartData(String symbol, String currency) {
-        return Network.getInstance().getApiCryptoCompare().getChartData(symbol, currency)
-                .subscribeOn(Schedulers.io()) // "work" on io thread
-                .observeOn(AndroidSchedulers.mainThread());
-    }
+
 
     @Override
     public void refreshCoins(String currency, RefreshCallback callback) {
