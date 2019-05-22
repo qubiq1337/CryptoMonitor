@@ -2,8 +2,6 @@ package com.example.cryptomonitor.database.bills;
 
 import com.example.cryptomonitor.AppExecutors;
 import com.example.cryptomonitor.database.App;
-import com.example.cryptomonitor.database.dao.BillDao;
-import com.example.cryptomonitor.database.entities.Bill;
 
 import java.util.concurrent.Executor;
 

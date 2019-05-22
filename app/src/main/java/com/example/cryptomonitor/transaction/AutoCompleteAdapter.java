@@ -1,4 +1,4 @@
-package com.example.cryptomonitor;
+package com.example.cryptomonitor.transaction;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,8 +11,9 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.App;
-import com.example.cryptomonitor.database.entities.CoinInfo;
+import com.example.cryptomonitor.database.coins.CoinInfo;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

@@ -16,11 +16,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cryptomonitor.R;
-import com.example.cryptomonitor.activity.TransactionActivity;
 import com.example.cryptomonitor.adapters.PortfolioAdapter;
-import com.example.cryptomonitor.database.entities.Purchase;
+import com.example.cryptomonitor.database.purchases.Purchase;
 import com.example.cryptomonitor.database.purchases.PurchaseAndCoin;
 import com.example.cryptomonitor.model_cryptocompare.model_currencies.CurrenciesData;
+import com.example.cryptomonitor.transaction.TransactionActivity;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;

@@ -27,8 +27,8 @@ import com.example.cryptomonitor.ToolbarInteractor;
 import com.example.cryptomonitor.Utilities;
 import com.example.cryptomonitor.briefcase.BriefcaseFragment;
 import com.example.cryptomonitor.favorite.FavoritesFragment;
-import com.example.cryptomonitor.fragment.HistoryFragment;
 import com.example.cryptomonitor.fragment.NavigationBarFragment;
+import com.example.cryptomonitor.history.HistoryFragment;
 import com.example.cryptomonitor.home.HomeFragment;
 
 import java.util.Objects;

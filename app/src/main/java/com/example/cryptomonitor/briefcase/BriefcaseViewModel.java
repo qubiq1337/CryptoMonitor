@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.cryptomonitor.database.entities.Purchase;
+import com.example.cryptomonitor.database.purchases.Purchase;
 import com.example.cryptomonitor.database.purchases.PurchaseAndCoin;
 import com.example.cryptomonitor.database.purchases.PurchaseDataSource;
 import com.example.cryptomonitor.database.purchases.PurchaseRepo;

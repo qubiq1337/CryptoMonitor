@@ -1,4 +1,4 @@
-package com.example.cryptomonitor.database.entities;
+package com.example.cryptomonitor.database.coins;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

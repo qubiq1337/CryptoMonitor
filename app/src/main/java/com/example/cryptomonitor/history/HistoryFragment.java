@@ -1,4 +1,4 @@
-package com.example.cryptomonitor.fragment;
+package com.example.cryptomonitor.history;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,10 +12,9 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cryptomonitor.HistoryViewModel;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.adapters.HistoryAdapter;
-import com.example.cryptomonitor.database.entities.Bill;
+import com.example.cryptomonitor.database.bills.Bill;
 
 import java.util.List;
 

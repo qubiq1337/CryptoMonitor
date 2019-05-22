@@ -4,8 +4,6 @@ import android.util.Log;
 
 import com.example.cryptomonitor.AppExecutors;
 import com.example.cryptomonitor.database.App;
-import com.example.cryptomonitor.database.dao.CoinInfoDao;
-import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.model_cryptocompare.model_coins.CoinCryptoCompare;
 import com.example.cryptomonitor.model_cryptocompare.model_coins.CoinsData;
 import com.example.cryptomonitor.model_cryptocompare.model_currencies.CurrenciesData;
@@ -17,7 +15,6 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -105,7 +102,7 @@ public class CoinRepo implements CoinDataSource {
 
     private void testRxLoadCoins(String currency, RefreshCallback callback) {
 
-        /*compositeDisposable.add(concatObservable(currency)
+        compositeDisposable.add(concatObservable(currency)
                 .subscribeOn(Schedulers.io()) // "work" on io thread
                 .map(CoinCryptoCompare::getData)
                 .flatMap(Observable::fromIterable)
@@ -127,37 +124,39 @@ public class CoinRepo implements CoinDataSource {
         compositeDisposable.add(mCoinInfoApi
                 .getAllCurrencies(currency)
                 .subscribeOn(Schedulers.io())
-                .subscribe(this::updateCurrencies)
-        );*/
+                .subscribe(this::updateCurrencies, e -> Log.e("aDDADDSDADAD", "testRxLoadCoins: ", e))
+        );
+           /* Single<List<CoinInfo>> test1 = concatObservable(currency)
+                    .subscribeOn(Schedulers.io()) // "work" on io thread
+                    .map(CoinCryptoCompare::getData)
+                    .flatMap(Observable::fromIterable)
+                    .filter(coinsData -> coinsData.getRAW() != null && coinsData.getDISPLAY() != null)
+                    .map(this::toCoinInfo)
+                    .toList();
 
-        Single<List<CoinInfo>> test1 = concatObservable(currency)
-                .subscribeOn(Schedulers.io()) // "work" on io thread
-                .map(CoinCryptoCompare::getData)
-                .flatMap(Observable::fromIterable)
-                .filter(coinsData -> coinsData.getRAW() != null && coinsData.getDISPLAY() != null)
-                .map(this::toCoinInfo)
-                .toList();
+            Single<CurrenciesData> test2 = mCoinInfoApi
+                    .getAllCurrencies(currency)
+                    .subscribeOn(Schedulers.io())
+                    .doOnError(e-> Log.e("sdFFFDFADFDBA", "testRxLoadCoins: ", e));
 
-        Single<CurrenciesData> test2 = mCoinInfoApi
-                .getAllCurrencies(currency)
-                .subscribeOn(Schedulers.io());
 
-        compositeDisposable.add(Observable
-                .combineLatest(test1.toObservable(), test2.toObservable(), (coinInfoList, currenciesData) -> {
-                    updateCurrencies(currenciesData);
-                    return coinInfoList;
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(coinInfoList -> {
-                            Log.e("testRxLoadCoins", "coinInfoList size:" + coinInfoList.size());
-                            callback.onSuccess();
-                            updateAll(coinInfoList);
-                        }, e -> {
-                            Log.e("testRxLoadCoins", "FAILED DOWNLOAD: ", e);
-                            callback.onFailed();
-                        }
-                ));
+
+            compositeDisposable.add(Observable
+                    .combineLatest(test1.toObservable(), test2.toObservable(), (coinInfoList, currenciesData) -> {
+                        updateCurrencies(currenciesData);
+                        return coinInfoList;
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(coinInfoList -> {
+                                Log.e("testRxLoadCoins", "coinInfoList size:" + coinInfoList.size());
+                                callback.onSuccess();
+                                updateAll(coinInfoList);
+                            }, e -> {
+                                Log.e("testRxLoadCoins", "FAILED DOWNLOAD: ", e);
+                                callback.onFailed();
+                            }
+                    ));*/
     }
 
     //Rename concatObs to merge

@@ -1,7 +1,5 @@
 package com.example.cryptomonitor.database.coins;
 
-import com.example.cryptomonitor.database.entities.CoinInfo;
-
 import java.util.List;
 
 public interface CoinDataSource {

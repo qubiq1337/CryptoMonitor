@@ -1,4 +1,4 @@
-package com.example.cryptomonitor;
+package com.example.cryptomonitor.detailed_coin;
 
 
 import android.util.Log;
@@ -7,7 +7,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.cryptomonitor.database.entities.CoinInfo;
+import com.example.cryptomonitor.R;
+import com.example.cryptomonitor.database.coins.CoinInfo;
 import com.example.cryptomonitor.model_cryptocompare.model_chart.ModelChart;
 
 import io.reactivex.disposables.Disposable;
@@ -18,9 +19,14 @@ public class DetailedViewModel extends ViewModel {
     private Disposable disposable;
     private MutableLiveData<ModelChart> mChartLiveData = new MutableLiveData<>();
     private MutableLiveData<CoinInfo> mCoinLiveData = new MutableLiveData<>();
+    private MutableLiveData<Integer> mCoinSelectedLiveData = new MutableLiveData<>();
 
     public LiveData<ModelChart> getChartLiveData() {
         return mChartLiveData;
+    }
+
+    public LiveData<Integer> getSelectedCoinLiveData() {
+        return mCoinSelectedLiveData;
     }
 
 
@@ -54,9 +60,11 @@ public class DetailedViewModel extends ViewModel {
                         .subscribe(modelChart -> mChartLiveData.setValue(modelChart));
                 break;
         }
+        mCoinSelectedLiveData.setValue(id);
     }
 
     public void setChartLiveData(String symbol, String currency) {
+        mCoinSelectedLiveData.setValue(R.id.detailed_1M);
         disposable = chartRepo
                 .getChartData1M(symbol, currency)
                 .subscribe(modelChart ->

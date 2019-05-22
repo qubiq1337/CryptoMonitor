@@ -1,4 +1,4 @@
-package com.example.cryptomonitor;
+package com.example.cryptomonitor.transaction;
 
 import android.app.Application;
 import android.util.Log;
@@ -8,11 +8,12 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.cryptomonitor.R;
+import com.example.cryptomonitor.database.bills.Bill;
 import com.example.cryptomonitor.database.bills.BillDataSource;
 import com.example.cryptomonitor.database.bills.BillRepo;
-import com.example.cryptomonitor.database.entities.Bill;
-import com.example.cryptomonitor.database.entities.CoinInfo;
-import com.example.cryptomonitor.database.entities.Purchase;
+import com.example.cryptomonitor.database.coins.CoinInfo;
+import com.example.cryptomonitor.database.purchases.Purchase;
 import com.example.cryptomonitor.database.purchases.PurchaseAndCoin;
 import com.example.cryptomonitor.database.purchases.PurchaseDataSource;
 import com.example.cryptomonitor.database.purchases.PurchaseRepo;
@@ -31,8 +32,8 @@ import io.reactivex.disposables.Disposable;
 
 import static com.example.cryptomonitor.Utilities.dateFormatting;
 import static com.example.cryptomonitor.Utilities.simpleNumberFormatting;
-import static com.example.cryptomonitor.activity.TransactionActivity.EDIT_MODE;
-import static com.example.cryptomonitor.activity.TransactionActivity.SELL_MODE;
+import static com.example.cryptomonitor.transaction.TransactionActivity.EDIT_MODE;
+import static com.example.cryptomonitor.transaction.TransactionActivity.SELL_MODE;
 
 
 public class TransactionViewModel extends AndroidViewModel {

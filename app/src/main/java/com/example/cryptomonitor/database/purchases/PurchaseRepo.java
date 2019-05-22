@@ -3,8 +3,6 @@ package com.example.cryptomonitor.database.purchases;
 import com.example.cryptomonitor.AppExecutors;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.dao.CurrenciesDao;
-import com.example.cryptomonitor.database.dao.PurchaseDao;
-import com.example.cryptomonitor.database.entities.Purchase;
 
 import java.util.List;
 import java.util.concurrent.Executor;

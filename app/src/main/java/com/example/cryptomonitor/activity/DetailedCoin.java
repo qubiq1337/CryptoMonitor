@@ -13,9 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.cryptomonitor.DetailedViewModel;
 import com.example.cryptomonitor.R;
-import com.example.cryptomonitor.database.entities.CoinInfo;
+import com.example.cryptomonitor.database.coins.CoinInfo;
+import com.example.cryptomonitor.detailed_coin.DetailedViewModel;
 import com.example.cryptomonitor.model_cryptocompare.model_chart.ChartData;
 import com.example.cryptomonitor.model_cryptocompare.model_chart.ModelChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -66,6 +66,50 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
     private DetailedViewModel mDetailedViewModel;
     private Observer<ModelChart> modelChartObserver = this::setChartData;
     private Observer<CoinInfo> coinInfoObserver = this::bindViews;
+    private Observer<Integer> coinSelectedObserver = integer -> {
+        switch (integer) {
+            case R.id.detailed_1D:
+                textView_1D.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
+                textView_1W.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_3M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1D.setClickable(false);
+                textView_1W.setClickable(true);
+                textView_1M.setClickable(true);
+                textView_3M.setClickable(true);
+                break;
+            case R.id.detailed_1W:
+                textView_1W.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
+                textView_1D.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_3M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1W.setClickable(false);
+                textView_1D.setClickable(true);
+                textView_1M.setClickable(true);
+                textView_3M.setClickable(true);
+                break;
+            case R.id.detailed_1M:
+                textView_1M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
+                textView_1D.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1W.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_3M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1M.setClickable(false);
+                textView_1D.setClickable(true);
+                textView_1W.setClickable(true);
+                textView_3M.setClickable(true);
+                break;
+            case R.id.detailed_3M:
+                textView_3M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
+                textView_1D.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1W.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_3M.setClickable(false);
+                textView_1D.setClickable(true);
+                textView_1W.setClickable(true);
+                textView_1M.setClickable(true);
+                break;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +155,9 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
         mDetailedViewModel = ViewModelProviders.of(this).get(DetailedViewModel.class);
         mDetailedViewModel.getChartLiveData().observe(this, modelChartObserver);
         mDetailedViewModel.getCoinLiveData(mIndex).observe(this, coinInfoObserver);
-        mDetailedViewModel.setChartLiveData(mIndex, mCurrency);
+        mDetailedViewModel.getSelectedCoinLiveData().observe(this, coinSelectedObserver);
+        if (savedInstanceState == null)
+            mDetailedViewModel.setChartLiveData(mIndex, mCurrency);
     }
 
     private void initChart() {
@@ -210,47 +256,15 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.detailed_1D:
-                v.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
-                textView_1W.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_1M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_3M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_1D.setClickable(false);
-                textView_1W.setClickable(true);
-                textView_1M.setClickable(true);
-                textView_3M.setClickable(true);
                 mDetailedViewModel.setChartLiveData(mIndex, mCurrency, v.getId());
                 break;
             case R.id.detailed_1W:
-                v.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
-                textView_1D.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_1M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_3M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_1W.setClickable(false);
-                textView_1D.setClickable(true);
-                textView_1M.setClickable(true);
-                textView_3M.setClickable(true);
                 mDetailedViewModel.setChartLiveData(mIndex, mCurrency, v.getId());
                 break;
             case R.id.detailed_1M:
-                v.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
-                textView_1D.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_1W.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_3M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_1M.setClickable(false);
-                textView_1D.setClickable(true);
-                textView_1W.setClickable(true);
-                textView_3M.setClickable(true);
                 mDetailedViewModel.setChartLiveData(mIndex, mCurrency, v.getId());
                 break;
             case R.id.detailed_3M:
-                v.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
-                textView_1D.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_1W.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_1M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_3M.setClickable(false);
-                textView_1D.setClickable(true);
-                textView_1W.setClickable(true);
-                textView_1M.setClickable(true);
                 mDetailedViewModel.setChartLiveData(mIndex, mCurrency, v.getId());
                 break;
         }

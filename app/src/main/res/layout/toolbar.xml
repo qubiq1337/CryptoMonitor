@@ -5,7 +5,6 @@
     android:id="@+id/toolbar_actionbar"
     android:layout_width="match_parent"
     android:layout_height="?android:actionBarSize"
-    android:background="@color/backgroundColor"
     app:title="@string/app_name"
     app:titleTextColor="@color/textColorPrimary">
 

@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cryptomonitor.R;
-import com.example.cryptomonitor.database.entities.CoinInfo;
+import com.example.cryptomonitor.database.coins.CoinInfo;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

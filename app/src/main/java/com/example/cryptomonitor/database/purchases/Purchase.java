@@ -1,8 +1,10 @@
-package com.example.cryptomonitor.database.entities;
+package com.example.cryptomonitor.database.purchases;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
+
+import com.example.cryptomonitor.database.coins.CoinInfo;
 
 @Entity(foreignKeys = @ForeignKey(entity = CoinInfo.class, parentColumns = "id", childColumns = "coinId"))
 public class Purchase {

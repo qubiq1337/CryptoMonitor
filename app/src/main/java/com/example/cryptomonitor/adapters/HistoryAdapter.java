@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cryptomonitor.R;
-import com.example.cryptomonitor.database.entities.Bill;
+import com.example.cryptomonitor.database.bills.Bill;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

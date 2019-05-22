@@ -19,7 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.ToolbarInteractor;
 import com.example.cryptomonitor.activity.MainActivity;
-import com.example.cryptomonitor.database.entities.CoinInfo;
+import com.example.cryptomonitor.database.coins.CoinInfo;
 import com.example.cryptomonitor.events.Event;
 import com.example.cryptomonitor.events.Message;
 

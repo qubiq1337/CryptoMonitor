@@ -1,4 +1,4 @@
-package com.example.cryptomonitor.activity;
+package com.example.cryptomonitor.transaction;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -18,10 +18,8 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.cryptomonitor.AutoCompleteAdapter;
 import com.example.cryptomonitor.R;
-import com.example.cryptomonitor.TransactionViewModel;
-import com.example.cryptomonitor.database.entities.CoinInfo;
+import com.example.cryptomonitor.database.coins.CoinInfo;
 import com.example.cryptomonitor.events.Event;
 import com.example.cryptomonitor.events.FinishEvent;
 import com.example.cryptomonitor.events.Message;
@@ -34,9 +32,9 @@ import java.util.Calendar;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
-import static com.example.cryptomonitor.TransactionViewModel.coinSymbols;
 import static com.example.cryptomonitor.Utilities.cashFormatting;
 import static com.example.cryptomonitor.briefcase.BriefcaseFragment.COIN_INDEX;
+import static com.example.cryptomonitor.transaction.TransactionViewModel.coinSymbols;
 
 public class TransactionActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 

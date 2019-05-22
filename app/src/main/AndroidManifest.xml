@@ -20,7 +20,7 @@
 
 
         <activity
-            android:name=".activity.TransactionActivity"
+            android:name=".transaction.TransactionActivity"
             android:configChanges="locale" />
 
         <activity

@@ -1,8 +1,8 @@
-package com.example.cryptomonitor;
+package com.example.cryptomonitor.detailed_coin;
 
 import com.example.cryptomonitor.database.App;
-import com.example.cryptomonitor.database.dao.CoinInfoDao;
-import com.example.cryptomonitor.database.entities.CoinInfo;
+import com.example.cryptomonitor.database.coins.CoinInfo;
+import com.example.cryptomonitor.database.coins.CoinInfoDao;
 import com.example.cryptomonitor.model_cryptocompare.model_chart.ModelChart;
 import com.example.cryptomonitor.network_api.ApiCryptoCompare;
 import com.example.cryptomonitor.network_api.Network;

@@ -29,11 +29,11 @@
 
     </style>
 
-    <style name="DetailedActivityTheme" parent="Theme.Design.NoActionBar"></style>
+    <style name="DetailedActivityTheme" parent="Theme.Design.NoActionBar" />
 
-    <style name="BriefcaseFragmentTheme" parent="Theme.Design.NoActionBar"></style>
+    <style name="BriefcaseFragmentTheme" parent="Theme.Design.NoActionBar" />
 
-    <style name="HistoryFragmentTheme" parent="Theme.Design.NoActionBar"></style>
+    <style name="HistoryFragmentTheme" parent="Theme.Design.NoActionBar" />
 
 
     <style name="TextViewStyle" parent="Theme.AppCompat.DayNight.NoActionBar">
@@ -69,12 +69,12 @@
         <item name="contentPaddingLeft">10dp</item>
         <item name="contentPaddingRight">10dp</item>
         <item name="customBgColor">@color/dark1</item>
-        <item name="cardBackgroundColor">@color/dark1</item>
+        <item name="cardBackgroundColor">@color/dark3</item>
     </style>
 
-    <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem"></style>
+    <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem" />
 
-    <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem"></style>
+    <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem" />
 
 
 </resources>

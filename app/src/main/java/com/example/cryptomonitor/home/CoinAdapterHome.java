@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.App;
-import com.example.cryptomonitor.database.dao.CoinInfoDao;
-import com.example.cryptomonitor.database.entities.CoinInfo;
+import com.example.cryptomonitor.database.coins.CoinInfo;
+import com.example.cryptomonitor.database.coins.CoinInfoDao;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

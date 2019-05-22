@@ -9,7 +9,7 @@ import android.widget.RemoteViewsService;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.App;
-import com.example.cryptomonitor.database.dao.CoinInfoDao;
+import com.example.cryptomonitor.database.coins.CoinInfoDao;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

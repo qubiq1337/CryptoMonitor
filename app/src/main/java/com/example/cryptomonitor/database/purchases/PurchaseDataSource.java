@@ -1,6 +1,5 @@
 package com.example.cryptomonitor.database.purchases;
 
-import com.example.cryptomonitor.database.entities.Purchase;
 import com.example.cryptomonitor.model_cryptocompare.model_currencies.CurrenciesData;
 
 import java.util.List;

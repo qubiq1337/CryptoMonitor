@@ -14,12 +14,12 @@
             android:id="@+id/layoutHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/backgroundChartColor"
+            android:background="@color/dark1"
             android:clipToPadding="false"
             android:fitsSystemWindows="true"
             android:orientation="vertical"
             android:visibility="visible"
-            app:contentScrim="@color/backgroundChartColor"
+            app:contentScrim="@color/dark1"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <com.github.mikephil.charting.charts.PieChart
@@ -68,7 +68,7 @@
         android:id="@+id/portfolio_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/backgroundChartColor"
+        android:background="@color/dark1"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         app:spanCount="2" />

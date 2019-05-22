@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".transaction.TransactionActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/transaction_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/coin"
+                android:textColor="@color/textColorDark"
+                android:textSize="@dimen/transaction_text_size" />
+
+            <LinearLayout
+                android:id="@+id/transaction_linear_actv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/transaction_currency"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp">
+
+                <ImageButton
+                    android:id="@+id/transaction_cancel_selected_coin"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_action_close"
+                    android:visibility="gone" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/transaction_actv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:completionThreshold="1"
+                    android:dropDownWidth="wrap_content"
+                    android:dropDownHeight="wrap_content"
+                    android:hint="@string/name"
+                    android:inputType="textAutoComplete"
+                    android:maxLines="1"
+                    android:scrollHorizontally="true"
+                    android:textColor="@color/textColorPrimary"
+                    android:textColorHint="@color/textColorDark"
+                    android:textSize="22sp"
+                    app:autoSizeTextType="uniform" />
+            </LinearLayout>
+
+
+            <RadioGroup
+                android:id="@+id/transaction_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/transaction_linear_actv"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/transaction_buy_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="100dp"
+                    android:padding="15dp"
+                    android:text="@string/edit"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="@dimen/transaction_text_size" />
+
+                <RadioButton
+                    android:id="@+id/transaction_sell_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="@string/sell"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="@dimen/transaction_text_size" />
+            </RadioGroup>
+
+            <TableLayout
+                android:id="@+id/transaction_tabel_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/transaction_radio_group"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:stretchColumns="1,1,2">
+
+                <TableRow>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp" />
+
+                    <TextView
+                        android:id="@+id/transaction_price_in"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/price"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/transaction_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/amount"
+                        android:textColor="@color/textColorDark"
+                        android:textSize="@dimen/transaction_text_size" />
+                </TableRow>
+
+                <TableRow>
+
+                    <TextView
+                        android:id="@+id/transaction_price_symbol"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="26sp"
+                        tools:text="$" />
+
+                    <EditText
+                        android:id="@+id/transaction_edit_price"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:imeOptions="actionDone"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1"
+                        android:nextFocusDown="@id/transaction_edit_amount"
+                        android:scrollHorizontally="true"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="26sp"
+                        tools:text="4656,34" />
+
+                    <EditText
+                        android:id="@+id/transaction_edit_amount"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:imeOptions="actionDone"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="26sp"
+                        tools:text="10" />
+                </TableRow>
+            </TableLayout>
+
+            <LinearLayout
+                android:id="@+id/transaction_linear1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/transaction_tabel_layout"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp">
+
+                <TextView
+                    android:id="@+id/transaction_total_cost_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/total_cost"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="@dimen/transaction_text_size" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/transaction_total_cost_symbol"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="15dp"
+                        android:textSize="45sp"
+                        tools:text="$" />
+
+                    <TextView
+                        android:id="@+id/transaction_total_cost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="15dp"
+                        android:maxLines="1"
+                        android:textSize="45sp"
+                        tools:text="4,000.0" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/transaction_linear2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/transaction_linear1"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date"
+                    android:textColor="@color/textColorDark"
+                    android:textSize="@dimen/transaction_text_size" />
+
+
+                <TextView
+                    android:id="@+id/transaction_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="15dp"
+                    android:hint="@string/check_date"
+                    android:textColor="@color/textColorPrimary"
+                    android:textColorHint="@color/textColorDark"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/transaction_linear2"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/transaction_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorLigthAccent"
+                    android:clickable="true"
+                    android:elevation="1dp"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:text="@string/cancel"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/transaction_ready"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@color/yellow_color_button"
+                    android:clickable="true"
+                    android:elevation="1dp"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:text="@string/save"
+                    android:textSize="24sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

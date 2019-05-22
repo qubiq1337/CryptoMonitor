@@ -1,11 +1,9 @@
-package com.example.cryptomonitor.database.dao;
+package com.example.cryptomonitor.database.bills;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-
-import com.example.cryptomonitor.database.entities.Bill;
 
 import java.util.List;
 

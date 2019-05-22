@@ -9,8 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.coins.CoinDataSource;
+import com.example.cryptomonitor.database.coins.CoinInfo;
 import com.example.cryptomonitor.database.coins.CoinRepo;
-import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.example.cryptomonitor.events.Event;
 import com.example.cryptomonitor.events.Message;
 

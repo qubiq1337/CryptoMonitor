@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.briefcase.BriefcaseFragment;
 import com.example.cryptomonitor.favorite.FavoritesFragment;
+import com.example.cryptomonitor.history.HistoryFragment;
 import com.example.cryptomonitor.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

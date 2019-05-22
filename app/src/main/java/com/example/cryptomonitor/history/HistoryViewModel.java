@@ -1,12 +1,12 @@
-package com.example.cryptomonitor;
+package com.example.cryptomonitor.history;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.cryptomonitor.database.bills.Bill;
 import com.example.cryptomonitor.database.bills.BillDataSource;
 import com.example.cryptomonitor.database.bills.BillRepo;
-import com.example.cryptomonitor.database.entities.Bill;
 
 import java.util.List;
 

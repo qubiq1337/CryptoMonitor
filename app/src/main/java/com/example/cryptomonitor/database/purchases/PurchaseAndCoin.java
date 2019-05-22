@@ -3,8 +3,6 @@ package com.example.cryptomonitor.database.purchases;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 
-import com.example.cryptomonitor.database.entities.Purchase;
-
 public class PurchaseAndCoin {
 
     @Embedded
