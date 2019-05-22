@@ -26,7 +26,6 @@
     <string name="price_for_a_coin">Цена криптовалюты</string>
     <string name="start_input">Начните вводить</string>
     <string name="date">Дата</string>
-    <string name="settings">Настройки</string>
     <string name="sort">Сортировка</string>
     <string name="transaction_price_in">Цена в %1$s</string>
     <string name="transaction_total_cost">Итоговая цена в %1$s</string>
@@ -51,6 +50,8 @@
     <string name="edit">Изменить</string>
     <string name="name">Название</string>
     <string name="update">Обновить</string>
+    <string name="settings">Настройки</string>
+    <string name="coin">Криптовалюта</string>
 
 
 </resources>

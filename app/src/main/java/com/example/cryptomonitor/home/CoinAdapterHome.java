@@ -7,6 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.dao.CoinInfoDao;
@@ -36,8 +40,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     private boolean showMode = false;
     private CoinInfoDao mDao;
     private Disposable disposable;
-    private final static int initialSize = 60;
-    private final static int loadSize = 20;
+
     private Consumer<List<CoinInfo>> mListConsumer = coinInfoList -> {
         mData = coinInfoList;
         notifyDataSetChanged();

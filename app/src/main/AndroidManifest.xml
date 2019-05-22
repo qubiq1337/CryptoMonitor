@@ -26,7 +26,7 @@
         <activity
             android:name=".activity.SettingsActivity"
             android:configChanges="locale"
-            android:label="@string/title_activity_settings"
+            android:label="@string/settings"
             android:theme="@style/SettingsTheme" />
         <activity
             android:name=".activity.DetailedCoin"
@@ -34,11 +34,7 @@
             android:parentActivityName=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/DetailedActivityTheme" />
-        <activity
-            android:name=".buy.BuyActivity"
-            android:configChanges="locale"
-            android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <activity
             android:name=".activity.SplashActivity"
 

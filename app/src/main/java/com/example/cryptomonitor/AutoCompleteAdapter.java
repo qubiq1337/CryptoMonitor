@@ -26,17 +26,18 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
     private List<CoinInfo> coinInfoList;
 
     public List<CoinInfo> getResultFilterList() {
-        return reusultFilterList;
+        return resultFilterList;
     }
 
-    private List<CoinInfo> reusultFilterList;
+    private List<CoinInfo> resultFilterList;
     private Context mContex;
 
 
     public AutoCompleteAdapter(Context context) {
         mContex = context;
-        reusultFilterList = new ArrayList<>();
+        resultFilterList = new ArrayList<>();
         coinInfoList = new ArrayList<>();
+        Disposable disposable = App
                 .getDatabase()
                 .coinInfoDao()
                 .getAll()
@@ -48,22 +49,15 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
                 });
     }
 
-    public List<CoinInfo> getReusultFilterList() {
-        return reusultFilterList;
-    }
-
-    public Disposable getDisposable() {
-        return disposable;
-    }
 
     @Override
     public int getCount() {
-        return reusultFilterList.size();
+        return resultFilterList.size();
     }
 
     @Override
     public CoinInfo getItem(int index) {
-        return reusultFilterList.get(index);
+        return resultFilterList.get(index);
     }
 
     @Override
@@ -118,7 +112,7 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 if (results != null && results.count > 0) {
-                    reusultFilterList = (List<CoinInfo>) results.values;
+                    resultFilterList = (List<CoinInfo>) results.values;
                     notifyDataSetChanged();
                 } else {
                     notifyDataSetInvalidated();

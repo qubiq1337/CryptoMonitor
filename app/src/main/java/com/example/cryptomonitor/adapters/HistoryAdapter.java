@@ -61,6 +61,26 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         return mBillList.size();
     }
 
+    public void setBillList(List<Bill> mBillList) {
+        this.mBillList = mBillList;
+        notifyDataSetChanged();
+    }
+
+    private Double changePercent(Double buyPrice, Double sellPrice) {
+        double numerator = sellPrice - buyPrice;
+        if (numerator >= 0) return (sellPrice - buyPrice) / buyPrice * 100D;
+        else return (sellPrice - buyPrice) / sellPrice * 100D;
+    }
+
+    private int changeColor(Double d) {
+        if (d > 0)
+            return (mContext.getResources().getColor(R.color.greenColor));
+        else if (d < 0)
+            return (mContext.getResources().getColor(R.color.redColor));
+
+        return (mContext.getResources().getColor(R.color.textColorDark));
+    }
+
     class HistoryViewHolder extends RecyclerView.ViewHolder {
         private TextView buyPrice;
         private TextView sellPrice;

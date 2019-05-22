@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:paddingBottom="15dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/portfolio_card_view"
         style="@style/MyCardViewStyle"
+        android:background="@color/darkPurple3"
         android:layout_width="165dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true">
@@ -18,40 +19,40 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:maxLines="1"
                 android:id="@+id/portfolio_fullname"
                 android:layout_width="match_parent"
-                app:autoSizeTextType="uniform"
                 android:layout_height="wrap_content"
-                tools:text="Bitcoin"
+                android:maxLines="1"
                 android:textColor="@color/textColorPrimary"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                app:autoSizeTextType="uniform"
+                tools:text="Bitcoin" />
 
             <TextView
                 android:id="@+id/portfolio_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_below="@+id/portfolio_fullname"
-                tools:text="$1020.25"
+                android:layout_marginTop="10dp"
                 android:textColor="@color/textColorPrimary"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:text="$1020.25" />
 
             <TextView
                 android:id="@+id/portfolio_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                tools:text="10 BTC"
                 android:textColor="@color/textColorPrimary"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:text="10 BTC" />
 
             <TextView
                 android:id="@+id/portfolio_change"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
                 android:layout_gravity="bottom"
                 android:layout_marginLeft="10dp"
                 android:gravity="end"
