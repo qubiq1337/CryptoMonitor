@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,15 +66,21 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
+
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 Purchase purchase = portfolioAdapter.getmPortfolioItemList().get(viewHolder.getAdapterPosition()).getPurchase();
                 mViewModel.removeSwipedItem(purchase);
             }
+
             @Override
             public int getSwipeDirs(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-                if (viewHolder.getAdapterPosition() % 2 == 0) return ItemTouchHelper.LEFT;
-                else return ItemTouchHelper.RIGHT;
+                if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
+                    if (viewHolder.getAdapterPosition() % 2 == 0) return ItemTouchHelper.LEFT;
+                    else return ItemTouchHelper.RIGHT;
+                }
+                return ItemTouchHelper.LEFT;
+
             }
         };
 
