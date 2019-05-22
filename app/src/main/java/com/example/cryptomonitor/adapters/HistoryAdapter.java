@@ -44,12 +44,16 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         holder.name.setText(bill.getFull_name());
         holder.sellDate.setText(bill.getSell_date());
         holder.buyDate.setText(bill.getBuy_date());
-        holder.sellPrice.setText(cashFormatting(bill.getSellPrice()));
-        holder.buyPrice.setText(cashFormatting(bill.getBuyPrice()));
+        double  buyPrice = bill.getBuyPrice();
+        double sellPrice = bill.getSellPrice();
+        double change = changePercent(buyPrice,sellPrice);
+        holder.change.setText(simpleNumberFormatting(change)+"%");
+        holder.change.setTextColor(changeColor(change));
+        holder.sellPrice.setText(cashFormatting(sellPrice));
+        holder.buyPrice.setText(cashFormatting(buyPrice));
         String amountStr = cashFormatting(bill.getAmount()) + " " + bill.getShort_name();
         holder.amount.setText(amountStr);
         Picasso.with(mContext).load(bill.getImage_url()).into(holder.icon);
-
     }
 
     @Override
@@ -65,6 +69,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         private TextView amount;
         private TextView name;
         private ImageView icon;
+        private TextView change;
 
         public HistoryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,11 +80,27 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             amount = itemView.findViewById(R.id.history_amount);
             name = itemView.findViewById(R.id.history_item_name);
             icon = itemView.findViewById(R.id.history_item_icon);
+            change = itemView.findViewById(R.id.history_change);
         }
     }
 
     public void setBillList(List<Bill> mBillList) {
         this.mBillList = mBillList;
         notifyDataSetChanged();
+    }
+
+    private Double changePercent (Double buyPrice, Double sellPrice) {
+        double numerator = sellPrice - buyPrice;
+        if (numerator >= 0) return (sellPrice - buyPrice) / buyPrice * 100D;
+        else return (sellPrice - buyPrice) / sellPrice * 100D;
+    }
+
+    private int changeColor(Double d) {
+        if (d > 0)
+            return (mContext.getResources().getColor(R.color.greenColor));
+        else if (d < 0)
+            return (mContext.getResources().getColor(R.color.redColor));
+
+        return (mContext.getResources().getColor(R.color.textColorDark));
     }
 }

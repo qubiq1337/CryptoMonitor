@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:completionThreshold="1"
             android:dropDownWidth="wrap_content"
-            android:dropDownHeight="250dp"
+            android:dropDownHeight="wrap_content"
             android:hint="Name"
             android:inputType="textAutoComplete"
             android:maxLines="1"
