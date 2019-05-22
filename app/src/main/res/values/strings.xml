@@ -55,9 +55,6 @@
     <string name="edit">Edit</string>
     <string name="name">Name</string>
     <string name="update">Update</string>
-
-    <string name="action_bar_spinner">Action Bar Spinner</string>
-    <string name="sort">Sort</string>
     <string name="action_bar_spinner">Action Bar Spinner</string>
     <string name="sort">Sort</string>
 </resources>

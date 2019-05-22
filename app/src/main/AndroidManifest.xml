@@ -35,11 +35,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/DetailedActivityTheme" />
         <activity
-            android:name=".buy.BuyActivity"
-            android:configChanges="locale"
-            android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
             android:name=".activity.SplashActivity"
 
             android:configChanges="locale"

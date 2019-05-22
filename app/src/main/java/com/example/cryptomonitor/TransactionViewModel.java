@@ -1,8 +1,10 @@
 package com.example.cryptomonitor;
 
+import android.app.Application;
 import android.util.Log;
 import android.view.View;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -56,10 +58,16 @@ public class TransactionViewModel extends AndroidViewModel {
     private Bill mBill;
     private String nowDate = "";
     private String buyDatePurchase = "";
+    public static final HashMap<String, String> coinSymbols = new HashMap<>();
 
-    public TransactionViewModel() {
-        defaultSetup();
+    static {
+        coinSymbols.put("\u0024", "USD");
+        coinSymbols.put("\u20AC", "EUR");
+        coinSymbols.put("\u20BD", "RUB");
+        coinSymbols.put("\u00a5", "CNY");
+        coinSymbols.put("\u00a3", "GBP");
     }
+
 
     public LiveData<String> getSymbolLiveData() {
         return mSymbolLiveData;
@@ -209,7 +217,7 @@ public class TransactionViewModel extends AndroidViewModel {
         mPurchase = new Purchase();
         mCurrentPurchaseAndCoin = null;
         mAutoCompleteTextLiveData.setValue("");
-        mReadyButtonName.setValue(getApplication().getString(R.string.buy));
+        mReadyButtonName.setValue("Buy");
         mCurrentCoinInfo = null;
     }
 

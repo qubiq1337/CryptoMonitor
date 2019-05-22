@@ -25,9 +25,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     private List<Bill> mBillList;
     private Context mContext;
 
+
     public HistoryAdapter(Context context) {
         mContext = context;
         mBillList = new ArrayList<>();
+    }
+    public void setBillList(List<Bill> mBillList) {
+        this.mBillList = mBillList;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -82,5 +87,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             icon = itemView.findViewById(R.id.history_item_icon);
             change = itemView.findViewById(R.id.history_change);
         }
+    }
+    private Double changePercent (Double buyPrice, Double sellPrice) {
+        double numerator = sellPrice - buyPrice;
+        if (numerator >= 0) return (sellPrice - buyPrice) / buyPrice * 100D;
+        else return (sellPrice - buyPrice) / sellPrice * 100D;
+    }
+    private int changeColor(Double d) {
+        if (d > 0)
+            return (mContext.getResources().getColor(R.color.greenColor));
+        else if (d < 0)
+            return (mContext.getResources().getColor(R.color.redColor));
+
+        return (mContext.getResources().getColor(R.color.textColorDark));
     }
 }

@@ -53,12 +53,5 @@
     <string name="name">Название</string>
     <string name="update">Обновить</string>
 
-    <string name="currency_spinner">Currency Spinner</string>
-    <string name="language_header">Настройки языка</string>
-    <string name="language_title">Язык</string>
-    <string name="currency_title">Валюта</string>
-    <string name="currency_header">Настройки валюты</string>
-    <string name="theme_header">Темы</string>
-    <string name="theme_title">Темная тема</string>
 
 </resources>
