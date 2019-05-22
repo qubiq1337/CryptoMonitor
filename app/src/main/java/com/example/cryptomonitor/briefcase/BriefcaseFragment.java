@@ -97,13 +97,12 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
 
     private void initPieChart() {
         mPieChart.setUsePercentValues(true);
-        mPieChart.setExtraOffsets(5, 10, 5, 5);
+        mPieChart.setExtraOffsets(35, 5, 35, 5);
         mPieChart.setDrawHoleEnabled(true);
         mPieChart.setHoleColor(getResources().getColor(R.color.backgroundChartColor));
         mPieChart.animateY(800);
         mPieChart.getDescription().setEnabled(false);
         mPieChart.setTouchEnabled(false);
-
         Legend legend = mPieChart.getLegend();
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
@@ -115,13 +114,19 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
     private void setPieDataSet(List<PieEntry> yValues) {
         PieDataSet pieDataSet = new PieDataSet(yValues, "");
         pieDataSet.setValueFormatter(new PercentFormatter(mPieChart));
-        pieDataSet.setValueTextSize(12);
+        pieDataSet.setValueTextSize(12f);
         pieDataSet.setValueTextColor(Color.WHITE);
         pieDataSet.setSliceSpace(3f);
         pieDataSet.setSelectionShift(4f);
+        pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        pieDataSet.setValueLineColor(getResources().getColor(R.color.textColorDark));
+        pieDataSet.setValueLinePart1OffsetPercentage(100f); // When valuePosition is OutsideSlice, indicates offset as percentage out of the slice size
+        pieDataSet.setValueLinePart1Length(0.6f); // When valuePosition is OutsideSlice, indicates length of first half of the line
+        pieDataSet.setValueLinePart2Length(0.4f); // When valuePosition is OutsideSlice, indicates length of second half of the line
         pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         PieData pieData = new PieData(pieDataSet);
-
+        mPieChart.setDrawEntryLabels(false);
         mPieChart.animateY(800);
         mPieChart.setData(pieData);
         mPieChart.notifyDataSetChanged();
