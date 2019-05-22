@@ -3,6 +3,6 @@
     android:color="@color/textColorDark">
     <item
         android:id="@android:id/mask"
-        android:gravity="center"
-        android:drawable="@color/white" />
+        android:drawable="@color/white"
+        android:gravity="center" />
 </ripple>

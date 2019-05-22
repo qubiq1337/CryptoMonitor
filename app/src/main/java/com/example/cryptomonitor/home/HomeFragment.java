@@ -1,19 +1,20 @@
 package com.example.cryptomonitor.home;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.ToolbarInteractor;
@@ -37,6 +38,27 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     private SwipeRefreshLayout mSwipeRefresh;
     private RecyclerView mRecyclerView;
     private CoinAdapterHome mCoinAdapterHome;
+    private Observer<List<CoinInfo>> listObserver = coinInfoList -> {
+        if (coinInfoList != null)
+            mCoinAdapterHome.setList(coinInfoList);
+        else
+            mCoinAdapterHome.showMode();
+    };
+    private Observer<Event> eventObserver = event -> {
+        if (event != null && !event.isHandled()) {
+            if (event instanceof Message) {
+                Message message = (Message) event;
+                Toast.makeText(getContext(), message.getMessageText(), Toast.LENGTH_SHORT).show();
+                message.handled();
+            }
+        }
+    };
+    private Observer<Boolean> swipeRefreshObserver = isRefreshing -> {
+        if (isRefreshing)
+            mSwipeRefresh.setRefreshing(true);
+        else
+            mSwipeRefresh.setRefreshing(false);
+    };
 
     @Nullable
     @Override
@@ -67,7 +89,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     public void onStarClick(CoinInfo clickedCoinInfo) {
         mHomeViewModel.onStarClicked(clickedCoinInfo);
     }
-
 
     @Override
     public boolean onQueryTextSubmit(String s) {
@@ -104,31 +125,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         mSwipeRefresh = null;
         super.onDestroy();
     }
-
-    private Observer<List<CoinInfo>> listObserver = coinInfoList -> {
-        if (coinInfoList != null)
-            mCoinAdapterHome.setList(coinInfoList);
-        else
-            mCoinAdapterHome.showMode();
-    };
-
-    private Observer<Event> eventObserver = event -> {
-        if (event != null && !event.isHandled()) {
-            if (event instanceof Message) {
-                Message message = (Message) event;
-                Toast.makeText(getContext(), message.getMessageText(), Toast.LENGTH_SHORT).show();
-                message.handled();
-            }
-        }
-    };
-
-    private Observer<Boolean> swipeRefreshObserver = isRefreshing -> {
-        if (isRefreshing)
-            mSwipeRefresh.setRefreshing(true);
-        else
-            mSwipeRefresh.setRefreshing(false);
-    };
-
 
     @Override
     public void setCurrency(String currency) {

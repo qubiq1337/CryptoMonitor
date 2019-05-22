@@ -2,23 +2,20 @@
 
     <PreferenceCategory app:title="@string/language_header">
         <ListPreference
-            app:defaultValue="Russian"
             app:entries="@array/language_entries"
-            app:entryValues="@array/language_values"
-            app:key="language"
+            app:entryValues="@array/language_entries_values"
+            app:key="lang"
             app:title="@string/language_title"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/currency_header">
         <ListPreference
-            app:defaultValue="USD"
-            app:entries="@array/spinner_pref"
-            app:entryValues="@array/spinner_pref"
+            app:entries="@array/currency_entries"
+            app:entryValues="@array/currency_entries_values"
             app:key="currency"
-            app:title="@string/language_title"
+            app:title="@string/currency_title"
             app:useSimpleSummaryProvider="true" />
-
 
     </PreferenceCategory>
     <PreferenceCategory app:title="@string/theme_header">

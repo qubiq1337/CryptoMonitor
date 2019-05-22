@@ -105,13 +105,13 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
             String mRank = "#" + intent.getIntExtra(EXTRA_POSITION_KEY, position);
             rank.setText(mRank);
             initChart();
-            Log.e("Detailed",mIndex+" "+mCurrency);
+            Log.e("Detailed", mIndex + " " + mCurrency);
         }
 
         mDetailedViewModel = ViewModelProviders.of(this).get(DetailedViewModel.class);
-        mDetailedViewModel.getChartLiveData().observe(this,modelChartObserver);
-        mDetailedViewModel.getCoinLiveData(mIndex).observe(this,coinInfoObserver);
-        mDetailedViewModel.setChartLiveData(mIndex,mCurrency);
+        mDetailedViewModel.getChartLiveData().observe(this, modelChartObserver);
+        mDetailedViewModel.getCoinLiveData(mIndex).observe(this, coinInfoObserver);
+        mDetailedViewModel.setChartLiveData(mIndex, mCurrency);
     }
 
     private void initChart() {
@@ -138,7 +138,7 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
             dateXvalues.add(strDate);
             i++;
         }
-        LineDataSet set = new LineDataSet(dataVal1,"");
+        LineDataSet set = new LineDataSet(dataVal1, "");
         set.setDrawFilled(true);
         set.setColor(Color.parseColor("#ffffff"));
         set.setFillColor(Color.parseColor("#007ff2"));
@@ -205,6 +205,7 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
         mCompositeDisposable.dispose();
         super.onDestroy();
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -217,7 +218,7 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
                 textView_1W.setClickable(true);
                 textView_1M.setClickable(true);
                 textView_3M.setClickable(true);
-                mDetailedViewModel.setChartLiveData(mIndex,mCurrency,v.getId());
+                mDetailedViewModel.setChartLiveData(mIndex, mCurrency, v.getId());
                 break;
             case R.id.detailed_1W:
                 v.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
@@ -228,7 +229,7 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
                 textView_1D.setClickable(true);
                 textView_1M.setClickable(true);
                 textView_3M.setClickable(true);
-                mDetailedViewModel.setChartLiveData(mIndex,mCurrency,v.getId());
+                mDetailedViewModel.setChartLiveData(mIndex, mCurrency, v.getId());
                 break;
             case R.id.detailed_1M:
                 v.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
@@ -239,7 +240,7 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
                 textView_1D.setClickable(true);
                 textView_1W.setClickable(true);
                 textView_3M.setClickable(true);
-                mDetailedViewModel.setChartLiveData(mIndex,mCurrency,v.getId());
+                mDetailedViewModel.setChartLiveData(mIndex, mCurrency, v.getId());
                 break;
             case R.id.detailed_3M:
                 v.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
@@ -250,7 +251,7 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
                 textView_1D.setClickable(true);
                 textView_1W.setClickable(true);
                 textView_1M.setClickable(true);
-                mDetailedViewModel.setChartLiveData(mIndex,mCurrency,v.getId());
+                mDetailedViewModel.setChartLiveData(mIndex, mCurrency, v.getId());
                 break;
         }
     }

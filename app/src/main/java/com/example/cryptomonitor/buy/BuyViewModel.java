@@ -127,11 +127,10 @@ class BuyViewModel extends ViewModel {
     void ready(String priceStr, String amountStr) {
         double price;
         double amount;
-        if (priceStr.isEmpty() || amountStr.isEmpty()){
+        if (priceStr.isEmpty() || amountStr.isEmpty()) {
             mEvent.setValue(new Message("Fill empty fields"));
-            Log.e("Ready",(priceStr));
-        }
-        else
+            Log.e("Ready", (priceStr));
+        } else
             try {
                 mPurchase.setCoinId(mCurrentCoinInfo.getId());
                 price = Double.parseDouble(priceStr);
@@ -139,7 +138,7 @@ class BuyViewModel extends ViewModel {
                 mPurchase.setAmount(amount);
                 mPurchase.setPrice_purchase(price);
                 mPurchaseDataSource.insert(mPurchase);
-                Log.e("Ready",(mPurchase.getPrice_purchase()+" "+mPurchase.getAmount()+mPurchase.getDateStr()));
+                Log.e("Ready", (mPurchase.getPrice_purchase() + " " + mPurchase.getAmount() + mPurchase.getDateStr()));
                 mEvent.setValue(new FinishEvent());
             } catch (NullPointerException e) {
                 mEvent.setValue(new Message("Select coin"));

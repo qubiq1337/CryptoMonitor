@@ -15,20 +15,21 @@ public class HistoryViewModel extends ViewModel {
     private MutableLiveData<List<Bill>> billsLiveData = new MutableLiveData<>();
     private BillDataSource billDataSource = new BillRepo();
 
-    public LiveData<List<Bill>> getBillsLiveData(){
-        return billsLiveData;
-    }
-
-    public HistoryViewModel(){
+    public HistoryViewModel() {
         billDataSource.getAll(new BillDataSource.GetBillsCallback() {
             @Override
             public void onLoaded(List<Bill> billList) {
                 billsLiveData.setValue(billList);
             }
+
             @Override
             public void onFailed() {
 
             }
         });
+    }
+
+    public LiveData<List<Bill>> getBillsLiveData() {
+        return billsLiveData;
     }
 }

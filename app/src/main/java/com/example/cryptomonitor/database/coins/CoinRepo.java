@@ -21,18 +21,16 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class CoinRepo implements CoinDataSource {
 
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private static Executor dbExecutor = AppExecutors.getInstance().getDbExecutor();
     private final String BASE_IMAGE_URL = "https://www.cryptocompare.com";
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private CoinInfoDao mCoinInfoDao = App.getDatabase().coinInfoDao();
     private ApiCryptoCompare mCoinInfoApi = Network.getInstance().getApiCryptoCompare();
     private Disposable mDisposableSubscription;
-    private static Executor dbExecutor = AppExecutors.getInstance().getDbExecutor();
 
     @Override
     public void getSearchFavoriteCoins(String word, GetCoinCallback coinCallback) {
@@ -98,7 +96,6 @@ public class CoinRepo implements CoinDataSource {
                     .subscribe(coinCallback::onLoaded, error -> coinCallback.onFailed());
         }
     }
-
 
 
     @Override

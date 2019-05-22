@@ -1,30 +1,25 @@
 package com.example.cryptomonitor.briefcase;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-
-import com.example.cryptomonitor.activity.TransactionActivity;
-import com.example.cryptomonitor.database.entities.Purchase;
-import com.example.cryptomonitor.model_cryptocompare.model_currencies.CurrenciesData;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.cryptomonitor.R;
+import com.example.cryptomonitor.activity.TransactionActivity;
 import com.example.cryptomonitor.adapters.PortfolioAdapter;
+import com.example.cryptomonitor.database.entities.Purchase;
 import com.example.cryptomonitor.database.purchases.PurchaseAndCoin;
+import com.example.cryptomonitor.model_cryptocompare.model_currencies.CurrenciesData;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -32,19 +27,28 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.List;
+
 import io.reactivex.disposables.CompositeDisposable;
 
 
 public class BriefcaseFragment extends Fragment implements View.OnClickListener, PortfolioAdapter.OnItemClickListener {
 
 
+    public static final String COIN_INDEX = "COIN_INDEX";
     private PortfolioAdapter portfolioAdapter;
     private PieChart mPieChart;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private BriefcaseViewModel mViewModel;
-    public static final String COIN_INDEX = "COIN_INDEX";
-
+    private Observer<List<PieEntry>> mPieEntryObserver = this::setPieDataSet;
+    private Observer<List<PurchaseAndCoin>> mListObserver = purchaseList -> {
+        portfolioAdapter.setPortfolioItemList(purchaseList);
+        portfolioAdapter.notifyDataSetChanged();
+    };
+    private Observer<CurrenciesData> currenciesDataObserver = currenciesData ->
+            portfolioAdapter.setCurrencies(currenciesData);
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,11 +71,13 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
+
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 Purchase purchase = portfolioAdapter.getmPortfolioItemList().get(viewHolder.getAdapterPosition()).getPurchase();
                 mViewModel.removeSwipedItem(purchase);
             }
+
             @Override
             public int getSwipeDirs(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
                 if (viewHolder.getAdapterPosition() % 2 == 0) return ItemTouchHelper.LEFT;
@@ -99,7 +105,8 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
         mPieChart.setUsePercentValues(true);
         mPieChart.setExtraOffsets(35, 5, 35, 5);
         mPieChart.setDrawHoleEnabled(true);
-        mPieChart.setHoleColor(getResources().getColor(R.color.backgroundChartColor));
+        //TODO refactor
+        mPieChart.setHoleColor(getResources().getColor(R.color.dark1));
         mPieChart.animateY(800);
         mPieChart.getDescription().setEnabled(false);
         mPieChart.setTouchEnabled(false);
@@ -132,13 +139,6 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
         mPieChart.notifyDataSetChanged();
     }
 
-    private Observer<List<PieEntry>> mPieEntryObserver = this::setPieDataSet;
-
-    private Observer<List<PurchaseAndCoin>> mListObserver = purchaseList -> {
-        portfolioAdapter.setPortfolioItemList(purchaseList);
-        portfolioAdapter.notifyDataSetChanged();
-    };
-
     @Override
     public void onDestroy() {
         mCompositeDisposable.dispose();
@@ -151,7 +151,4 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
         intent.putExtra(COIN_INDEX, purchaseAndCoin.getPurchase().getPurchase_id());
         startActivity(intent);
     }
-
-    private Observer<CurrenciesData> currenciesDataObserver = currenciesData ->
-            portfolioAdapter.setCurrencies(currenciesData);
 }
