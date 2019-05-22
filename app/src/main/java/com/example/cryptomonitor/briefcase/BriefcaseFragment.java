@@ -98,11 +98,11 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
     private void initPieChart() {
         mPieChart.setUsePercentValues(true);
         mPieChart.setExtraOffsets(35, 5, 35, 5);
-        mPieChart.setDrawHoleEnabled(true);
         mPieChart.setHoleColor(getResources().getColor(R.color.backgroundChartColor));
         mPieChart.animateY(800);
         mPieChart.getDescription().setEnabled(false);
-        mPieChart.setTouchEnabled(false);
+        mPieChart.setTouchEnabled(true);
+        mPieChart.setDragDecelerationFrictionCoef(0.1f);
         Legend legend = mPieChart.getLegend();
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
@@ -112,6 +112,8 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
     }
 
     private void setPieDataSet(List<PieEntry> yValues) {
+        if (yValues.isEmpty()) mPieChart.setDrawHoleEnabled(false);
+        else mPieChart.setDrawHoleEnabled(true);
         PieDataSet pieDataSet = new PieDataSet(yValues, "");
         pieDataSet.setValueFormatter(new PercentFormatter(mPieChart));
         pieDataSet.setValueTextSize(12f);

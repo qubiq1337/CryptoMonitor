@@ -65,7 +65,10 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
 
         Double change = getChangePercent(buyPrice, currentPrice, buyCurrency);
         change = simplePercentFormatting(change);
-        portfolioViewHolder.change.setText(change + "%");
+        String strChange = change + "%";
+        //Fix -0.0 в отображении change
+        if (change == 0D) strChange = strChange.replace("-","");
+        portfolioViewHolder.change.setText(strChange);
         portfolioViewHolder.change.setTextColor(changeColor(change));
         portfolioViewHolder.change.setTextSize(TypedValue.COMPLEX_UNIT_SP, changeTextSize(change));
         String buyPriceFormatted = purchaseAndCoin.getPurchase().getBuyCurrencySymbol() + " " + cashFormatting(buyPrice);
