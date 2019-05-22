@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeDark"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.TransactionActivity" />
+
 
         <activity
             android:name=".activity.TransactionActivity"
