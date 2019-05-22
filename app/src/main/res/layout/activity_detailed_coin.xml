@@ -250,7 +250,7 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_above="@id/chart"
-        android:background="@color/backgroundChartColor"
+        android:background="@color/dark2"
         android:orientation="horizontal"
         android:paddingTop="2dp"
         android:paddingBottom="2dp">
@@ -307,7 +307,7 @@
         android:layout_width="match_parent"
         android:layout_height="280dp"
         android:layout_above="@+id/view"
-        android:background="@color/backgroundChartColor" />
+        android:background="@color/dark2" />
 
     <View
         android:id="@+id/view"
@@ -315,6 +315,6 @@
         android:layout_width="match_parent"
         android:layout_height="15dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/backgroundChartColor" />
+        android:background="@color/dark2" />
 
 </RelativeLayout>
