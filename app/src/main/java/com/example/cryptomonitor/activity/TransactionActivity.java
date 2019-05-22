@@ -1,10 +1,5 @@
 package com.example.cryptomonitor.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +12,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.cryptomonitor.AutoCompleteAdapter;
 import com.example.cryptomonitor.R;
@@ -76,7 +76,6 @@ public class TransactionActivity extends AppCompatActivity implements View.OnCli
         mPriceIn = findViewById(R.id.transaction_price_in);
         mRadioGroup = findViewById(R.id.transaction_radio_group);
         mBuyRadioButton = findViewById(R.id.transaction_buy_button);
-        mSellRadioButton = findViewById(R.id.transaction_sell_button);
         mReadyButton = findViewById(R.id.transaction_ready);
         mCancelButton = findViewById(R.id.transaction_cancel);
         mPriceSymbol = findViewById(R.id.transaction_price_symbol);
@@ -118,7 +117,7 @@ public class TransactionActivity extends AppCompatActivity implements View.OnCli
         }
         //Клик на элемент списка (Выбор монеты)
         mAutoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
-            CoinInfo coinInfo = autoCompleteAdapter.getReusultFilterList().get(position);
+            CoinInfo coinInfo = autoCompleteAdapter.getResultFilterList().get(position);
             mTransactionViewModel.coinSelected(coinInfo);
         });
         //Слушатель radio group

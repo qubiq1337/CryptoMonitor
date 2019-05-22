@@ -34,7 +34,6 @@ public class WidgetProvider extends AppWidgetProvider {
     public static final String SHORT_NAME_EXTRA = "shortNameExtra";
 
     final static String ACTION_ON_CLICK = "onItemClick";
-    final static String ITEM_POSITION = "itemPosition";
     public static final String ACTION_SHOW_TOAST = "showToast";
     public static final String EXTRA_MESSAGE = "extraMessage";
     public static final String ACTION_UPDATE_DB = "updateDb";
@@ -133,7 +132,7 @@ public class WidgetProvider extends AppWidgetProvider {
                 for (int page = 0; page <= 19; page++) {
                     Response<CoinCryptoCompare> response = Network.getInstance()
                             .getApiCryptoCompare().getAllCoinsToWidget(page, "USD").execute();
-                    CoinCryptoCompare coinCryptoCompare = null;
+                    CoinCryptoCompare coinCryptoCompare;
                     if (response.body() != null)
                         coinCryptoCompare = response.body();
                     else

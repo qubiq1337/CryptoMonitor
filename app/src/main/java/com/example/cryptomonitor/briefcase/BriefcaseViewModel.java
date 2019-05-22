@@ -1,12 +1,9 @@
 package com.example.cryptomonitor.briefcase;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.entities.Purchase;
 import com.example.cryptomonitor.database.purchases.PurchaseAndCoin;
 import com.example.cryptomonitor.database.purchases.PurchaseDataSource;
@@ -19,7 +16,6 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 class BriefcaseViewModel extends ViewModel {
@@ -72,11 +68,11 @@ class BriefcaseViewModel extends ViewModel {
         });
     }
 
-    public LiveData<CurrenciesData> getCurrenciesLiveData() {
+    LiveData<CurrenciesData> getCurrenciesLiveData() {
         return currenciesLiveData;
     }
 
-    public void removeSwipedItem(Purchase purchase){
+    void removeSwipedItem(Purchase purchase) {
         mPurchaseRepo.remove(purchase);
     }
 

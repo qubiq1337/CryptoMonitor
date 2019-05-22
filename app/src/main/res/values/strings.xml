@@ -35,5 +35,15 @@
     <string name="sort_by_name">Sorting by name</string>
     <string name="sort_by_value">Sorting by price</string>
     <string name="updated_at">Updated at</string>
+    <string name="portfolio">Portfolio</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="check_date">Check Date</string>
+    <string name="total_cost">Total cost</string>
+    <string name="price">Price</string>
+    <string name="sell">Sell</string>
+    <string name="edit">Edit</string>
+    <string name="name">Name</string>
+    <string name="update">Update</string>
 
 </resources>

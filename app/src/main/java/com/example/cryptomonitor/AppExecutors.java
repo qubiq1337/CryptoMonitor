@@ -2,6 +2,7 @@ package com.example.cryptomonitor;
 
 import android.os.Handler;
 import android.os.Looper;
+
 import androidx.annotation.NonNull;
 
 import java.util.concurrent.Executor;
@@ -11,14 +12,11 @@ public class AppExecutors {
 
     private static AppExecutors executors;
     private final Executor mDbExecutor;
-    private final Executor mNetworkExecutor;
     private final Executor mMainThreadExecutor;
-    private final int nThreads = 3;
 
     private AppExecutors() {
         mMainThreadExecutor = new MainThreadExecutor();
         mDbExecutor = Executors.newSingleThreadExecutor();
-        mNetworkExecutor = Executors.newFixedThreadPool(nThreads);
     }
 
     public static AppExecutors getInstance() {
@@ -30,10 +28,6 @@ public class AppExecutors {
 
     public Executor getDbExecutor() {
         return mDbExecutor;
-    }
-
-    public Executor getNetworkExecutor() {
-        return mNetworkExecutor;
     }
 
     public Executor getMainThreadExecutor() {

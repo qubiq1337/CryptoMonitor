@@ -5,8 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -27,25 +25,19 @@ import io.reactivex.schedulers.Schedulers;
 public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
     private List<CoinInfo> coinInfoList;
 
-    public List<CoinInfo> getReusultFilterList() {
+    public List<CoinInfo> getResultFilterList() {
         return reusultFilterList;
     }
 
     private List<CoinInfo> reusultFilterList;
     private Context mContex;
 
-    public Disposable getDisposable() {
-        return disposable;
-    }
-
-    private Disposable disposable;
-
 
     public AutoCompleteAdapter(Context context) {
         mContex = context;
         reusultFilterList = new ArrayList<>();
         coinInfoList = new ArrayList<>();
-        disposable = App
+        Disposable disposable = App
                 .getDatabase()
                 .coinInfoDao()
                 .getAll()
@@ -53,7 +45,7 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(list -> {
                     coinInfoList = list;
-                    Log.e("findCoin",coinInfoList.size()+"");
+                    Log.e("findCoin", coinInfoList.size() + "");
                 });
     }
 
@@ -92,7 +84,7 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public Filter getFilter() {
-        Filter filter = new Filter() {
+        return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
 
@@ -132,6 +124,5 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
             }
 
         };
-        return filter;
     }
 }

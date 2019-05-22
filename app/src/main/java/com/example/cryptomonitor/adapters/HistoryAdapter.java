@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.entities.Bill;
-import com.example.cryptomonitor.database.entities.Purchase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -47,7 +46,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         double  buyPrice = bill.getBuyPrice();
         double sellPrice = bill.getSellPrice();
         double change = changePercent(buyPrice,sellPrice);
-        holder.change.setText(simpleNumberFormatting(change)+"%");
+        String changeInPercent = simpleNumberFormatting(change) + "%";
+        holder.change.setText(changeInPercent);
         holder.change.setTextColor(changeColor(change));
         holder.sellPrice.setText(cashFormatting(sellPrice));
         holder.buyPrice.setText(cashFormatting(buyPrice));
@@ -61,7 +61,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         return mBillList.size();
     }
 
-    public class HistoryViewHolder extends RecyclerView.ViewHolder {
+    class HistoryViewHolder extends RecyclerView.ViewHolder {
         private TextView buyPrice;
         private TextView sellPrice;
         private TextView buyDate;
@@ -71,7 +71,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         private ImageView icon;
         private TextView change;
 
-        public HistoryViewHolder(@NonNull View itemView) {
+        HistoryViewHolder(@NonNull View itemView) {
             super(itemView);
             buyPrice = itemView.findViewById(R.id.history_buy_price);
             sellPrice = itemView.findViewById(R.id.history_sell_price);

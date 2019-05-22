@@ -20,7 +20,7 @@ public class Utilities {
 
     public static String formatToMillion(String s) {
         String symbol = String.valueOf(s.charAt(0));
-        s = s.replaceAll("[^0-9\\.]", "");
+        s = s.replaceAll("[^0-9.]", "");
         double aDouble = Double.parseDouble(s);
         long killo = 1000L;
         long million = 1000000L;

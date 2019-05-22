@@ -1,19 +1,20 @@
 package com.example.cryptomonitor.home;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.ToolbarInteractor;
@@ -31,7 +32,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         SwipeRefreshLayout.OnRefreshListener,
         CoinAdapterHome.OnCoinClickListener {
 
-    public static final String TAG = "MyLogs";
     private String mCurrency;
     private HomeViewModel mHomeViewModel;
     private SwipeRefreshLayout mSwipeRefresh;
@@ -82,10 +82,8 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.search:
-                mHomeViewModel.onSearchClicked();
-                break;
+        if (v.getId() == R.id.search) {
+            mHomeViewModel.onSearchClicked();
         }
     }
 
