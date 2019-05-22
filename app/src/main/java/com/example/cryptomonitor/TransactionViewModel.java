@@ -1,10 +1,8 @@
 package com.example.cryptomonitor;
 
-import android.app.Application;
 import android.util.Log;
 import android.view.View;
 
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -58,14 +56,9 @@ public class TransactionViewModel extends AndroidViewModel {
     private Bill mBill;
     private String nowDate = "";
     private String buyDatePurchase = "";
-    public static final HashMap<String, String> coinSymbols = new HashMap<>();
 
-    static {
-        coinSymbols.put("\u0024", "USD");
-        coinSymbols.put("\u20AC", "EUR");
-        coinSymbols.put("\u20BD", "RUB");
-        coinSymbols.put("\u00a5", "CNY");
-        coinSymbols.put("\u00a3", "GBP");
+    public TransactionViewModel() {
+        defaultSetup();
     }
 
     public LiveData<String> getSymbolLiveData() {
@@ -339,7 +332,7 @@ public class TransactionViewModel extends AndroidViewModel {
     private int[] strToDate(String dateStr) {
 
         int[] date = new int[3];
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy",Locale.US);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
         SimpleDateFormat dayf = new SimpleDateFormat("dd", Locale.US);
         SimpleDateFormat monf = new SimpleDateFormat("MM", Locale.US);
         SimpleDateFormat yearf = new SimpleDateFormat("yyyy", Locale.US);
@@ -347,7 +340,7 @@ public class TransactionViewModel extends AndroidViewModel {
             date[0] = Integer.parseInt(dayf.format(simpleDateFormat.parse(dateStr)));
             date[1] = Integer.parseInt(monf.format(simpleDateFormat.parse(dateStr)));
             date[2] = Integer.parseInt(yearf.format(simpleDateFormat.parse(dateStr)));
-        }catch (ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return date;

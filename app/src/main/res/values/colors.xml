@@ -6,6 +6,10 @@
     <color name="colorDarkPrimary">#2C2D2F</color>
     <color name="colorDarkPrimaryDark">#2C2D2F</color>
     <color name="colorDarkAccent">#1E90FF</color>
+    <color name="backgroundColor">#00FFE8</color>
+    <color name="darkPurple1">#1A0044</color>
+    <color name="darkPurple2">#3F118D</color>
+    <color name="darkPurple3">#543088</color>
     <color name="dark1">#000000</color>
     <color name="dark2">#191919</color>
     <color name="dark3">#2C2D2F</color>
@@ -17,7 +21,6 @@
     <color name="red_close">#DD2C00</color>
     <color name="textColorPrimary">#ffffff</color>
     <color name="textColorDark">#c7c7c7</color>
-    <color name="backgroundColor">#201C37</color>
     <color name="redColor">#d50000</color>
     <color name="greenColor">#087f23</color>
     <color name="backgroundChartColor">#18142E</color>

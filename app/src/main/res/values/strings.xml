@@ -11,9 +11,13 @@
         <item>CNY</item>
         <item>GBP</item>
     </string-array>
+    <string-array name="settings_spinner">
+        <item>Sort </item>
+        <item>Settings  </item>
+    </string-array>
     <string name="briefcase">Briefcase</string>
     <string name="find">Find</string>
-    <string name="action_bar_spinner">Action Bar Spinner</string>
+    <string name="currency_spinner">Currency Spinner</string>
     <string name="search_line">Search</string>
     <string name="close">Close</string>
     <string name="updating">Updating</string>
@@ -30,10 +34,6 @@
     <string name="settings">Settings</string>
     <string name="transaction_price_in">Price in %1$s</string>
     <string name="transaction_total_cost">Total cost in %1$s</string>
-    <string name="sort">Sorting</string>
-    <string name="sort_by_rank">Sorting by rate</string>
-    <string name="sort_by_name">Sorting by name</string>
-    <string name="sort_by_value">Sorting by price</string>
     <string name="updated_at">Updated at</string>
     <string name="portfolio">Portfolio</string>
     <string name="save">Save</string>
@@ -46,4 +46,6 @@
     <string name="name">Name</string>
     <string name="update">Update</string>
 
+    <string name="action_bar_spinner">Action Bar Spinner</string>
+    <string name="sort">Sort</string>
 </resources>

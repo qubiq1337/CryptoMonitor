@@ -24,6 +24,12 @@ public class HistoryFragment extends Fragment {
 
     private HistoryAdapter mHistoryAdapter;
     private HistoryViewModel mHistoryViewModel;
+    private Observer<List<Bill>> billsLiveDataObserver = new Observer<List<Bill>>() {
+        @Override
+        public void onChanged(List<Bill> bills) {
+            mHistoryAdapter.setBillList(bills);
+        }
+    };
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,15 +40,8 @@ public class HistoryFragment extends Fragment {
         mHistoryAdapter = new HistoryAdapter(getActivity());
         mRecyclerView.setAdapter(mHistoryAdapter);
         mHistoryViewModel = ViewModelProviders.of(this).get(HistoryViewModel.class);
-        mHistoryViewModel.getBillsLiveData().observe(this,billsLiveDataObserver);
+        mHistoryViewModel.getBillsLiveData().observe(this, billsLiveDataObserver);
         return view;
     }
-
-    private Observer<List<Bill>> billsLiveDataObserver = new Observer<List<Bill>>() {
-        @Override
-        public void onChanged(List<Bill> bills) {
-            mHistoryAdapter.setBillList(bills);
-        }
-    };
 
 }

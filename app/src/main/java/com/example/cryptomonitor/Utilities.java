@@ -29,13 +29,13 @@ public class Utilities {
         long number = Math.round(aDouble);
         if ((number >= million) && (number < billion)) {
             String fraction = calculateFraction(number, million);
-            return symbol+" "+(fraction) + " M";
+            return symbol + " " + (fraction) + " M";
         } else if ((number >= billion) && (number < trillion)) {
             String fraction = calculateFraction(number, billion);
-            return symbol+" "+(fraction) + " B";
-        } else if ((number >= killo) && (number < million)){
+            return symbol + " " + (fraction) + " B";
+        } else if ((number >= killo) && (number < million)) {
             String fraction = calculateFraction(number, killo);
-            return symbol+" "+(fraction) + " K";
+            return symbol + " " + (fraction) + " K";
         }
         return Long.toString(number);
     }
@@ -54,20 +54,21 @@ public class Utilities {
         } else {
             //Смена Local ставиться точка пример 89.9
             DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-            DecimalFormat decimalFormat = new DecimalFormat(".##",symbols);
+            DecimalFormat decimalFormat = new DecimalFormat(".##", symbols);
             decimalFormat.setRoundingMode(RoundingMode.CEILING);
 
             result = decimalFormat.format(d);
         }
         return result;
     }
+
     public static Double simplePercentFormatting(Double d) {
         String result;
-            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-            DecimalFormat decimalFormat = new DecimalFormat(".#",symbols);
-            decimalFormat.setRoundingMode(RoundingMode.CEILING);
-            decimalFormat.format(d);
-            result = decimalFormat.format(d);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat decimalFormat = new DecimalFormat(".#", symbols);
+        decimalFormat.setRoundingMode(RoundingMode.CEILING);
+        decimalFormat.format(d);
+        result = decimalFormat.format(d);
         return Double.parseDouble(result);
     }
 
@@ -78,7 +79,7 @@ public class Utilities {
             result = bigDecimal.toPlainString();
         } else {
             DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-            DecimalFormat decimalFormat = new DecimalFormat("##,###.##",symbols);
+            DecimalFormat decimalFormat = new DecimalFormat("##,###.##", symbols);
             decimalFormat.setRoundingMode(RoundingMode.CEILING);
             decimalFormat.format(d);
             result = decimalFormat.format(d);
@@ -86,8 +87,8 @@ public class Utilities {
         return result;
     }
 
-    public static String dateFormatting(String date){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy",Locale.US);
+    public static String dateFormatting(String date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
         SimpleDateFormat sm = new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
         try {
             return sm.format(simpleDateFormat.parse(date));
@@ -116,8 +117,6 @@ public class Utilities {
         String strRoundedX = roundStr(x, n, 0);
         return strRoundedX;
     }
-
-
 
 
     /**

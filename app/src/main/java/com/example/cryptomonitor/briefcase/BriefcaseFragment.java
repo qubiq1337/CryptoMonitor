@@ -38,12 +38,18 @@ import io.reactivex.disposables.CompositeDisposable;
 public class BriefcaseFragment extends Fragment implements View.OnClickListener, PortfolioAdapter.OnItemClickListener {
 
 
+    public static final String COIN_INDEX = "COIN_INDEX";
     private PortfolioAdapter portfolioAdapter;
     private PieChart mPieChart;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private BriefcaseViewModel mViewModel;
-    public static final String COIN_INDEX = "COIN_INDEX";
-
+    private Observer<List<PieEntry>> mPieEntryObserver = this::setPieDataSet;
+    private Observer<List<PurchaseAndCoin>> mListObserver = purchaseList -> {
+        portfolioAdapter.setPortfolioItemList(purchaseList);
+        portfolioAdapter.notifyDataSetChanged();
+    };
+    private Observer<CurrenciesData> currenciesDataObserver = currenciesData ->
+            portfolioAdapter.setCurrencies(currenciesData);
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,7 +107,9 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
     private void initPieChart() {
         mPieChart.setUsePercentValues(true);
         mPieChart.setExtraOffsets(35, 5, 35, 5);
-        mPieChart.setHoleColor(getResources().getColor(R.color.backgroundChartColor));
+        mPieChart.setDrawHoleEnabled(true);
+        //TODO refactor
+        mPieChart.setHoleColor(getResources().getColor(R.color.dark1));
         mPieChart.animateY(800);
         mPieChart.getDescription().setEnabled(false);
         mPieChart.setTouchEnabled(true);
@@ -137,13 +145,6 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
         mPieChart.notifyDataSetChanged();
     }
 
-    private Observer<List<PieEntry>> mPieEntryObserver = this::setPieDataSet;
-
-    private Observer<List<PurchaseAndCoin>> mListObserver = purchaseList -> {
-        portfolioAdapter.setPortfolioItemList(purchaseList);
-        portfolioAdapter.notifyDataSetChanged();
-    };
-
     @Override
     public void onDestroy() {
         mCompositeDisposable.dispose();
@@ -156,7 +157,4 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
         intent.putExtra(COIN_INDEX, purchaseAndCoin.getPurchase().getPurchase_id());
         startActivity(intent);
     }
-
-    private Observer<CurrenciesData> currenciesDataObserver = currenciesData ->
-            portfolioAdapter.setCurrencies(currenciesData);
 }

@@ -9,8 +9,8 @@
         </shape>
     </item>
     <item
-        android:height="200dp"
         android:width="200dp"
+        android:height="200dp"
         android:drawable="@drawable/ic_launcher_crypto"
         android:gravity="center" />
 </layer-list>

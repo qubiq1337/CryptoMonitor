@@ -35,7 +35,21 @@ public class FavoritesFragment extends Fragment implements FavoriteCoinAdapter.O
     private FavoriteCoinAdapter mCoinAdapterHome;
     private FavoriteViewModel mViewModel;
     private String mCurrency;
-
+    private Observer<Event> eventObserver = event -> {
+        if (event != null && !event.isHandled()) {
+            if (event instanceof Message) {
+                Message message = (Message) event;
+                Toast.makeText(getContext(), message.getMessageText(), Toast.LENGTH_SHORT).show();
+                message.handled();
+            }
+        }
+    };
+    private Observer<Boolean> swipeRefreshObserver = isRefreshing -> {
+        if (isRefreshing)
+            mSwipeRefreshLayout.setRefreshing(true);
+        else
+            mSwipeRefreshLayout.setRefreshing(false);
+    };
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,23 +70,6 @@ public class FavoritesFragment extends Fragment implements FavoriteCoinAdapter.O
         mViewModel.getIsRefreshLiveData().observe(this, swipeRefreshObserver);
         return view;
     }
-
-    private Observer<Event> eventObserver = event -> {
-        if (event != null && !event.isHandled()) {
-            if (event instanceof Message) {
-                Message message = (Message) event;
-                Toast.makeText(getContext(), message.getMessageText(), Toast.LENGTH_SHORT).show();
-                message.handled();
-            }
-        }
-    };
-
-    private Observer<Boolean> swipeRefreshObserver = isRefreshing -> {
-        if (isRefreshing)
-            mSwipeRefreshLayout.setRefreshing(true);
-        else
-            mSwipeRefreshLayout.setRefreshing(false);
-    };
 
     @Override
     public void onStarClick(CoinInfo clickedCoinInfo) {

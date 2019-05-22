@@ -25,7 +25,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     private List<Bill> mBillList;
     private Context mContext;
 
-    public HistoryAdapter(Context context){
+    public HistoryAdapter(Context context) {
         mContext = context;
         mBillList = new ArrayList<>();
     }
@@ -33,7 +33,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     @NonNull
     @Override
     public HistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.history_item,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.history_item, parent, false);
         return new HistoryViewHolder(view);
     }
 
@@ -43,7 +43,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         holder.name.setText(bill.getFull_name());
         holder.sellDate.setText(bill.getSell_date());
         holder.buyDate.setText(bill.getBuy_date());
-        double  buyPrice = bill.getBuyPrice();
+        double buyPrice = bill.getBuyPrice();
         double sellPrice = bill.getSellPrice();
         double change = changePercent(buyPrice,sellPrice);
         String changeInPercent = simpleNumberFormatting(change) + "%";
@@ -82,25 +82,5 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             icon = itemView.findViewById(R.id.history_item_icon);
             change = itemView.findViewById(R.id.history_change);
         }
-    }
-
-    public void setBillList(List<Bill> mBillList) {
-        this.mBillList = mBillList;
-        notifyDataSetChanged();
-    }
-
-    private Double changePercent (Double buyPrice, Double sellPrice) {
-        double numerator = sellPrice - buyPrice;
-        if (numerator >= 0) return (sellPrice - buyPrice) / buyPrice * 100D;
-        else return (sellPrice - buyPrice) / sellPrice * 100D;
-    }
-
-    private int changeColor(Double d) {
-        if (d > 0)
-            return (mContext.getResources().getColor(R.color.greenColor));
-        else if (d < 0)
-            return (mContext.getResources().getColor(R.color.redColor));
-
-        return (mContext.getResources().getColor(R.color.textColorDark));
     }
 }

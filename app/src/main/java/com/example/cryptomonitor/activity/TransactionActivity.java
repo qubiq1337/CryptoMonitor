@@ -61,6 +61,65 @@ public class TransactionActivity extends AppCompatActivity implements View.OnCli
     private TextView mPriceSymbol;
     private TextView mTotalCostSymbol;
     private TextView mTotalCostText;
+    //Вывод сообщений ошибок
+    private Observer<Event> toastObserver = event -> {
+        if (event != null && !event.isHandled()) {
+            if (event instanceof Message) {
+                Message message = (Message) event;
+                Toast.makeText(TransactionActivity.this, message.getMessageText(), Toast.LENGTH_SHORT).show();
+                message.handled();
+            } else if (event instanceof FinishEvent) {
+                FinishEvent finishEvent = (FinishEvent) event;
+                finishEvent.handled();
+                finish();
+            }
+        }
+    };
+    // Состояние автокомплита после выбора монеты/ отмены
+    private Observer<Boolean> autoCompleteTextViewEnabledObserver = enabled -> {
+        if (enabled) {
+            mAutoCompleteTextView.setEnabled(true);
+            mAutoCompleteTextView.getText().clear();
+            mAutoCompleteTextView.requestFocus();
+            mEditPrice.setText("");
+        } else {
+            mAutoCompleteTextView.setEnabled(false);
+        }
+    };
+    //  отмена выбранного коина
+    private Observer<Integer> cancelCoinVisibleObserver = visibility ->
+            mCancelCoin.setVisibility(visibility);
+    // Изменение price
+    private Observer<Event> priceEventObserver = priceEvent -> {
+        if (priceEvent != null && !priceEvent.isHandled()) {
+            PriceEvent price = (PriceEvent) priceEvent;
+            mEditPrice.setText(price.getPrice());
+        }
+    };
+    //сетим текущую дату в TV
+    private Observer<String> dateObserver = date ->
+            mDate.setText(date);
+    // Изменение текста кнопки Ready
+    private Observer<String> readyButtonNameObserver = s ->
+            mReadyButton.setText(s);
+    //Изменение текста autocomplete
+    private Observer<String> autocompleteTextObserver = s ->
+            mAutoCompleteTextView.setText(s);
+    //Первая инициализация EditMode
+    private Observer<Boolean> buyButtonObserver = aBoolean ->
+            mBuyRadioButton.setChecked(aBoolean);
+    //Изменение Amount
+    private Observer<String> amountLiveDataObserver = s ->
+            mEditAmount.setText(s);
+    //Изменение символа валюты
+    private Observer<String> symbolLiveDataObserver = s -> {
+        //USD/EUR ...
+        String currency = coinSymbols.get(s);
+        mPriceIn.setText(getString(R.string.transaction_price_in, currency));
+        mTotalCostText.setText(getString(R.string.transaction_total_cost, currency));
+        mTotalCostSymbol.setText(s);
+        mPriceSymbol.setText(s);
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,73 +226,11 @@ public class TransactionActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    //Вывод сообщений ошибок
-    private Observer<Event> toastObserver = event -> {
-        if (event != null && !event.isHandled()) {
-            if (event instanceof Message) {
-                Message message = (Message) event;
-                Toast.makeText(TransactionActivity.this, message.getMessageText(), Toast.LENGTH_SHORT).show();
-                message.handled();
-            } else if (event instanceof FinishEvent) {
-                FinishEvent finishEvent = (FinishEvent) event;
-                finishEvent.handled();
-                finish();
-            }
-        }
-    };
-    // Состояние автокомплита после выбора монеты/ отмены
-    private Observer<Boolean> autoCompleteTextViewEnabledObserver = enabled -> {
-        if (enabled) {
-            mAutoCompleteTextView.setEnabled(true);
-            mAutoCompleteTextView.getText().clear();
-            mAutoCompleteTextView.requestFocus();
-            mEditPrice.setText("");
-        } else {
-            mAutoCompleteTextView.setEnabled(false);
-        }
-    };
-
-    //  отмена выбранного коина
-    private Observer<Integer> cancelCoinVisibleObserver = visibility ->
-            mCancelCoin.setVisibility(visibility);
-    // Изменение price
-    private Observer<Event> priceEventObserver = priceEvent -> {
-        if (priceEvent != null && !priceEvent.isHandled()) {
-            PriceEvent price = (PriceEvent) priceEvent;
-            mEditPrice.setText(price.getPrice());
-        }
-    };
-
     //сетим текущую дату в VM
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         mTransactionViewModel.onDateSet(dayOfMonth, month, year);
     }
-
-    //сетим текущую дату в TV
-    private Observer<String> dateObserver = date ->
-            mDate.setText(date);
-    // Изменение текста кнопки Ready
-    private Observer<String> readyButtonNameObserver = s ->
-            mReadyButton.setText(s);
-    //Изменение текста autocomplete
-    private Observer<String> autocompleteTextObserver = s ->
-            mAutoCompleteTextView.setText(s);
-    //Первая инициализация EditMode
-    private Observer<Boolean> buyButtonObserver = aBoolean ->
-            mBuyRadioButton.setChecked(aBoolean);
-    //Изменение Amount
-    private Observer<String> amountLiveDataObserver = s ->
-            mEditAmount.setText(s);
-    //Изменение символа валюты
-    private Observer<String> symbolLiveDataObserver = s -> {
-        //USD/EUR ...
-        String currency = coinSymbols.get(s);
-        mPriceIn.setText(getString(R.string.transaction_price_in, currency));
-        mTotalCostText.setText(getString(R.string.transaction_total_cost, currency));
-        mTotalCostSymbol.setText(s);
-        mPriceSymbol.setText(s);
-    };
 
     @Override
     protected void onDestroy() {

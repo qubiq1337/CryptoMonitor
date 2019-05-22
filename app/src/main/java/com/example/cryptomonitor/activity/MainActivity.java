@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     private FrameLayout fragmentContainer;
     private ViewPropertyAnimator animator;
     private boolean isSearchViewExpanded;
+    private MenuItem mSettingsItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +140,8 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_and_fav_menu_toolbar, menu);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false); // Dont put app name on bar
-        mSpinnerItem = menu.findItem(R.id.action_bar_spinner);
+
+        mSpinnerItem = menu.findItem(R.id.currency_spinner);
         Spinner spinner = (Spinner) mSpinnerItem.getActionView();
         spinner.getBackground().setColorFilter(R.attr.itemIconTint, PorterDuff.Mode.DST); // Replace color of arrow
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -158,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
         mSearchView = (SearchView) menu.findItem(R.id.search).getActionView();
         ImageView searchIcon = mSearchView.findViewById(R.id.search_button);
         searchIcon.setColorFilter(R.attr.itemIconTint, PorterDuff.Mode.DST);// Replace color of search icon
@@ -168,6 +171,34 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             mSearchView.setIconified(false);
             mSearchView.setQuery(savedText, false);
         }
+        mSettingsItem
+
+
+//        mSettingsSpinnerItem = menu.findItem(R.id.settings_spinner);
+//        Spinner settingsSpinner = (Spinner) mSettingsSpinnerItem.getActionView();
+//        settingsSpinner.getBackground().setColorFilter(R.attr.itemIconTint, PorterDuff.Mode.DST); // Replace color of arrow
+//        ArrayAdapter<CharSequence> settingsAdapter = ArrayAdapter.createFromResource(this,
+//                R.array.settings_spinner, R.layout.spinner_item);
+//        settingsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+//        settingsSpinner.setAdapter(settingsAdapter);
+//        settingsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                if (position == 0) {
+//                    //Set sort
+//                }
+//                if (position == 1) {
+//                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+//                    startActivity(intent);
+//                }
+//            }
+//            //TODO: Refactor this!
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
+
 
 //        mSettingsItem = menu.findItem(R.id.sort);
 //        mSettingsItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -191,6 +222,23 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
 
         return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settings:
+                startSettings();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void startSettings() {
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
 
     @Override
     public boolean onClose() {

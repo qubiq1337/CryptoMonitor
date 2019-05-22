@@ -37,7 +37,6 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
         mContex = context;
         reusultFilterList = new ArrayList<>();
         coinInfoList = new ArrayList<>();
-        Disposable disposable = App
                 .getDatabase()
                 .coinInfoDao()
                 .getAll()
@@ -47,6 +46,14 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
                     coinInfoList = list;
                     Log.e("findCoin", coinInfoList.size() + "");
                 });
+    }
+
+    public List<CoinInfo> getReusultFilterList() {
+        return reusultFilterList;
+    }
+
+    public Disposable getDisposable() {
+        return disposable;
     }
 
     @Override

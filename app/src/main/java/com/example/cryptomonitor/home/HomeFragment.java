@@ -37,6 +37,27 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     private SwipeRefreshLayout mSwipeRefresh;
     private RecyclerView mRecyclerView;
     private CoinAdapterHome mCoinAdapterHome;
+    private Observer<List<CoinInfo>> listObserver = coinInfoList -> {
+        if (coinInfoList != null)
+            mCoinAdapterHome.setList(coinInfoList);
+        else
+            mCoinAdapterHome.showMode();
+    };
+    private Observer<Event> eventObserver = event -> {
+        if (event != null && !event.isHandled()) {
+            if (event instanceof Message) {
+                Message message = (Message) event;
+                Toast.makeText(getContext(), message.getMessageText(), Toast.LENGTH_SHORT).show();
+                message.handled();
+            }
+        }
+    };
+    private Observer<Boolean> swipeRefreshObserver = isRefreshing -> {
+        if (isRefreshing)
+            mSwipeRefresh.setRefreshing(true);
+        else
+            mSwipeRefresh.setRefreshing(false);
+    };
 
     @Nullable
     @Override
@@ -67,7 +88,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     public void onStarClick(CoinInfo clickedCoinInfo) {
         mHomeViewModel.onStarClicked(clickedCoinInfo);
     }
-
 
     @Override
     public boolean onQueryTextSubmit(String s) {
@@ -102,31 +122,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         mSwipeRefresh = null;
         super.onDestroy();
     }
-
-    private Observer<List<CoinInfo>> listObserver = coinInfoList -> {
-        if (coinInfoList != null)
-            mCoinAdapterHome.setList(coinInfoList);
-        else
-            mCoinAdapterHome.showMode();
-    };
-
-    private Observer<Event> eventObserver = event -> {
-        if (event != null && !event.isHandled()) {
-            if (event instanceof Message) {
-                Message message = (Message) event;
-                Toast.makeText(getContext(), message.getMessageText(), Toast.LENGTH_SHORT).show();
-                message.handled();
-            }
-        }
-    };
-
-    private Observer<Boolean> swipeRefreshObserver = isRefreshing -> {
-        if (isRefreshing)
-            mSwipeRefresh.setRefreshing(true);
-        else
-            mSwipeRefresh.setRefreshing(false);
-    };
-
 
     @Override
     public void setCurrency(String currency) {

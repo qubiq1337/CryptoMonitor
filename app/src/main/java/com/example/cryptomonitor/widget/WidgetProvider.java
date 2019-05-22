@@ -37,7 +37,8 @@ public class WidgetProvider extends AppWidgetProvider {
     public static final String ACTION_SHOW_TOAST = "showToast";
     public static final String EXTRA_MESSAGE = "extraMessage";
     public static final String ACTION_UPDATE_DB = "updateDb";
-
+    final static String ACTION_ON_CLICK = "onItemClick";
+    final static String ITEM_POSITION = "itemPosition";
     private CoinInfoDao dao = App.getDatabase().coinInfoDao();
 
 
