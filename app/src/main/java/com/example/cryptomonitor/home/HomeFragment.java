@@ -32,7 +32,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         SwipeRefreshLayout.OnRefreshListener,
         CoinAdapterHome.OnCoinClickListener {
 
-    public static final String TAG = "MyLogs";
     private String mCurrency;
     private HomeViewModel mHomeViewModel;
     private SwipeRefreshLayout mSwipeRefresh;
@@ -103,10 +102,8 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.search:
-                mHomeViewModel.onSearchClicked();
-                break;
+        if (v.getId() == R.id.search) {
+            mHomeViewModel.onSearchClicked();
         }
     }
 

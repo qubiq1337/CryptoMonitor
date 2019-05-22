@@ -1,6 +1,5 @@
 package com.example.cryptomonitor.widget;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,19 +22,18 @@ public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
     private Context mContext;
     private List<SmallCoin> mData = new ArrayList<>();
     private CoinInfoDao dao = App.getDatabase().coinInfoDao();
-    private int mAppWidgetId;
 
     RemoteFactory(Context context, Intent intent) {
         mContext = context;
-        mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                AppWidgetManager.INVALID_APPWIDGET_ID);
     }
 
+    //initial data
     @Override
     public void onCreate() {
         mData = dao.getWidgetList().subscribeOn(Schedulers.io()).blockingGet();
     }
 
+    //prepare changed data
     @Override
     public void onDataSetChanged() {
         mData = dao.getWidgetList().subscribeOn(Schedulers.io()).blockingGet();

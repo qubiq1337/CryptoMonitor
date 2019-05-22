@@ -18,6 +18,7 @@
         android:theme="@style/AppThemeDark"
         tools:ignore="GoogleAppIndexingWarning">
 
+
         <activity
             android:name=".activity.TransactionActivity"
             android:configChanges="locale" />

@@ -7,10 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.dao.CoinInfoDao;
@@ -40,7 +36,8 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     private boolean showMode = false;
     private CoinInfoDao mDao;
     private Disposable disposable;
-    private Disposable sortedDisposable;
+    private final static int initialSize = 60;
+    private final static int loadSize = 20;
     private Consumer<List<CoinInfo>> mListConsumer = coinInfoList -> {
         mData = coinInfoList;
         notifyDataSetChanged();
@@ -66,11 +63,11 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
             disposable.dispose();
         disposable = mDao.getAllBefore(initialSize)
                 .subscribeOn(Schedulers.io())
-                .subscribe(coinInfoList -> toSortedList(coinInfoList));
+                .subscribe(this::toSortedList);
     }
 
-    void toSortedList(List<CoinInfo> coinInfoList) {
-        sortedDisposable = Flowable.fromIterable(coinInfoList)
+    private void toSortedList(List<CoinInfo> coinInfoList) {
+        Disposable sortedDisposable = Flowable.fromIterable(coinInfoList)
                 .subscribeOn(Schedulers.computation())
                 .toSortedList((coinInfo1, coinInfo2) -> Double.compare(coinInfo2.getMktcap_double(), coinInfo1.getMktcap_double()))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -113,6 +110,11 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         return mData.size();
     }
 
+
+    public interface OnStarClickListener {
+        void onStarClick(CoinInfo coinInfo);
+    }
+
     private void loadMore() {
         isLoading = true;
         if (disposable != null)
@@ -121,14 +123,6 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mListConsumer);
-    }
-
-    public interface OnStarClickListener {
-        void onStarClick(CoinInfo coinInfo);
-    }
-
-    public interface OnCoinClickListener {
-        void onCoinClick(String index, int position);
     }
 
     class CoinViewHolder extends RecyclerView.ViewHolder {
@@ -161,5 +155,9 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
                     mOnCoinClickListener.onCoinClick(mData.get(getAdapterPosition()).getShortName(), getAdapterPosition()));
         }
 
+    }
+
+    public interface OnCoinClickListener {
+        void onCoinClick(String index, int position);
     }
 }

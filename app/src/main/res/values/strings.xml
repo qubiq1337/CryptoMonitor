@@ -45,6 +45,19 @@
     <string name="transaction_price_in">Price in %1$s</string>
     <string name="transaction_total_cost">Total cost in %1$s</string>
     <string name="updated_at">Updated at</string>
+    <string name="portfolio">Portfolio</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="check_date">Check Date</string>
+    <string name="total_cost">Total cost</string>
+    <string name="price">Price</string>
+    <string name="sell">Sell</string>
+    <string name="edit">Edit</string>
+    <string name="name">Name</string>
+    <string name="update">Update</string>
+
+    <string name="action_bar_spinner">Action Bar Spinner</string>
+    <string name="sort">Sort</string>
     <string name="action_bar_spinner">Action Bar Spinner</string>
     <string name="sort">Sort</string>
 </resources>

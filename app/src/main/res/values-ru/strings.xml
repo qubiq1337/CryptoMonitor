@@ -42,5 +42,23 @@
     <string name="currency_header">Настройки валюты</string>
     <string name="theme_header">Темы</string>
     <string name="theme_title">Темная тема</string>
+    <string name="portfolio">Портфель</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
+    <string name="check_date">Check Date</string>
+    <string name="total_cost">Итого</string>
+    <string name="price">Цена за шт.</string>
+    <string name="sell">Продать</string>
+    <string name="edit">Изменить</string>
+    <string name="name">Название</string>
+    <string name="update">Обновить</string>
+
+    <string name="currency_spinner">Currency Spinner</string>
+    <string name="language_header">Настройки языка</string>
+    <string name="language_title">Язык</string>
+    <string name="currency_title">Валюта</string>
+    <string name="currency_header">Настройки валюты</string>
+    <string name="theme_header">Темы</string>
+    <string name="theme_title">Темная тема</string>
 
 </resources>

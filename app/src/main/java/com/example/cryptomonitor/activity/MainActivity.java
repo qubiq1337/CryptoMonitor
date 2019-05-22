@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
                 .alpha(0f)
                 .withEndAction(() -> {
                     Fragment fragment;
-                    String tag = fragmentName;
                     if (fragmentName.equals(HomeFragment.class.getName())) {
                         Objects.requireNonNull(getSupportActionBar()).show();
                         fragment = new HomeFragment();
@@ -106,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
                         return;
                     }
                     FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(container, fragment, tag);
+                    fragmentTransaction.replace(container, fragment, fragmentName);
                     fragmentTransaction.commit();
                     if (fragment instanceof ToolbarInteractor) {
                         mToolbarInteractor = (ToolbarInteractor) fragment;
@@ -172,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             mSearchView.setIconified(false);
             mSearchView.setQuery(savedText, false);
         }
+
 
 
 //        mSettingsSpinnerItem = menu.findItem(R.id.settings_spinner);
@@ -264,12 +264,10 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.search:
-                onExpandSearch();
-                if (mToolbarInteractor != null)
-                    mToolbarInteractor.onClick(v);
-                break;
+        if (v.getId() == R.id.search) {
+            onExpandSearch();
+            if (mToolbarInteractor != null)
+                mToolbarInteractor.onClick(v);
         }
     }
 

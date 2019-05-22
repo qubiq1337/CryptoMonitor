@@ -5,7 +5,6 @@ import android.view.View;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.cryptomonitor.database.bills.BillDataSource;
 import com.example.cryptomonitor.database.bills.BillRepo;
@@ -34,17 +33,7 @@ import static com.example.cryptomonitor.activity.TransactionActivity.EDIT_MODE;
 import static com.example.cryptomonitor.activity.TransactionActivity.SELL_MODE;
 
 
-public class TransactionViewModel extends ViewModel {
-    public static final HashMap<String, String> coinSymbols = new HashMap<>();
-
-    static {
-        coinSymbols.put("\u0024", "USD");
-        coinSymbols.put("\u20AC", "EUR");
-        coinSymbols.put("\u20BD", "RUB");
-        coinSymbols.put("\u00a5", "CNY");
-        coinSymbols.put("\u00a3", "GBP");
-    }
-
+public class TransactionViewModel extends AndroidViewModel {
     private MutableLiveData<CoinInfo> mSelectedCoin = new MutableLiveData<>();
     private CoinInfo mCurrentCoinInfo;
     private PurchaseAndCoin mCurrentPurchaseAndCoin;
@@ -115,6 +104,12 @@ public class TransactionViewModel extends ViewModel {
     public LiveData<Boolean> getAutoCompleteTextViewEnabled() {
         return mAutoCompleteTextViewEnabled;
     }
+
+    public TransactionViewModel(Application application) {
+        super(application);
+        defaultSetup();
+    }
+
 
     public void coinSelected(CoinInfo coinInfo) {
         mCurrentCoinInfo = coinInfo;
@@ -214,7 +209,7 @@ public class TransactionViewModel extends ViewModel {
         mPurchase = new Purchase();
         mCurrentPurchaseAndCoin = null;
         mAutoCompleteTextLiveData.setValue("");
-        mReadyButtonName.setValue("Buy");
+        mReadyButtonName.setValue(getApplication().getString(R.string.buy));
         mCurrentCoinInfo = null;
     }
 
@@ -285,7 +280,7 @@ public class TransactionViewModel extends ViewModel {
         mPriceEventLiveData.setValue(new PriceEvent(symbol, price));
         mAmountLiveData.setValue(simpleNumberFormatting(mCurrentPurchaseAndCoin.getPurchase().getAmount()));
         mDateSet.setValue(dateFormatting(buyDatePurchase));
-        mReadyButtonName.setValue("Update");
+        mReadyButtonName.setValue(getApplication().getString(R.string.update));
     }
 
     //Если SellMode = On
@@ -306,7 +301,7 @@ public class TransactionViewModel extends ViewModel {
         //Дата now
         mDateSet.setValue(dateFormatting(nowDate));
 
-        mReadyButtonName.setValue("Sell");
+        mReadyButtonName.setValue(getApplication().getString(R.string.sell));
     }
 
     private Double convert(Double currentPrice, Double buyCurrencyPrice) {

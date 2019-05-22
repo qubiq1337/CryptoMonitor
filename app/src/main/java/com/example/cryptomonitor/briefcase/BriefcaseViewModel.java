@@ -25,6 +25,14 @@ class BriefcaseViewModel extends ViewModel {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private MutableLiveData<CurrenciesData> currenciesLiveData = new MutableLiveData<>();
 
+    LiveData<List<PurchaseAndCoin>> getPurchaseAndCoinLive() {
+        return mPurchaseAndCoinLive;
+    }
+
+    LiveData<List<PieEntry>> getPieLiveData() {
+        return mPieLiveData;
+    }
+
     BriefcaseViewModel() {
         mPurchaseRepo.getAllPurchase(new PurchaseDataSource.GetPurchaseCallback() {
             @Override
@@ -42,7 +50,6 @@ class BriefcaseViewModel extends ViewModel {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(pieEntries -> mPieLiveData.setValue(pieEntries)));
             }
-
             @Override
             public void onFailed() {
                 //ignored
@@ -54,7 +61,6 @@ class BriefcaseViewModel extends ViewModel {
             public void onLoaded(CurrenciesData currenciesData) {
                 currenciesLiveData.setValue(currenciesData);
             }
-
             @Override
             public void onFailed() {
                 //ignored
@@ -62,19 +68,11 @@ class BriefcaseViewModel extends ViewModel {
         });
     }
 
-    LiveData<List<PurchaseAndCoin>> getPurchaseAndCoinLive() {
-        return mPurchaseAndCoinLive;
-    }
-
-    LiveData<List<PieEntry>> getPieLiveData() {
-        return mPieLiveData;
-    }
-
-    public LiveData<CurrenciesData> getCurrenciesLiveData() {
+    LiveData<CurrenciesData> getCurrenciesLiveData() {
         return currenciesLiveData;
     }
 
-    public void removeSwipedItem(Purchase purchase) {
+    void removeSwipedItem(Purchase purchase) {
         mPurchaseRepo.remove(purchase);
     }
 

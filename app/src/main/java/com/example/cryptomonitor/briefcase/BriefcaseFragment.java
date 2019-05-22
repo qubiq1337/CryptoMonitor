@@ -80,8 +80,12 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
 
             @Override
             public int getSwipeDirs(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-                if (viewHolder.getAdapterPosition() % 2 == 0) return ItemTouchHelper.LEFT;
-                else return ItemTouchHelper.RIGHT;
+                if (recyclerView.getLayoutManager() instanceof GridLayoutManager) {
+                    if (viewHolder.getAdapterPosition() % 2 == 0) return ItemTouchHelper.LEFT;
+                    else return ItemTouchHelper.RIGHT;
+                }
+                return ItemTouchHelper.LEFT;
+
             }
         };
 
@@ -93,11 +97,9 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.floatingActionButton:
-                Intent intent = new Intent(this.getContext(), TransactionActivity.class);
-                startActivity(intent);
-                break;
+        if (v.getId() == R.id.floatingActionButton) {
+            Intent intent = new Intent(this.getContext(), TransactionActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -109,7 +111,8 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
         mPieChart.setHoleColor(getResources().getColor(R.color.dark1));
         mPieChart.animateY(800);
         mPieChart.getDescription().setEnabled(false);
-        mPieChart.setTouchEnabled(false);
+        mPieChart.setTouchEnabled(true);
+        mPieChart.setDragDecelerationFrictionCoef(0.1f);
         Legend legend = mPieChart.getLegend();
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
@@ -119,6 +122,8 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
     }
 
     private void setPieDataSet(List<PieEntry> yValues) {
+        if (yValues.isEmpty()) mPieChart.setDrawHoleEnabled(false);
+        else mPieChart.setDrawHoleEnabled(true);
         PieDataSet pieDataSet = new PieDataSet(yValues, "");
         pieDataSet.setValueFormatter(new PercentFormatter(mPieChart));
         pieDataSet.setValueTextSize(12f);

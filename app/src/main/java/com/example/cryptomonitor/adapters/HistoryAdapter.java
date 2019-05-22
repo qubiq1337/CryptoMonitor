@@ -45,8 +45,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         holder.buyDate.setText(bill.getBuy_date());
         double buyPrice = bill.getBuyPrice();
         double sellPrice = bill.getSellPrice();
-        double change = changePercent(buyPrice, sellPrice);
-        holder.change.setText(simpleNumberFormatting(change) + "%");
+        double change = changePercent(buyPrice,sellPrice);
+        String changeInPercent = simpleNumberFormatting(change) + "%";
+        holder.change.setText(changeInPercent);
         holder.change.setTextColor(changeColor(change));
         holder.sellPrice.setText(cashFormatting(sellPrice));
         holder.buyPrice.setText(cashFormatting(buyPrice));
@@ -60,27 +61,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         return mBillList.size();
     }
 
-    public void setBillList(List<Bill> mBillList) {
-        this.mBillList = mBillList;
-        notifyDataSetChanged();
-    }
-
-    private Double changePercent(Double buyPrice, Double sellPrice) {
-        double numerator = sellPrice - buyPrice;
-        if (numerator >= 0) return (sellPrice - buyPrice) / buyPrice * 100D;
-        else return (sellPrice - buyPrice) / sellPrice * 100D;
-    }
-
-    private int changeColor(Double d) {
-        if (d > 0)
-            return (mContext.getResources().getColor(R.color.greenColor));
-        else if (d < 0)
-            return (mContext.getResources().getColor(R.color.redColor));
-
-        return (mContext.getResources().getColor(R.color.textColorDark));
-    }
-
-    public class HistoryViewHolder extends RecyclerView.ViewHolder {
+    class HistoryViewHolder extends RecyclerView.ViewHolder {
         private TextView buyPrice;
         private TextView sellPrice;
         private TextView buyDate;
@@ -90,7 +71,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         private ImageView icon;
         private TextView change;
 
-        public HistoryViewHolder(@NonNull View itemView) {
+        HistoryViewHolder(@NonNull View itemView) {
             super(itemView);
             buyPrice = itemView.findViewById(R.id.history_buy_price);
             sellPrice = itemView.findViewById(R.id.history_sell_price);

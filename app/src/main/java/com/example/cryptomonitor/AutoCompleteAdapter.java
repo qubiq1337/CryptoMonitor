@@ -24,15 +24,19 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
     private List<CoinInfo> coinInfoList;
+
+    public List<CoinInfo> getResultFilterList() {
+        return reusultFilterList;
+    }
+
     private List<CoinInfo> reusultFilterList;
     private Context mContex;
-    private Disposable disposable;
+
 
     public AutoCompleteAdapter(Context context) {
         mContex = context;
         reusultFilterList = new ArrayList<>();
         coinInfoList = new ArrayList<>();
-        disposable = App
                 .getDatabase()
                 .coinInfoDao()
                 .getAll()
@@ -40,7 +44,7 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(list -> {
                     coinInfoList = list;
-                    Log.v("findCoin", coinInfoList.size() + "");
+                    Log.e("findCoin", coinInfoList.size() + "");
                 });
     }
 
@@ -87,7 +91,7 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public Filter getFilter() {
-        Filter filter = new Filter() {
+        return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
 
@@ -127,6 +131,5 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
             }
 
         };
-        return filter;
     }
 }
