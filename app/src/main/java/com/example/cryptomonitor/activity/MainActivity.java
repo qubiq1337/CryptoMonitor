@@ -22,9 +22,9 @@ import androidx.constraintlayout.widget.Guideline;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.cryptomonitor.ExitClass;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.ToolbarInteractor;
+import com.example.cryptomonitor.Utilities;
 import com.example.cryptomonitor.briefcase.BriefcaseFragment;
 import com.example.cryptomonitor.favorite.FavoritesFragment;
 import com.example.cryptomonitor.fragment.HistoryFragment;
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         if (isSearchViewExpanded) {
             mSearchView.setIconified(true); //сворачивает searchView
         } else
-            ExitClass.onBackPressed(this);
+            Utilities.onBackPressed(this);
     }
 
     @Override
