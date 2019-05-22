@@ -1,11 +1,8 @@
 package com.example.cryptomonitor.database.coins;
 
 import com.example.cryptomonitor.database.entities.CoinInfo;
-import com.example.cryptomonitor.model_cryptocompare.model_chart.ModelChart;
 
 import java.util.List;
-
-import io.reactivex.Observable;
 
 public interface CoinDataSource {
 
@@ -27,9 +24,10 @@ public interface CoinDataSource {
 
     void getSearchCoins(String word, GetCoinCallback coinCallback);
 
+    void getSearchFavoriteCoins(String word, GetCoinCallback coinCallback);
+
     void updateCoin(CoinInfo coinInfo);
 
     void updateAll(List<CoinInfo> coinInfoList);
 
-    public Observable<ModelChart> getChartData(String symbol, String currency);
 }

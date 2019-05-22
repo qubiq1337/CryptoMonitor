@@ -7,13 +7,15 @@ import androidx.room.PrimaryKey;
 @Entity(foreignKeys = @ForeignKey(entity = CoinInfo.class, parentColumns = "id", childColumns = "coinId"))
 public class Purchase {
     @PrimaryKey(autoGenerate = true)
-    private long id;
+    private long purchase_id;
     private long coinId;
     private int day;
     private int month;
     private int year;
-    private double price;
+    private double price_purchase;
     private String USD;
+    private String buyCurrencySymbol;
+    private String buyCurrency;
     private double amount;
 
 
@@ -25,12 +27,12 @@ public class Purchase {
         this.amount = amount;
     }
 
-    public double getPrice() {
-        return price;
+    public double getPrice_purchase() {
+        return price_purchase;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setPrice_purchase(double price_purchase) {
+        this.price_purchase = price_purchase;
     }
 
     public String getUSD() {
@@ -45,14 +47,6 @@ public class Purchase {
         return month < 10 ?
                 this.getDay() + ".0" + this.getMonth() + "." + this.getYear()
                 : this.getDay() + "." + this.getMonth() + "." + this.getYear();
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public long getCoinId() {
@@ -85,5 +79,29 @@ public class Purchase {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public long getPurchase_id() {
+        return purchase_id;
+    }
+
+    public void setPurchase_id(long purchase_id) {
+        this.purchase_id = purchase_id;
+    }
+
+    public String getBuyCurrencySymbol() {
+        return buyCurrencySymbol;
+    }
+
+    public void setBuyCurrencySymbol(String buyCurrencySymbol) {
+        this.buyCurrencySymbol = buyCurrencySymbol;
+    }
+
+    public String getBuyCurrency() {
+        return buyCurrency;
+    }
+
+    public void setBuyCurrency(String buyCurrency) {
+        this.buyCurrency = buyCurrency;
     }
 }

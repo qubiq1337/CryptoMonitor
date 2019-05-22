@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">CryptoMonitor</string>
+    <string name="history">История</string>
+    <string name="favorites">Избранное</string>
+    <string name="home">Главная</string>
+    <string name="exit_phrase">Нажмите Назад еще раз, чтобы выйти</string>
+    <string-array name="spinner">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>RUB</item>
+        <item>CNY</item>
+        <item>GBP</item>
+    </string-array>
+    <string name="briefcase">Портфель</string>
+    <string name="find">Найти</string>
+    <string name="action_bar_spinner">Action Bar Spinner</string>
+    <string name="search_line">Поиск</string>
+    <string name="close">Закрыть</string>
+    <string name="updating">Обновляется</string>
+    <string name="update_success">Успешно обновлено</string>
+    <string name="updating_failed">Обновить не удалось</string>
+    <string name="buy">Купить</string>
+    <string name="coin">Криптовалюта</string>
+    <string name="choose_coin">Выберите криптовалюту…</string>
+    <string name="cost">Стоимость</string>
+    <string name="amount">Количество</string>
+    <string name="price_for_a_coin">Цена криптовалюты</string>
+    <string name="start_input">Начните вводить</string>
+    <string name="date">Дата</string>
+    <string name="settings">Настройки</string>
+    <string name="sort">Сортировка</string>
+    <string name="transaction_price_in">Цена в %1$s</string>
+    <string name="transaction_total_cost">Итоговая цена в %1$s</string>
+    <string name="sort_by_rank">Сортировка по рейтингу</string>
+    <string name="sort_by_name">Сортировка по имени</string>
+    <string name="sort_by_value">Сортировка по цене</string>
+    <string name="updated_at">Обновлено в</string>
+
+</resources>

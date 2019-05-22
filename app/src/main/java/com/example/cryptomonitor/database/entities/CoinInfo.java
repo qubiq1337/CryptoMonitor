@@ -17,6 +17,7 @@ public class CoinInfo {
     private double price;
     private String symbol;
     private boolean isFavorite;
+    private double mktcap_double;
 
     private String priceDisplay;
     private String changeDayDispaly;
@@ -45,7 +46,8 @@ public class CoinInfo {
                     String totalVolume24hTo,
                     String high,
                     String low,
-                    String infoURL) {
+                    String infoURL,
+                    double mktcap_double) {
 
         this.fullName = fullName;
         this.shortName = shortName;
@@ -64,7 +66,7 @@ public class CoinInfo {
         this.high = high;
         this.low = low;
         this.infoURL = infoURL;
-
+        this.mktcap_double = mktcap_double;
     }
 
     public double getPrice() {
@@ -215,5 +217,13 @@ public class CoinInfo {
 
     public void setChangeDay(Double changeDay) {
         this.changeDay = changeDay;
+    }
+
+    public double getMktcap_double() {
+        return mktcap_double;
+    }
+
+    public void setMktcap_double(double mktcap_double) {
+        this.mktcap_double = mktcap_double;
     }
 }

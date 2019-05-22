@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingBottom="15dp">
 
     <androidx.cardview.widget.CardView
@@ -16,10 +18,12 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:maxLines="1"
                 android:id="@+id/portfolio_fullname"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                app:autoSizeTextType="uniform"
                 android:layout_height="wrap_content"
-                android:text="Bitcoin"
+                tools:text="Bitcoin"
                 android:textColor="@color/textColorPrimary"
                 android:textSize="20sp" />
 
@@ -29,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_below="@+id/portfolio_fullname"
-                android:text="$1020.25"
+                tools:text="$1020.25"
                 android:textColor="@color/textColorPrimary"
                 android:textSize="14sp" />
 
@@ -38,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:text="10 BTC"
+                tools:text="10 BTC"
                 android:textColor="@color/textColorPrimary"
                 android:textSize="12sp" />
 
@@ -53,7 +57,7 @@
                 android:gravity="end"
                 android:text="+20%"
                 android:textColor="@color/greenColor"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
