@@ -7,7 +7,7 @@ public abstract class Event {
         return mIsHandled;
     }
 
-    public void handled(){
+    public void handled() {
         mIsHandled = true;
     }
 }

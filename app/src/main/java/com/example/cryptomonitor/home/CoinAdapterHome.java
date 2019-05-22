@@ -1,16 +1,15 @@
 package com.example.cryptomonitor.home;
 
 import android.content.Context;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.App;
@@ -19,7 +18,6 @@ import com.example.cryptomonitor.database.entities.CoinInfo;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import io.reactivex.Flowable;
@@ -32,6 +30,8 @@ import io.reactivex.schedulers.Schedulers;
 public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinViewHolder> {
 
 
+    private final static int initialSize = 60;
+    private final static int loadSize = 20;
     private Context mContext;
     private List<CoinInfo> mData;
     private OnStarClickListener mOnStarClickListener;
@@ -41,8 +41,6 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
     private CoinInfoDao mDao;
     private Disposable disposable;
     private Disposable sortedDisposable;
-    private final static int initialSize = 60;
-    private final static int loadSize = 20;
     private Consumer<List<CoinInfo>> mListConsumer = coinInfoList -> {
         mData = coinInfoList;
         notifyDataSetChanged();
@@ -115,11 +113,6 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         return mData.size();
     }
 
-
-    public interface OnStarClickListener {
-        void onStarClick(CoinInfo coinInfo);
-    }
-
     private void loadMore() {
         isLoading = true;
         if (disposable != null)
@@ -128,6 +121,14 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mListConsumer);
+    }
+
+    public interface OnStarClickListener {
+        void onStarClick(CoinInfo coinInfo);
+    }
+
+    public interface OnCoinClickListener {
+        void onCoinClick(String index, int position);
     }
 
     class CoinViewHolder extends RecyclerView.ViewHolder {
@@ -160,9 +161,5 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
                     mOnCoinClickListener.onCoinClick(mData.get(getAdapterPosition()).getShortName(), getAdapterPosition()));
         }
 
-    }
-
-    public interface OnCoinClickListener {
-        void onCoinClick(String index, int position);
     }
 }

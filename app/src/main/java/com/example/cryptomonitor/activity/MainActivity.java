@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             mSearchView.setIconified(false);
             mSearchView.setQuery(savedText, false);
         }
+        mSettingsItem
 
 
 //        mSettingsSpinnerItem = menu.findItem(R.id.settings_spinner);

@@ -5,21 +5,9 @@ import com.example.cryptomonitor.model_cryptocompare.model_currencies.Currencies
 
 import java.util.List;
 
-import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 public interface PurchaseDataSource {
-
-    interface GetPurchaseCallback {
-        void onLoaded(List<PurchaseAndCoin> purchaseList);
-
-        void onFailed();
-    }
-    interface GetCurrenciesCallBack {
-        void onLoaded(CurrenciesData currenciesData);
-
-        void onFailed();
-    }
 
     void getAllPurchase(GetPurchaseCallback callback);
 
@@ -32,4 +20,16 @@ public interface PurchaseDataSource {
     Single<List<PurchaseAndCoin>> getPurchase(long id);
 
     void getCurrencyData(GetCurrenciesCallBack getCurrenciesCallBack);
+
+    interface GetPurchaseCallback {
+        void onLoaded(List<PurchaseAndCoin> purchaseList);
+
+        void onFailed();
+    }
+
+    interface GetCurrenciesCallBack {
+        void onLoaded(CurrenciesData currenciesData);
+
+        void onFailed();
+    }
 }

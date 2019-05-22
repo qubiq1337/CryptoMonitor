@@ -1,22 +1,17 @@
 package com.example.cryptomonitor.database.purchases;
 
-import android.util.Log;
-
 import com.example.cryptomonitor.AppExecutors;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.dao.CurrenciesDao;
 import com.example.cryptomonitor.database.dao.PurchaseDao;
 import com.example.cryptomonitor.database.entities.Purchase;
-import com.example.cryptomonitor.model_cryptocompare.model_currencies.CurrenciesData;
 
 import java.util.List;
 import java.util.concurrent.Executor;
 
-import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class PurchaseRepo implements PurchaseDataSource {

@@ -1,19 +1,16 @@
 package com.example.cryptomonitor.adapters;
 
 import android.content.Context;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.cryptomonitor.R;
-import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.purchases.PurchaseAndCoin;
 import com.example.cryptomonitor.model_cryptocompare.model_currencies.CurrenciesData;
 
@@ -21,31 +18,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.cryptomonitor.Utilities.cashFormatting;
-import static com.example.cryptomonitor.Utilities.simpleNumberFormatting;
 import static com.example.cryptomonitor.Utilities.simplePercentFormatting;
 
 public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.PortfolioViewHolder> {
 
 
     private Context mContext;
-
-    public List<PurchaseAndCoin> getmPortfolioItemList() {
-        return mPortfolioItemList;
-    }
-
     private List<PurchaseAndCoin> mPortfolioItemList;
     private CurrenciesData currencies;
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
-
     private OnItemClickListener onItemClickListener;
 
     public PortfolioAdapter(Context context) {
         mContext = context;
         mPortfolioItemList = new ArrayList<>();
         currencies = new CurrenciesData();
+    }
+
+    public List<PurchaseAndCoin> getmPortfolioItemList() {
+        return mPortfolioItemList;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -84,29 +78,6 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
 
     public void setPortfolioItemList(List<PurchaseAndCoin> mPortfolioItemList) {
         this.mPortfolioItemList = mPortfolioItemList;
-    }
-
-    class PortfolioViewHolder extends RecyclerView.ViewHolder {
-
-        TextView price;
-        TextView amount;
-        TextView fullName;
-        TextView change;
-
-        PortfolioViewHolder(@NonNull View itemView) {
-            super(itemView);
-            price = itemView.findViewById(R.id.portfolio_price);
-            amount = itemView.findViewById(R.id.portfolio_amount);
-            fullName = itemView.findViewById(R.id.portfolio_fullname);
-            change = itemView.findViewById(R.id.portfolio_change);
-            itemView.setOnClickListener(v -> {
-                onItemClickListener.OnItemClick(mPortfolioItemList.get(getAdapterPosition()));
-            });
-        }
-    }
-
-    public interface OnItemClickListener {
-        void OnItemClick(PurchaseAndCoin purchaseAndCoin);
     }
 
     private Double getBuyCurrencyPrice(String buyCurrency) {
@@ -163,6 +134,29 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
         else if (change >= 10 && change < 1000) return 20;
         else if (change >= 1000 && change < 10000) return 18;
         return 16;
+    }
+
+    public interface OnItemClickListener {
+        void OnItemClick(PurchaseAndCoin purchaseAndCoin);
+    }
+
+    class PortfolioViewHolder extends RecyclerView.ViewHolder {
+
+        TextView price;
+        TextView amount;
+        TextView fullName;
+        TextView change;
+
+        PortfolioViewHolder(@NonNull View itemView) {
+            super(itemView);
+            price = itemView.findViewById(R.id.portfolio_price);
+            amount = itemView.findViewById(R.id.portfolio_amount);
+            fullName = itemView.findViewById(R.id.portfolio_fullname);
+            change = itemView.findViewById(R.id.portfolio_change);
+            itemView.setOnClickListener(v -> {
+                onItemClickListener.OnItemClick(mPortfolioItemList.get(getAdapterPosition()));
+            });
+        }
     }
 
 }

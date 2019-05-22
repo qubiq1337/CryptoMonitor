@@ -35,5 +35,12 @@
     <string name="sort_by_name">Сортировка по имени</string>
     <string name="sort_by_value">Сортировка по цене</string>
     <string name="updated_at">Обновлено в</string>
+    <string name="currency_spinner">Currency Spinner</string>
+    <string name="language_header">Настройки языка</string>
+    <string name="language_title">Язык</string>
+    <string name="currency_title">Валюта</string>
+    <string name="currency_header">Настройки валюты</string>
+    <string name="theme_header">Темы</string>
+    <string name="theme_title">Темная тема</string>
 
 </resources>

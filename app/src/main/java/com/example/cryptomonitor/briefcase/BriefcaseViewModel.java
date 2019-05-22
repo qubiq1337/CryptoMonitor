@@ -1,12 +1,9 @@
 package com.example.cryptomonitor.briefcase;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.entities.Purchase;
 import com.example.cryptomonitor.database.purchases.PurchaseAndCoin;
 import com.example.cryptomonitor.database.purchases.PurchaseDataSource;
@@ -19,7 +16,6 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 class BriefcaseViewModel extends ViewModel {
@@ -28,14 +24,6 @@ class BriefcaseViewModel extends ViewModel {
     private PurchaseDataSource mPurchaseRepo = new PurchaseRepo();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private MutableLiveData<CurrenciesData> currenciesLiveData = new MutableLiveData<>();
-
-    LiveData<List<PurchaseAndCoin>> getPurchaseAndCoinLive() {
-        return mPurchaseAndCoinLive;
-    }
-
-    LiveData<List<PieEntry>> getPieLiveData() {
-        return mPieLiveData;
-    }
 
     BriefcaseViewModel() {
         mPurchaseRepo.getAllPurchase(new PurchaseDataSource.GetPurchaseCallback() {
@@ -54,6 +42,7 @@ class BriefcaseViewModel extends ViewModel {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(pieEntries -> mPieLiveData.setValue(pieEntries)));
             }
+
             @Override
             public void onFailed() {
                 //ignored
@@ -65,6 +54,7 @@ class BriefcaseViewModel extends ViewModel {
             public void onLoaded(CurrenciesData currenciesData) {
                 currenciesLiveData.setValue(currenciesData);
             }
+
             @Override
             public void onFailed() {
                 //ignored
@@ -72,11 +62,19 @@ class BriefcaseViewModel extends ViewModel {
         });
     }
 
+    LiveData<List<PurchaseAndCoin>> getPurchaseAndCoinLive() {
+        return mPurchaseAndCoinLive;
+    }
+
+    LiveData<List<PieEntry>> getPieLiveData() {
+        return mPieLiveData;
+    }
+
     public LiveData<CurrenciesData> getCurrenciesLiveData() {
         return currenciesLiveData;
     }
 
-    public void removeSwipedItem(Purchase purchase){
+    public void removeSwipedItem(Purchase purchase) {
         mPurchaseRepo.remove(purchase);
     }
 

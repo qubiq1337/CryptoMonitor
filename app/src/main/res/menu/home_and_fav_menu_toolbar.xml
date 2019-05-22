@@ -20,9 +20,7 @@
         android:icon="@drawable/ic_dots_vertical"
         android:iconTint="?attr/itemIconTint"
         android:title="@string/settings"
-        app:showAsAction="never"
-        />
-
+        app:showAsAction="never" />
 
 
 </menu>

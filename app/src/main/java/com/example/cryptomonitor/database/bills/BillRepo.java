@@ -13,8 +13,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class BillRepo implements BillDataSource {
 
-    private BillDao mDao = App.getDatabase().billDao();
     private static Executor dbExecutor = AppExecutors.getInstance().getDbExecutor();
+    private BillDao mDao = App.getDatabase().billDao();
 
     @Override
     public void getAll(GetBillsCallback callback) {

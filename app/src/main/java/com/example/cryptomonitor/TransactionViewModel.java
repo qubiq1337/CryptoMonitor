@@ -23,7 +23,6 @@ import com.example.cryptomonitor.model_cryptocompare.model_currencies.Currencies
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -36,6 +35,16 @@ import static com.example.cryptomonitor.activity.TransactionActivity.SELL_MODE;
 
 
 public class TransactionViewModel extends ViewModel {
+    public static final HashMap<String, String> coinSymbols = new HashMap<>();
+
+    static {
+        coinSymbols.put("\u0024", "USD");
+        coinSymbols.put("\u20AC", "EUR");
+        coinSymbols.put("\u20BD", "RUB");
+        coinSymbols.put("\u00a5", "CNY");
+        coinSymbols.put("\u00a3", "GBP");
+    }
+
     private MutableLiveData<CoinInfo> mSelectedCoin = new MutableLiveData<>();
     private CoinInfo mCurrentCoinInfo;
     private PurchaseAndCoin mCurrentPurchaseAndCoin;
@@ -58,14 +67,9 @@ public class TransactionViewModel extends ViewModel {
     private Bill mBill;
     private String nowDate = "";
     private String buyDatePurchase = "";
-    public static final HashMap<String, String> coinSymbols = new HashMap<>();
 
-    static {
-        coinSymbols.put("\u0024", "USD");
-        coinSymbols.put("\u20AC", "EUR");
-        coinSymbols.put("\u20BD", "RUB");
-        coinSymbols.put("\u00a5", "CNY");
-        coinSymbols.put("\u00a3", "GBP");
+    public TransactionViewModel() {
+        defaultSetup();
     }
 
     public LiveData<String> getSymbolLiveData() {
@@ -111,11 +115,6 @@ public class TransactionViewModel extends ViewModel {
     public LiveData<Boolean> getAutoCompleteTextViewEnabled() {
         return mAutoCompleteTextViewEnabled;
     }
-
-    public TransactionViewModel() {
-        defaultSetup();
-    }
-
 
     public void coinSelected(CoinInfo coinInfo) {
         mCurrentCoinInfo = coinInfo;
@@ -338,7 +337,7 @@ public class TransactionViewModel extends ViewModel {
     private int[] strToDate(String dateStr) {
 
         int[] date = new int[3];
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy",Locale.US);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.US);
         SimpleDateFormat dayf = new SimpleDateFormat("dd", Locale.US);
         SimpleDateFormat monf = new SimpleDateFormat("MM", Locale.US);
         SimpleDateFormat yearf = new SimpleDateFormat("yyyy", Locale.US);
@@ -346,7 +345,7 @@ public class TransactionViewModel extends ViewModel {
             date[0] = Integer.parseInt(dayf.format(simpleDateFormat.parse(dateStr)));
             date[1] = Integer.parseInt(monf.format(simpleDateFormat.parse(dateStr)));
             date[2] = Integer.parseInt(yearf.format(simpleDateFormat.parse(dateStr)));
-        }catch (ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         return date;
