@@ -21,6 +21,4 @@
         android:iconTint="?attr/itemIconTint"
         android:title="@string/settings"
         app:showAsAction="never" />
-
-
 </menu>
