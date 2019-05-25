@@ -1,4 +1,4 @@
-package com.example.cryptomonitor.activity;
+package com.example.cryptomonitor.detailed_coin;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.coins.CoinInfo;
-import com.example.cryptomonitor.detailed_coin.DetailedViewModel;
 import com.example.cryptomonitor.model_cryptocompare.model_chart.ChartData;
 import com.example.cryptomonitor.model_cryptocompare.model_chart.ModelChart;
 import com.github.mikephil.charting.charts.LineChart;

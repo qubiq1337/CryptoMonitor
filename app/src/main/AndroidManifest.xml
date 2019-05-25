@@ -29,7 +29,7 @@
             android:label="@string/settings"
             android:theme="@style/SettingsTheme" />
         <activity
-            android:name=".activity.DetailedCoin"
+            android:name=".detailed_coin.DetailedCoin"
             android:configChanges="locale"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/DetailedActivityTheme" />

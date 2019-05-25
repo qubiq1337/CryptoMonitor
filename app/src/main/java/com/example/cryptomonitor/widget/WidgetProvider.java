@@ -11,10 +11,10 @@ import android.widget.Toast;
 
 import com.example.cryptomonitor.AppExecutors;
 import com.example.cryptomonitor.R;
-import com.example.cryptomonitor.activity.DetailedCoin;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.coins.CoinInfo;
 import com.example.cryptomonitor.database.coins.CoinInfoDao;
+import com.example.cryptomonitor.detailed_coin.DetailedCoin;
 import com.example.cryptomonitor.model_cryptocompare.model_coins.CoinCryptoCompare;
 import com.example.cryptomonitor.model_cryptocompare.model_coins.CoinsData;
 import com.example.cryptomonitor.network_api.Network;

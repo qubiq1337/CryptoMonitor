@@ -26,6 +26,7 @@ import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.ToolbarInteractor;
 import com.example.cryptomonitor.Utilities;
 import com.example.cryptomonitor.briefcase.BriefcaseFragment;
+import com.example.cryptomonitor.detailed_coin.DetailedCoin;
 import com.example.cryptomonitor.favorite.FavoritesFragment;
 import com.example.cryptomonitor.fragment.NavigationBarFragment;
 import com.example.cryptomonitor.history.HistoryFragment;
@@ -33,9 +34,9 @@ import com.example.cryptomonitor.home.HomeFragment;
 
 import java.util.Objects;
 
-import static com.example.cryptomonitor.activity.DetailedCoin.EXTRA_CURRENCY_KEY;
-import static com.example.cryptomonitor.activity.DetailedCoin.EXTRA_INDEX_KEY;
-import static com.example.cryptomonitor.activity.DetailedCoin.EXTRA_POSITION_KEY;
+import static com.example.cryptomonitor.detailed_coin.DetailedCoin.EXTRA_CURRENCY_KEY;
+import static com.example.cryptomonitor.detailed_coin.DetailedCoin.EXTRA_INDEX_KEY;
+import static com.example.cryptomonitor.detailed_coin.DetailedCoin.EXTRA_POSITION_KEY;
 
 public class MainActivity extends AppCompatActivity implements NavigationBarFragment.NavigationBarListener,
         ToolbarInteractor {
