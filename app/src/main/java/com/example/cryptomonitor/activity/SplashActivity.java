@@ -10,6 +10,7 @@ import androidx.preference.PreferenceManager;
 public class SplashActivity extends AppCompatActivity {
     public static final String CURRENCY = "currency";
     public static final String DEFAULT = "default";
+    public static final String USD = "USD";
     private SharedPreferences mPreferences;
 
     @Override
@@ -28,9 +29,9 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void setCurrency(String mCurrency) {
-        if (mCurrency.equals("default")) {
+        if (mCurrency.equals(DEFAULT)) {
             SharedPreferences.Editor editor = mPreferences.edit();
-            editor.putString("currency", "usd");
+            editor.putString(CURRENCY, USD);
             editor.apply();
         }
     }
