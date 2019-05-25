@@ -21,6 +21,7 @@
     <PreferenceCategory app:title="@string/theme_header">
         <SwitchPreferenceCompat
             app:key="theme"
+            app:defaultValue="false"
             app:title="@string/theme_title" />
     </PreferenceCategory>
 
