@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Boolean mTheme = mPreferences.getBoolean("theme", false);
+        Boolean mTheme = mPreferences.getBoolean(THEME, false);
         if (mTheme.equals(true)) {
             setTheme(R.style.AppThemeDarkPurple);
         } else {

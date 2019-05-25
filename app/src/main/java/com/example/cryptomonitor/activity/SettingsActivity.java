@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,11 +18,15 @@ import java.util.Locale;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    public static final String THEME = "theme";
+    public static final String LANG = "lang";
+    public static final String DEFAULT = "default";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Boolean mTheme = mPreferences.getBoolean("theme", false);
+        Boolean mTheme = mPreferences.getBoolean(THEME, false);
         if (mTheme.equals(true)) {
             setTheme(R.style.AppThemeDarkPurple);
         } else {
@@ -39,7 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        String mLang = mPreferences.getString("lang", "default");
+        String mLang = mPreferences.getString(LANG, DEFAULT);
         assert mLang != null;
         if (mLang.equals("default")) {
             mLang = getResources().getConfiguration().locale.getCountry();
@@ -50,13 +53,10 @@ public class SettingsActivity extends AppCompatActivity {
         configuration.locale = mLocale;
         getBaseContext().getResources().updateConfiguration(configuration, null);
         FloatingActionButton button = findViewById(R.id.buttonApply);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
-                SettingsActivity.this.startActivity(intent);
-                SettingsActivity.this.finishAffinity();
-            }
+        button.setOnClickListener(v -> {
+            Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
+            SettingsActivity.this.startActivity(intent);
+            SettingsActivity.this.finishAffinity();
         });
     }
 
