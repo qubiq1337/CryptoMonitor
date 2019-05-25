@@ -80,6 +80,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         mHomeViewModel.getSearchModeLiveData().observe(this, listObserver);
         mHomeViewModel.getEventLiveData().observe(this, eventObserver);
         mHomeViewModel.getSwipeRefreshLiveData().observe(this, swipeRefreshObserver);
+        mHomeViewModel.refresh();
         return view;
     }
 
