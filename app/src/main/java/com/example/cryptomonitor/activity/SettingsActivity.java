@@ -82,15 +82,10 @@ public class SettingsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class SettingsFragment extends PreferenceFragmentCompat {
+    public static class SettingsFragment extends PreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
-            if(rootKey.equals("usd")){
-                Toast toast = Toast.makeText(SettingsActivity.this,
-                        "Пора покормить кота!", Toast.LENGTH_SHORT);
-                toast.show();
-            }
         }
     }
 

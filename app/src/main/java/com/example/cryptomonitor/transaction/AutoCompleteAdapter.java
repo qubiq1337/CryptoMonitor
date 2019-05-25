@@ -26,16 +26,16 @@ import io.reactivex.schedulers.Schedulers;
 public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
     private List<CoinInfo> coinInfoList;
 
-    public List<CoinInfo> getResultFilterList() {
+    List<CoinInfo> getResultFilterList() {
         return resultFilterList;
     }
 
     private List<CoinInfo> resultFilterList;
-    private Context mContex;
+    private Context mContext;
 
 
-    public AutoCompleteAdapter(Context context) {
-        mContex = context;
+    AutoCompleteAdapter(Context context) {
+        mContext = context;
         resultFilterList = new ArrayList<>();
         coinInfoList = new ArrayList<>();
         Disposable disposable = App
@@ -69,7 +69,7 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContex).inflate(R.layout.autocomplete_tv_item, parent, false);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.autocomplete_tv_item, parent, false);
         }
         TextView textView = convertView.findViewById(R.id.autocomplete_item_full_name);
         ImageView imageView = convertView.findViewById(R.id.autocomplete_item_icon);
@@ -77,7 +77,7 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
 
         if (coinInfo != null) {
             textView.setText(coinInfo.getFullName());
-            Picasso.with(mContex).load(coinInfo.getImageURL()).into(imageView);
+            Picasso.get().load(coinInfo.getImageURL()).into(imageView);
         }
 
         return convertView;

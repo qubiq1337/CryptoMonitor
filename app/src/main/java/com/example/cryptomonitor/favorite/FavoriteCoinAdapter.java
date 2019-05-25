@@ -48,7 +48,7 @@ public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapte
         coinViewHolder.textViewFullName.setText(coin.getFullName());
         coinViewHolder.textViewName.setText(coin.getShortName());
         coinViewHolder.textViewPrice.setText(coin.getPriceStr());
-        Picasso.with(mContext).load(coin.getImageURL()).into(coinViewHolder.imageViewIcon);
+        Picasso.get().load(coin.getImageURL()).into(coinViewHolder.imageViewIcon);
         if (coin.isFavorite())
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_favorite_star));
         else

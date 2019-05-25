@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -68,40 +70,40 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
     private Observer<Integer> coinSelectedObserver = integer -> {
         switch (integer) {
             case R.id.detailed_1D:
-                textView_1D.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
-                textView_1W.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_1M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_3M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1D.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_text_view_selected));
+                textView_1W.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_text_view));
+                textView_1M.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_text_view));
+                textView_3M.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_text_view));
                 textView_1D.setClickable(false);
                 textView_1W.setClickable(true);
                 textView_1M.setClickable(true);
                 textView_3M.setClickable(true);
                 break;
             case R.id.detailed_1W:
-                textView_1W.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
-                textView_1D.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_1M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_3M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1W.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_text_view_selected));
+                textView_1D.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_text_view));
+                textView_1M.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_text_view));
+                textView_3M.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_text_view));
                 textView_1W.setClickable(false);
                 textView_1D.setClickable(true);
                 textView_1M.setClickable(true);
                 textView_3M.setClickable(true);
                 break;
             case R.id.detailed_1M:
-                textView_1M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
-                textView_1D.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_1W.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_3M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_1M.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_text_view_selected));
+                textView_1D.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_text_view));
+                textView_1W.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_text_view));
+                textView_3M.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_text_view));
                 textView_1M.setClickable(false);
                 textView_1D.setClickable(true);
                 textView_1W.setClickable(true);
                 textView_3M.setClickable(true);
                 break;
             case R.id.detailed_3M:
-                textView_3M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view_selected));
-                textView_1D.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_1W.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
-                textView_1M.setBackground(getResources().getDrawable(R.drawable.rounded_text_view));
+                textView_3M.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_text_view_selected));
+                textView_1D.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_text_view));
+                textView_1W.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_text_view));
+                textView_1M.setBackground(ContextCompat.getDrawable(this, R.drawable.rounded_text_view));
                 textView_3M.setClickable(false);
                 textView_1D.setClickable(true);
                 textView_1W.setClickable(true);
@@ -216,7 +218,7 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
 
     private void bindViews(CoinInfo coinInfo) {
         full_name.setText(coinInfo.getFullName());
-        Picasso.with(this).load(coinInfo.getImageURL()).into(icon);
+        Picasso.get().load(coinInfo.getImageURL()).into(icon);
         price.setText(coinInfo.getPriceDisplay());
         setChangeColor(coinInfo.getChangeDay());
         String changeConcat = coinInfo.getChangeDayDispaly() + " (" + coinInfo.getChangePctDay() + "%)";
@@ -235,11 +237,11 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
 
     private void setChangeColor(Double d) {
         if (d > 0)
-            change.setTextColor(getResources().getColor(R.color.greenColor));
+            change.setTextColor(ContextCompat.getColor(this, R.color.greenColor));
         else if (d < 0)
-            change.setTextColor(getResources().getColor(R.color.redColor));
+            change.setTextColor(ContextCompat.getColor(this, R.color.redColor));
         else if (d == 0)
-            change.setTextColor(getResources().getColor(R.color.textColorDark));
+            change.setTextColor(ContextCompat.getColor(this, R.color.textColorDark));
     }
 
     @NonNull

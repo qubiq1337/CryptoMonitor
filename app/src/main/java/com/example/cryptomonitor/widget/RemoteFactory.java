@@ -56,7 +56,7 @@ public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
         remoteViews.setTextViewText(R.id.name_tv, mData.get(position).getFullName());
         remoteViews.setTextViewText(R.id.price_tv, mData.get(position).getPriceDisplay());
         try {
-            Bitmap bitmap = Picasso.with(mContext)
+            Bitmap bitmap = Picasso.get()
                     .load(mData.get(position).getImageURL())
                     .error(R.drawable.ic_action_close)
                     .get();

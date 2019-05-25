@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -32,6 +33,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -113,7 +115,7 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
             mPieChart.setExtraOffsets(35, 15, 35, 15);
         mPieChart.setDrawHoleEnabled(true);
         //TODO refactor
-        mPieChart.setHoleColor(getResources().getColor(R.color.dark1));
+        mPieChart.setHoleColor(ContextCompat.getColor(Objects.requireNonNull(this.getContext()),R.color.dark1));
         mPieChart.animateY(800);
         mPieChart.getDescription().setEnabled(false);
         mPieChart.setTouchEnabled(true);
@@ -137,7 +139,7 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
         pieDataSet.setSelectionShift(4f);
         pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        pieDataSet.setValueLineColor(getResources().getColor(R.color.textColorDark));
+        pieDataSet.setValueLineColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.textColorDark));
         pieDataSet.setValueLinePart1OffsetPercentage(100f); // When valuePosition is OutsideSlice, indicates offset as percentage out of the slice size
         pieDataSet.setValueLinePart1Length(0.6f); // When valuePosition is OutsideSlice, indicates length of first half of the line
         pieDataSet.setValueLinePart2Length(0.4f); // When valuePosition is OutsideSlice, indicates length of second half of the line

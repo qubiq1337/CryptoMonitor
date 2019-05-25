@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cryptomonitor.R;
@@ -61,7 +62,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
         change = simplePercentFormatting(change);
         String strChange = change + "%";
         //Fix -0.0 в отображении change
-        if (change == 0D) strChange = strChange.replace("-","");
+        if (change == 0D) strChange = strChange.replace("-", "");
         portfolioViewHolder.change.setText(strChange);
         portfolioViewHolder.change.setTextColor(changeColor(change));
         portfolioViewHolder.change.setTextSize(TypedValue.COMPLEX_UNIT_SP, changeTextSize(change));
@@ -124,11 +125,11 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
 
     private int changeColor(Double d) {
         if (d > 0)
-            return (mContext.getResources().getColor(R.color.greenColor));
+            return (ContextCompat.getColor(mContext, R.color.greenColor));
         else if (d < 0)
-            return (mContext.getResources().getColor(R.color.redColor));
+            return (ContextCompat.getColor(mContext, R.color.redColor));
 
-        return (mContext.getResources().getColor(R.color.textColorDark));
+        return (ContextCompat.getColor(mContext, R.color.textColorDark));
     }
 
     private int changeTextSize(Double change) {
