@@ -25,5 +25,5 @@
         <item>cny</item>
         <item>gnp</item>
     </string-array>
-    <integer name="span_count">1</integer>
+    <integer name="span_count">2</integer>
 </resources>

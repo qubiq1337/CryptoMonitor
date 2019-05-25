@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -65,8 +66,8 @@ public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
         }
         Bundle extras = new Bundle();
         extras.putInt(WidgetProvider.POSITION_EXTRA, position + 1);
-        //TODO: get normal currency
-        extras.putString(WidgetProvider.SYMBOL_EXTRA, "USD");
+        String currency = PreferenceManager.getDefaultSharedPreferences(mContext).getString("currency", "USD");
+        extras.putString(WidgetProvider.SYMBOL_EXTRA, currency);
         extras.putString(WidgetProvider.SHORT_NAME_EXTRA, mData.get(position).getShortName());
         Intent fillInIntent = new Intent();
         fillInIntent.putExtras(extras);

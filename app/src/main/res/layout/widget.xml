@@ -21,6 +21,14 @@
             android:textSize="12sp" />
 
         <ImageButton
+            android:id="@+id/home_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:background="@color/backgroundChartColor"
+            android:src="@drawable/widget_home" />
+
+        <ImageButton
             android:id="@+id/refresh_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"

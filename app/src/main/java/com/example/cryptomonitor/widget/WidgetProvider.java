@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.cryptomonitor.AppExecutors;
 import com.example.cryptomonitor.R;
+import com.example.cryptomonitor.activity.SplashActivity;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.coins.CoinInfo;
 import com.example.cryptomonitor.database.coins.CoinInfoDao;
@@ -33,13 +34,12 @@ public class WidgetProvider extends AppWidgetProvider {
     public static final String POSITION_EXTRA = "positionExtra";
     public static final String SHORT_NAME_EXTRA = "shortNameExtra";
 
-    final static String ACTION_ON_CLICK = "onItemClick";
-    public static final String ACTION_SHOW_TOAST = "showToast";
-    public static final String EXTRA_MESSAGE = "extraMessage";
+    public static final String ACTION_ON_CLICK = "onItemClick";
+    public static final String ACTION_HOME = "goHome";
     public static final String ACTION_UPDATE_DB = "updateDb";
+
+    private boolean isUpdating = false;
     private CoinInfoDao dao = App.getDatabase().coinInfoDao();
-
-
     private SimpleDateFormat mDateFormat = new SimpleDateFormat("HH:mm dd.MM.yyyy", Locale.getDefault());
 
     @Override
@@ -60,15 +60,21 @@ public class WidgetProvider extends AppWidgetProvider {
             }
         }
 
-        if (intent.getAction() != null && intent.getAction().equalsIgnoreCase(ACTION_SHOW_TOAST)) {
-            String message = intent.getStringExtra(EXTRA_MESSAGE);
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-        }
-
-        if (intent.getAction() != null && intent.getAction().equals(ACTION_UPDATE_DB)) {
+        if (intent.getAction() != null && intent.getAction().equals(ACTION_UPDATE_DB) && !isUpdating) {
+            isUpdating = true;
             Toast.makeText(context, context.getString(R.string.updating), Toast.LENGTH_SHORT).show();
             int[] ids = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
             updateDB(context, ids);
+        }
+
+        if (intent.getAction() != null && intent.getAction().equals(ACTION_HOME)) {
+            Intent activityIntent = new Intent(context, SplashActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+            try {
+                pendingIntent.send();
+            } catch (PendingIntent.CanceledException e) {
+                e.printStackTrace();
+            }
         }
         super.onReceive(context, intent);
     }
@@ -93,8 +99,14 @@ public class WidgetProvider extends AppWidgetProvider {
         Intent updIntent = new Intent(context, WidgetProvider.class);
         updIntent.setAction(ACTION_UPDATE_DB);
         updIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{id});
-        PendingIntent updPIntent = PendingIntent.getBroadcast(context, id, updIntent, 0);
+        PendingIntent updPIntent = PendingIntent.getBroadcast(context, id, updIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         widgetView.setOnClickPendingIntent(R.id.refresh_btn, updPIntent);
+
+        Intent homeIntent = new Intent(context, WidgetProvider.class);
+        homeIntent.setAction(ACTION_HOME);
+        homeIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, new int[]{id});
+        PendingIntent homePIntent = PendingIntent.getBroadcast(context, id, homeIntent, 0);
+        widgetView.setOnClickPendingIntent(R.id.home_btn, homePIntent);
 
         Intent listClickIntent = new Intent(context, WidgetProvider.class);
         listClickIntent.setAction(ACTION_ON_CLICK);
@@ -104,9 +116,6 @@ public class WidgetProvider extends AppWidgetProvider {
 
         appWidgetManager.updateAppWidget(id, widgetView);
         appWidgetManager.notifyAppWidgetViewDataChanged(id, R.id.widget_list);
-
-        Toast.makeText(context, context.getString(R.string.update_success), Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
@@ -160,7 +169,11 @@ public class WidgetProvider extends AppWidgetProvider {
                 updPIntent.send();
             } catch (PendingIntent.CanceledException e) {
                 e.printStackTrace();
+                return;
             }
+            isUpdating = false;
+            AppExecutors.getInstance().getMainThreadExecutor().execute(() ->
+                    Toast.makeText(context, context.getString(R.string.update_success), Toast.LENGTH_SHORT).show());
         });
     }
 

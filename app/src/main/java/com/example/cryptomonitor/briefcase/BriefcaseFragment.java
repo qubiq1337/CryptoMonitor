@@ -1,6 +1,7 @@
 package com.example.cryptomonitor.briefcase;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -106,7 +107,10 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
 
     private void initPieChart() {
         mPieChart.setUsePercentValues(true);
-        mPieChart.setExtraOffsets(35, 5, 35, 5);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            mPieChart.setExtraOffsets(35, 5, 35, 5);
+        else
+            mPieChart.setExtraOffsets(35, 15, 35, 15);
         mPieChart.setDrawHoleEnabled(true);
         //TODO refactor
         mPieChart.setHoleColor(getResources().getColor(R.color.dark1));

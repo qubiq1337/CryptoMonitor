@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
 
     public static final String THEME = "THEME";
     private static final String SEARCH_TEXT_KEY = "searchKey";
-    private static final long ANIM_DURATION = 150;
+    private static final long ANIM_DURATION = 200;
     private String mCurrency;
     private String savedText;
     private SearchView mSearchView;
