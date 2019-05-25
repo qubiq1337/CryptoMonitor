@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
 public class SplashActivity extends AppCompatActivity {
+    public static final String CURRENCY = "currency";
+    public static final String DEFAULT = "default";
     private SharedPreferences mPreferences;
 
     @Override
@@ -21,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
 
     public void setPreferences() {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String mCurrency = mPreferences.getString("currency", "default");
+        String mCurrency = mPreferences.getString(CURRENCY, DEFAULT);
         setCurrency(mCurrency);
     }
 

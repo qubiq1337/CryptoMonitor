@@ -18,12 +18,5 @@
         <item>GBP</item>
     </string-array>
 
-    <string-array name="currency_entries_values">
-        <item>usd</item>
-        <item>eur</item>
-        <item>rub</item>
-        <item>cny</item>
-        <item>gnp</item>
-    </string-array>
     <integer name="span_count">1</integer>
 </resources>
