@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,7 +12,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -43,7 +43,6 @@ import static com.example.cryptomonitor.Utilities.formatToMillion;
 
 public class DetailedCoin extends AppCompatActivity implements View.OnClickListener {
     public static final String EXTRA_INDEX_KEY = "INDEX";
-    public static final String EXTRA_CURRENCY_KEY = "CURRENCY";
     public static final String EXTRA_POSITION_KEY = "POSITION";
     private LineChart lineChart;
     private String mIndex;
@@ -142,10 +141,10 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
         textView_3M = findViewById(R.id.detailed_3M);
         textView_3M.setOnClickListener(this);
 
+        mCurrency = PreferenceManager.getDefaultSharedPreferences(this).getString("currency", "USD");
         Intent intent = getIntent();
         if (intent != null) {
             mIndex = intent.getStringExtra(EXTRA_INDEX_KEY);
-            mCurrency = intent.getStringExtra(EXTRA_CURRENCY_KEY);
             int position = 0;
             String mRank = "#" + intent.getIntExtra(EXTRA_POSITION_KEY, position);
             rank.setText(mRank);

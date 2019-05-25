@@ -9,11 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -36,7 +33,6 @@ import com.example.cryptomonitor.home.HomeFragment;
 
 import java.util.Objects;
 
-import static com.example.cryptomonitor.detailed_coin.DetailedCoin.EXTRA_CURRENCY_KEY;
 import static com.example.cryptomonitor.detailed_coin.DetailedCoin.EXTRA_INDEX_KEY;
 import static com.example.cryptomonitor.detailed_coin.DetailedCoin.EXTRA_POSITION_KEY;
 
@@ -44,28 +40,23 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         ToolbarInteractor {
 
 
-    public static final String THEME = "THEME";
     private static final String SEARCH_TEXT_KEY = "searchKey";
     private static final long ANIM_DURATION = 200;
-    private String mCurrency;
     private String savedText;
     private SearchView mSearchView;
-    private MenuItem mSpinnerItem;
     private ToolbarInteractor mToolbarInteractor;
     private FrameLayout fragmentContainer;
     private ViewPropertyAnimator animator;
     private boolean isSearchViewExpanded;
-    private MenuItem mSettingsItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean mTheme = mPreferences.getBoolean("theme", false);
-        if (mTheme.equals(true)){
+        if (mTheme.equals(true)) {
             setTheme(R.style.AppThemeDarkPurple);
-        }
-        else{
+        } else {
             setTheme(R.style.AppThemeDark);
         }
         setContentView(R.layout.activity_main);
@@ -120,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
                     fragmentTransaction.commit();
                     if (fragment instanceof ToolbarInteractor) {
                         mToolbarInteractor = (ToolbarInteractor) fragment;
-                        mToolbarInteractor.setCurrency(mCurrency);
                     }
                     animator = fragmentContainer
                             .animate()
@@ -151,26 +141,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_and_fav_menu_toolbar, menu);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false); // Dont put app name on bar
-
-        mSpinnerItem = menu.findItem(R.id.currency_spinner);
-        Spinner spinner = (Spinner) mSpinnerItem.getActionView();
-        spinner.getBackground().setColorFilter(R.attr.itemIconTint, PorterDuff.Mode.DST); // Replace color of arrow
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.spinner, R.layout.spinner_item);
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String[] spinnerArray = getResources().getStringArray(R.array.spinner);
-                setCurrency(spinnerArray[position]);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
 
         mSearchView = (SearchView) menu.findItem(R.id.search).getActionView();
         ImageView searchIcon = mSearchView.findViewById(R.id.search_button);
@@ -292,13 +262,11 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     private void onExpandSearch() {
         setGuidelinePercentage(1f);
         isSearchViewExpanded = true;
-        mSpinnerItem.setVisible(false);
     }
 
     private void onClosedSearch() {
         setGuidelinePercentage(0.92f);
         isSearchViewExpanded = false;
-        mSpinnerItem.setVisible(true);
     }
 
     private void setGuidelinePercentage(float v) {
@@ -311,7 +279,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     @Override
     protected void onDestroy() {
         mSearchView = null;
-        mSpinnerItem = null;
         mToolbarInteractor = null;
        /* mSwipeRefresh = null;
         networkHelper.getCompositeDisposable().dispose();
@@ -320,17 +287,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
 
     }
 
-    @Override
-    public void setCurrency(String currency) {
-        mCurrency = currency;
-        if (mToolbarInteractor != null)
-            mToolbarInteractor.setCurrency(currency);
-    }
-
     public void onCoinClicked(String index, int position) {
         Intent intent = new Intent(this, DetailedCoin.class);
         intent.putExtra(EXTRA_INDEX_KEY, index);
-        intent.putExtra(EXTRA_CURRENCY_KEY, mCurrency);
         intent.putExtra(EXTRA_POSITION_KEY, position + 1);
         startActivity(intent);
     }

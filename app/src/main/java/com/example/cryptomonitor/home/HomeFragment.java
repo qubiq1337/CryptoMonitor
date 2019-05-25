@@ -32,7 +32,6 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         SwipeRefreshLayout.OnRefreshListener,
         CoinAdapterHome.OnCoinClickListener {
 
-    private String mCurrency;
     private HomeViewModel mHomeViewModel;
     private SwipeRefreshLayout mSwipeRefresh;
     private RecyclerView mRecyclerView;
@@ -123,16 +122,11 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         super.onDestroy();
     }
 
-    @Override
-    public void setCurrency(String currency) {
-        mCurrency = currency;
-        onRefresh();
-    }
 
     @Override
     public void onRefresh() {
         if (mHomeViewModel != null)
-            mHomeViewModel.refresh(mCurrency);
+            mHomeViewModel.refresh();
     }
 
     @Override

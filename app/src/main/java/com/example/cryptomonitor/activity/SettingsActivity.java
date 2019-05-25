@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,13 +50,10 @@ public class SettingsActivity extends AppCompatActivity {
         configuration.locale = mLocale;
         getBaseContext().getResources().updateConfiguration(configuration, null);
         FloatingActionButton button =  findViewById(R.id.buttonApply);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
-                SettingsActivity.this.startActivity(intent);
-                SettingsActivity.this.finishAffinity();
-            }
+        button.setOnClickListener(v -> {
+            Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
+            SettingsActivity.this.startActivity(intent);
+            SettingsActivity.this.finishAffinity();
         });
     }
 
