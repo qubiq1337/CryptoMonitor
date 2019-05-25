@@ -67,7 +67,6 @@ public class RemoteFactory implements RemoteViewsService.RemoteViewsFactory {
         Bundle extras = new Bundle();
         extras.putInt(WidgetProvider.POSITION_EXTRA, position + 1);
         String currency = PreferenceManager.getDefaultSharedPreferences(mContext).getString("currency", "USD");
-        extras.putString(WidgetProvider.SYMBOL_EXTRA, currency);
         extras.putString(WidgetProvider.SHORT_NAME_EXTRA, mData.get(position).getShortName());
         Intent fillInIntent = new Intent();
         fillInIntent.putExtras(extras);

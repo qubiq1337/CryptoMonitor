@@ -17,6 +17,5 @@
         <item>CNY</item>
         <item>GBP</item>
     </string-array>
-
     <integer name="span_count">1</integer>
 </resources>

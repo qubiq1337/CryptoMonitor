@@ -1,6 +1,8 @@
 package com.example.cryptomonitor.favorite;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -60,10 +62,12 @@ class FavoriteViewModel extends AndroidViewModel {
         mFavoriteCoinsLiveData.setValue(new ArrayList<>());
     }
 
-    void onRefresh(String currency) {
+    void onRefresh() {
         if (!isRefreshing) {
             isRefreshing = true;
             mIsRefreshLiveData.setValue(true);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplication().getApplicationContext());
+            String currency = preferences.getString("currency", "USD");
             mCoinDataSource.refreshCoins(currency, new CoinDataSource.RefreshCallback() {
                 @Override
                 public void onSuccess() {

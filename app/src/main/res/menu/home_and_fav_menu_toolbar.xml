@@ -4,11 +4,6 @@
     android:layout_width="0dp"
     android:layout_height="0dp"
     tools:context=".activity.MainActivity">
-    <item
-        android:id="@+id/currency_spinner"
-        android:title="@string/currency_spinner"
-        app:actionViewClass="android.widget.Spinner"
-        app:showAsAction="always" />
 
     <item
         android:id="@+id/search"
