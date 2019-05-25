@@ -6,5 +6,5 @@
     android:background="?attr/colorPrimary"
     android:ellipsize="marquee"
     android:singleLine="true"
-    android:textColor="?attr/itemTextColor"
-    android:textAlignment="center"/>
+    android:textAlignment="center"
+    android:textColor="?attr/itemTextColor" />

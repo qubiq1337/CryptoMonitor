@@ -18,14 +18,15 @@ public class SplashActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-    public void setPreferences(){
+
+    public void setPreferences() {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String mCurrency = mPreferences.getString("currency", "default");
         setCurrency(mCurrency);
     }
 
-    public void setCurrency(String mCurrency){
-        if (mCurrency.equals("default")){
+    public void setCurrency(String mCurrency) {
+        if (mCurrency.equals("default")) {
             SharedPreferences.Editor editor = mPreferences.edit();
             editor.putString("currency", "usd");
             editor.apply();

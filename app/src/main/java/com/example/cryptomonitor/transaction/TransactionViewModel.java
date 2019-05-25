@@ -37,6 +37,16 @@ import static com.example.cryptomonitor.transaction.TransactionActivity.SELL_MOD
 
 
 public class TransactionViewModel extends AndroidViewModel {
+    public static final HashMap<String, String> coinSymbols = new HashMap<>();
+
+    static {
+        coinSymbols.put("\u0024", "USD");
+        coinSymbols.put("\u20AC", "EUR");
+        coinSymbols.put("\u20BD", "RUB");
+        coinSymbols.put("\u00a5", "CNY");
+        coinSymbols.put("\u00a3", "GBP");
+    }
+
     private MutableLiveData<CoinInfo> mSelectedCoin = new MutableLiveData<>();
     private CoinInfo mCurrentCoinInfo;
     private PurchaseAndCoin mCurrentPurchaseAndCoin;
@@ -59,6 +69,11 @@ public class TransactionViewModel extends AndroidViewModel {
     private Bill mBill;
     private String nowDate = "";
     private String buyDatePurchase = "";
+
+    public TransactionViewModel(Application application) {
+        super(application);
+        defaultSetup();
+    }
 
     public LiveData<String> getSymbolLiveData() {
         return mSymbolLiveData;
@@ -103,23 +118,6 @@ public class TransactionViewModel extends AndroidViewModel {
     public LiveData<Boolean> getAutoCompleteTextViewEnabled() {
         return mAutoCompleteTextViewEnabled;
     }
-
-    public static final HashMap<String, String> coinSymbols = new HashMap<>();
-
-    static {
-        coinSymbols.put("\u0024", "USD");
-        coinSymbols.put("\u20AC", "EUR");
-        coinSymbols.put("\u20BD", "RUB");
-        coinSymbols.put("\u00a5", "CNY");
-        coinSymbols.put("\u00a3", "GBP");
-    }
-
-
-    public TransactionViewModel(Application application) {
-        super(application);
-        defaultSetup();
-    }
-
 
     public void coinSelected(CoinInfo coinInfo) {
         mCurrentCoinInfo = coinInfo;

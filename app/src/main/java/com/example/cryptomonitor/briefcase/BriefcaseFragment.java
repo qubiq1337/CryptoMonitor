@@ -115,7 +115,7 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
             mPieChart.setExtraOffsets(35, 15, 35, 15);
         mPieChart.setDrawHoleEnabled(true);
         //TODO refactor
-        mPieChart.setHoleColor(ContextCompat.getColor(Objects.requireNonNull(this.getContext()),R.color.dark1));
+        mPieChart.setHoleColor(ContextCompat.getColor(Objects.requireNonNull(this.getContext()), R.color.dark1));
         mPieChart.animateY(800);
         mPieChart.getDescription().setEnabled(false);
         mPieChart.setTouchEnabled(true);

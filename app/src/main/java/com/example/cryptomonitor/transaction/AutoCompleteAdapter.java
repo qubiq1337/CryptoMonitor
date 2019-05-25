@@ -25,14 +25,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
     private List<CoinInfo> coinInfoList;
-
-    List<CoinInfo> getResultFilterList() {
-        return resultFilterList;
-    }
-
     private List<CoinInfo> resultFilterList;
     private Context mContext;
-
 
     AutoCompleteAdapter(Context context) {
         mContext = context;
@@ -50,6 +44,9 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
                 });
     }
 
+    List<CoinInfo> getResultFilterList() {
+        return resultFilterList;
+    }
 
     @Override
     public int getCount() {

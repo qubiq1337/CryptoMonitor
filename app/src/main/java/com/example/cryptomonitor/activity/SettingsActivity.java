@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,10 +24,9 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean mTheme = mPreferences.getBoolean("theme", false);
-        if (mTheme.equals(true)){
+        if (mTheme.equals(true)) {
             setTheme(R.style.AppThemeDarkPurple);
-        }
-        else{
+        } else {
             setTheme(R.style.AppThemeDark);
         }
         setContentView(R.layout.settings_activity);
@@ -51,7 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
         Configuration configuration = new Configuration();
         configuration.locale = mLocale;
         getBaseContext().getResources().updateConfiguration(configuration, null);
-        FloatingActionButton button =  findViewById(R.id.buttonApply);
+        FloatingActionButton button = findViewById(R.id.buttonApply);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

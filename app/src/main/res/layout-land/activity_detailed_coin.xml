@@ -256,11 +256,11 @@
                 <LinearLayout
                     android:id="@+id/linear3"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="8dp"
                     android:layout_height="30dp"
-                    android:gravity="center"
                     android:layout_below="@id/detailed_table"
+                    android:layout_marginTop="8dp"
                     android:background="@color/backgroundChartColor"
+                    android:gravity="center"
                     android:orientation="horizontal"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp">

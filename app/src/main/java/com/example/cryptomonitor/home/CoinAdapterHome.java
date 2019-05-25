@@ -113,11 +113,6 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         return mData.size();
     }
 
-
-    public interface OnStarClickListener {
-        void onStarClick(CoinInfo coinInfo);
-    }
-
     private void loadMore() {
         isLoading = true;
         if (disposable != null)
@@ -126,6 +121,14 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mListConsumer);
+    }
+
+    public interface OnStarClickListener {
+        void onStarClick(CoinInfo coinInfo);
+    }
+
+    public interface OnCoinClickListener {
+        void onCoinClick(String index, int position);
     }
 
     class CoinViewHolder extends RecyclerView.ViewHolder {
@@ -158,9 +161,5 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
                     mOnCoinClickListener.onCoinClick(mData.get(getAdapterPosition()).getShortName(), getAdapterPosition()));
         }
 
-    }
-
-    public interface OnCoinClickListener {
-        void onCoinClick(String index, int position);
     }
 }

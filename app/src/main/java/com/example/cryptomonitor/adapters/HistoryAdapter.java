@@ -46,7 +46,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         holder.buyDate.setText(bill.getBuy_date());
         double buyPrice = bill.getBuyPrice();
         double sellPrice = bill.getSellPrice();
-        double change = changePercent(buyPrice,sellPrice);
+        double change = changePercent(buyPrice, sellPrice);
         String changeInPercent = simpleNumberFormatting(change) + "%";
         holder.change.setText(changeInPercent);
         holder.change.setTextColor(changeColor(change));
@@ -77,7 +77,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         if (d > 0)
             return (ContextCompat.getColor(mContext, R.color.greenColor));
         else if (d < 0)
-            return (ContextCompat.getColor(mContext,R.color.redColor));
+            return (ContextCompat.getColor(mContext, R.color.redColor));
         return (ContextCompat.getColor(mContext, R.color.textColorDark));
     }
 

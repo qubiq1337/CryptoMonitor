@@ -35,7 +35,6 @@
         <AutoCompleteTextView
             android:id="@+id/transaction_actv"
             android:layout_width="match_parent"
-            app:autoSizeTextType="uniform"
             android:layout_height="wrap_content"
             android:completionThreshold="1"
             android:dropDownWidth="wrap_content"
@@ -46,7 +45,8 @@
             android:scrollHorizontally="true"
             android:textColor="@color/textColorPrimary"
             android:textColorHint="@color/textColorDark"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            app:autoSizeTextType="uniform" />
     </LinearLayout>
 
 
@@ -90,9 +90,10 @@
         android:stretchColumns="1,1,2">
 
         <TableRow>
+
             <View
                 android:layout_width="0dp"
-                android:layout_height="0dp"/>
+                android:layout_height="0dp" />
 
             <TextView
                 android:id="@+id/transaction_price_in"
@@ -111,13 +112,13 @@
         </TableRow>
 
         <TableRow>
-           <TextView
-               android:id="@+id/transaction_price_symbol"
-               android:layout_marginTop="10dp"
-               android:textColor="@color/textColorPrimary"
-               android:textSize="26sp"
-               tools:text="$"
-               />
+
+            <TextView
+                android:id="@+id/transaction_price_symbol"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="26sp"
+                tools:text="$" />
 
             <EditText
                 android:id="@+id/transaction_edit_price"
@@ -168,6 +169,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:id="@+id/transaction_total_cost_symbol"
                 android:layout_width="wrap_content"
@@ -175,7 +177,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
                 android:textSize="45sp"
-                tools:text="$"/>
+                tools:text="$" />
 
             <TextView
                 android:id="@+id/transaction_total_cost"
@@ -234,10 +236,10 @@
                 android:background="@color/colorLigthAccent"
                 android:clickable="true"
                 android:elevation="1dp"
+                android:focusable="true"
                 android:gravity="center"
                 android:text="@string/cancel"
-                android:textSize="24sp"
-                android:focusable="true" />
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/transaction_ready"
@@ -246,10 +248,10 @@
                 android:background="@color/yellow_color_button"
                 android:clickable="true"
                 android:elevation="1dp"
+                android:focusable="true"
                 android:gravity="center"
                 android:text="@string/save"
-                android:textSize="24sp"
-                android:focusable="true" />
+                android:textSize="24sp" />
         </TableRow>
     </TableLayout>
 
