@@ -30,7 +30,6 @@ import io.reactivex.Observable;
 import retrofit2.Response;
 
 public class WidgetProvider extends AppWidgetProvider {
-    public static final String SYMBOL_EXTRA = "symbolExtra";
     public static final String POSITION_EXTRA = "positionExtra";
     public static final String SHORT_NAME_EXTRA = "shortNameExtra";
 
@@ -48,10 +47,8 @@ public class WidgetProvider extends AppWidgetProvider {
             Intent activityIntent = new Intent(context, DetailedCoin.class);
             int position = intent.getIntExtra(POSITION_EXTRA, -1);
             String index = intent.getStringExtra(SHORT_NAME_EXTRA);
-            String currency = intent.getStringExtra(SYMBOL_EXTRA);
             activityIntent.putExtra(DetailedCoin.EXTRA_POSITION_KEY, position);
             activityIntent.putExtra(DetailedCoin.EXTRA_INDEX_KEY, index);
-            activityIntent.putExtra(DetailedCoin.EXTRA_CURRENCY_KEY, currency);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             try {
                 pendingIntent.send();

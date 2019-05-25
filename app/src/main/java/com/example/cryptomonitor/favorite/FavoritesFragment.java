@@ -33,7 +33,6 @@ public class FavoritesFragment extends Fragment implements FavoriteCoinAdapter.O
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private FavoriteCoinAdapter mCoinAdapterHome;
     private FavoriteViewModel mViewModel;
-    private String mCurrency;
     private Observer<Event> eventObserver = event -> {
         if (event != null && !event.isHandled()) {
             if (event instanceof Message) {
@@ -80,12 +79,6 @@ public class FavoritesFragment extends Fragment implements FavoriteCoinAdapter.O
     }
 
     @Override
-    public void setCurrency(String currency) {
-        mCurrency = currency;
-        onRefresh();
-    }
-
-    @Override
     public void onClick(View v) {
         mViewModel.onSearchClicked();
     }
@@ -110,6 +103,6 @@ public class FavoritesFragment extends Fragment implements FavoriteCoinAdapter.O
     @Override
     public void onRefresh() {
         if (mViewModel != null)
-            mViewModel.onRefresh(mCurrency);
+            mViewModel.onRefresh();
     }
 }

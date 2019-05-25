@@ -4,13 +4,6 @@
     <string name="favorites">Favorites</string>
     <string name="home">Home</string>
     <string name="exit_phrase">Press Back once again to exit</string>
-    <string-array name="spinner">
-        <item>USD</item>
-        <item>EUR</item>
-        <item>RUB</item>
-        <item>CNY</item>
-        <item>GBP</item>
-    </string-array>
     <string-array name="settings_spinner">
         <item>Sort </item>
         <item>Settings  </item>
