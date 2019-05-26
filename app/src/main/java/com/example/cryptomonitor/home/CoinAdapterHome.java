@@ -100,7 +100,7 @@ public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinVi
         CoinInfo coin = mData.get(index);
         coinViewHolder.textViewFullName.setText(coin.getFullName());
         coinViewHolder.textViewName.setText(coin.getShortName());
-        coinViewHolder.textViewPrice.setText(coin.getPriceStr());
+        coinViewHolder.textViewPrice.setText(coin.getPriceDisplay());
         Picasso.get().load(coin.getImageURL()).into(coinViewHolder.imageViewIcon);
         if (coin.isFavorite())
             coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_favorite_star));

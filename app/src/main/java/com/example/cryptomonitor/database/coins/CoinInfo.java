@@ -3,9 +3,6 @@ package com.example.cryptomonitor.database.coins;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-
 @Entity
 public class CoinInfo {
 
@@ -125,11 +122,6 @@ public class CoinInfo {
         this.symbol = symbol;
     }
 
-    public String getPriceStr() {
-        DecimalFormat format = new DecimalFormat("#.##");
-        format.setRoundingMode(RoundingMode.CEILING);
-        return format.format(this.price).concat(this.symbol);
-    }
 
     public String getPriceDisplay() {
         return priceDisplay;
