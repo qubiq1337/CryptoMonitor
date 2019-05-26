@@ -26,7 +26,6 @@ public class CoinRepo implements CoinDataSource {
 
     private static Executor dbExecutor = AppExecutors.getInstance().getDbExecutor();
     private final String BASE_IMAGE_URL = "https://www.cryptocompare.com";
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private CoinInfoDao mCoinInfoDao = App.getDatabase().coinInfoDao();
     private ApiCryptoCompare mCoinInfoApi = Network.getInstance().getApiCryptoCompare();
     private Disposable mDisposableSubscription;
@@ -128,8 +127,11 @@ public class CoinRepo implements CoinDataSource {
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::updateCurrencies, e -> Log.e("aDDADDSDADAD", "testRxLoadCoins: ", e))
         );*/
+
+        if (mDisposableSubscription != null)
+            mDisposableSubscription.dispose();
+
         Single<List<CoinInfo>> test1 = mergeObservable(currency)
-                .subscribeOn(Schedulers.io()) // "work" on io thread
                 .map(CoinCryptoCompare::getData)
                 .flatMap(Observable::fromIterable)
                 .filter(coinsData -> coinsData.getRAW() != null && coinsData.getDISPLAY() != null)
@@ -139,12 +141,16 @@ public class CoinRepo implements CoinDataSource {
         Single<CurrenciesData> test2 = mCoinInfoApi.getAllCurrencies(currency);
 
 
-        compositeDisposable.add(Observable
-                .zip(test1.toObservable(), test2.toObservable(), (coinInfoList, currenciesData) -> {
-                    updateAll(coinInfoList);
-                    updateCurrencies(currenciesData);
-                    return coinInfoList;
+        mDisposableSubscription = Observable
+                .zip(test1.toObservable(), test2.toObservable(), new BiFunction<List<CoinInfo>, CurrenciesData, List<CoinInfo>>() {
+                    @Override
+                    public List<CoinInfo> apply(List<CoinInfo> coinInfoList, CurrenciesData currenciesData) throws Exception {
+                        updateAll(coinInfoList);
+                        updateCurrencies(currenciesData);
+                        return coinInfoList;
+                    }
                 })
+
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(coinInfoList -> {
@@ -154,13 +160,13 @@ public class CoinRepo implements CoinDataSource {
                             Log.e("testRxLoadCoins", "FAILED DOWNLOAD: ", e);
                             callback.onFailed();
                         }
-                ));
+                );
     }
 
     private Observable<CoinCryptoCompare> mergeObservable(String currency) {
         Observable<CoinCryptoCompare> mergeObs = mCoinInfoApi.getAllCoins(0, currency);
         for (int i = 0; i < 19; i++)
-            mergeObs = Observable.merge(mergeObs, mCoinInfoApi.getAllCoins(i + 1, currency));
+            mergeObs = Observable.mergeDelayError(mergeObs, mCoinInfoApi.getAllCoins(i + 1, currency));
         return mergeObs;
     }
 
