@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -132,11 +133,12 @@ public class WidgetProvider extends AppWidgetProvider {
 
     private void updateDB(Context context, int[] ids) {
         AppExecutors.getInstance().getDbExecutor().execute(() -> {
+            String currency = PreferenceManager.getDefaultSharedPreferences(context).getString("currency", "USD");
             ArrayList<CoinCryptoCompare> dataList = new ArrayList<>();
             try {
                 for (int page = 0; page <= 19; page++) {
                     Response<CoinCryptoCompare> response = Network.getInstance()
-                            .getApiCryptoCompare().getAllCoinsToWidget(page, "USD").execute();
+                            .getApiCryptoCompare().getAllCoinsToWidget(page, currency).execute();
                     CoinCryptoCompare coinCryptoCompare;
                     if (response.body() != null)
                         coinCryptoCompare = response.body();
