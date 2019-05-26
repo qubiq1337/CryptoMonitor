@@ -61,7 +61,7 @@
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/ic_action_name"
-        app:backgroundTint="@color/blue_color_selected"
+        app:backgroundTint="?attr/colorAccent"
         app:elevation="10dp" />
 
     <androidx.recyclerview.widget.RecyclerView

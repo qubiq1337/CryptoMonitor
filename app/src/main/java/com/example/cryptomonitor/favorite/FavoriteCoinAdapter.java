@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.coins.CoinInfo;
+import com.example.cryptomonitor.home.CoinAdapterHome;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -48,11 +49,14 @@ public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapte
         coinViewHolder.textViewFullName.setText(coin.getFullName());
         coinViewHolder.textViewName.setText(coin.getShortName());
         coinViewHolder.textViewPrice.setText(coin.getPriceDisplay());
-        Picasso.get().load(coin.getImageURL()).into(coinViewHolder.imageViewIcon);
+        Picasso.get()
+                .load(coin.getImageURL())
+                .transform(new CoinAdapterHome.PicassoCircleTransformation())
+                .into(coinViewHolder.imageViewIcon);
         if (coin.isFavorite())
-            coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_favorite_star));
+            coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_star));
         else
-            coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_not_favorite_star_light));
+            coinViewHolder.isFavoriteImage.setImageDrawable(mContext.getDrawable(R.drawable.ic_star_outline));
     }
 
     @Override
@@ -99,6 +103,5 @@ public class FavoriteCoinAdapter extends RecyclerView.Adapter<FavoriteCoinAdapte
             itemView.setOnClickListener(v ->
                     mOnCoinClickListener.onCoinClick(mData.get(getAdapterPosition()).getShortName(), getAdapterPosition()));
         }
-
     }
 }

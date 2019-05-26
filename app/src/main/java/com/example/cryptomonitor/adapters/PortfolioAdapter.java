@@ -125,11 +125,11 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
 
     private int changeColor(Double d) {
         if (d > 0)
-            return (ContextCompat.getColor(mContext, R.color.greenColor));
+            return (ContextCompat.getColor(mContext, R.color.green5));
         else if (d < 0)
-            return (ContextCompat.getColor(mContext, R.color.redColor));
+            return (ContextCompat.getColor(mContext, R.color.red1));
 
-        return (ContextCompat.getColor(mContext, R.color.textColorDark));
+        return (R.attr.custom_text_color);
     }
 
     private int changeTextSize(Double change) {

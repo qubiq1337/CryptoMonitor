@@ -139,7 +139,7 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
         pieDataSet.setSelectionShift(4f);
         pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        pieDataSet.setValueLineColor(ContextCompat.getColor(Objects.requireNonNull(getContext()), R.color.textColorDark));
+        pieDataSet.setValueLineColor(R.attr.custom_text_color);
         pieDataSet.setValueLinePart1OffsetPercentage(100f); // When valuePosition is OutsideSlice, indicates offset as percentage out of the slice size
         pieDataSet.setValueLinePart1Length(0.6f); // When valuePosition is OutsideSlice, indicates length of first half of the line
         pieDataSet.setValueLinePart2Length(0.4f); // When valuePosition is OutsideSlice, indicates length of second half of the line

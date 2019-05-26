@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         ToolbarInteractor {
 
 
+    public static final String THEME = "theme";
     private static final String SEARCH_TEXT_KEY = "searchKey";
     private static final long ANIM_DURATION = 200;
-    public static final String THEME = "theme";
     private String savedText;
     private SearchView mSearchView;
     private ToolbarInteractor mToolbarInteractor;
@@ -142,10 +142,9 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.home_and_fav_menu_toolbar, menu);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false); // Dont put app name on bar
-
         mSearchView = (SearchView) menu.findItem(R.id.search).getActionView();
         ImageView searchIcon = mSearchView.findViewById(R.id.search_button);
-        searchIcon.setColorFilter(R.attr.itemIconTint, PorterDuff.Mode.DST);// Replace color of search icon
+        searchIcon.setColorFilter(R.attr.custom_icon_color, PorterDuff.Mode.DST);// Replace color of search icon
         mSearchView.setOnQueryTextListener(this);
         mSearchView.setOnSearchClickListener(this);
         mSearchView.setOnCloseListener(this);
@@ -153,54 +152,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
             mSearchView.setIconified(false);
             mSearchView.setQuery(savedText, false);
         }
-
-
-//        mSettingsSpinnerItem = menu.findItem(R.id.settings_spinner);
-//        Spinner settingsSpinner = (Spinner) mSettingsSpinnerItem.getActionView();
-//        settingsSpinner.getBackground().setColorFilter(R.attr.itemIconTint, PorterDuff.Mode.DST); // Replace color of arrow
-//        ArrayAdapter<CharSequence> settingsAdapter = ArrayAdapter.createFromResource(this,
-//                R.array.settings_spinner, R.layout.spinner_item);
-//        settingsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-//        settingsSpinner.setAdapter(settingsAdapter);
-//        settingsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                if (position == 0) {
-//                    //Set sort
-//                }
-//                if (position == 1) {
-//                    Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-//                    startActivity(intent);
-//                }
-//            }
-//            //TODO: Refactor this!
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
-
-
-//        mSettingsItem = menu.findItem(R.id.sort);
-//        mSettingsItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                View viewSettings = findViewById(R.id.menu_one);
-//                PopupMenu popupMenu = new PopupMenu(MainActivity.this, viewSettings);
-//                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
-//                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                    public boolean onMenuItemClick(MenuItem item) {
-//                        Toast.makeText(MainActivity.this, "You Clicked : " + item.getTitle(), Toast.LENGTH_SHORT).show();
-//                        return true;
-//                    }
-//                });
-//                popupMenu.show();
-//
-//                return true;
-//            }
-//        });
-
         return true;
     }
 
@@ -219,7 +170,6 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
         startActivity(intent);
     }
-
 
     @Override
     public boolean onClose() {

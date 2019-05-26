@@ -27,12 +27,12 @@
             android:name=".activity.SettingsActivity"
             android:configChanges="locale"
             android:label="@string/settings"
-            android:theme="@style/SettingsTheme" />
+            android:theme="@style/Theme.Design.NoActionBar" />
         <activity
             android:name=".detailed_coin.DetailedCoin"
             android:configChanges="locale"
             android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/DetailedActivityTheme" />
+            android:theme="@style/DetailedTheme" />
 
         <activity
             android:name=".activity.SplashActivity"

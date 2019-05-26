@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.bills.Bill;
+import com.example.cryptomonitor.home.CoinAdapterHome;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -54,7 +55,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         holder.buyPrice.setText(cashFormatting(buyPrice));
         String amountStr = cashFormatting(bill.getAmount()) + " " + bill.getShort_name();
         holder.amount.setText(amountStr);
-        Picasso.get().load(bill.getImage_url()).into(holder.icon);
+        Picasso.get()
+                .load(bill.getImage_url())
+                .transform(new CoinAdapterHome.PicassoCircleTransformation())
+                .into(holder.icon);
     }
 
     @Override
@@ -75,10 +79,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     private int changeColor(Double d) {
         if (d > 0)
-            return (ContextCompat.getColor(mContext, R.color.greenColor));
+            return (ContextCompat.getColor(mContext, R.color.green5));
         else if (d < 0)
-            return (ContextCompat.getColor(mContext, R.color.redColor));
-        return (ContextCompat.getColor(mContext, R.color.textColorDark));
+            return (ContextCompat.getColor(mContext, R.color.red1));
+        return (R.attr.custom_text_color);
     }
 
     class HistoryViewHolder extends RecyclerView.ViewHolder {

@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@id/history_linear2"
                 android:layout_alignParentEnd="true"
-                android:textColor="@color/greenColor"
+                android:textColor="@color/green5"
                 android:textSize="36sp"
                 tools:text="20%" />
         </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.example.cryptomonitor.detailed_coin;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.coins.CoinInfo;
+import com.example.cryptomonitor.home.CoinAdapterHome;
 import com.example.cryptomonitor.model_cryptocompare.model_chart.ChartData;
 import com.example.cryptomonitor.model_cryptocompare.model_chart.ModelChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -44,6 +46,7 @@ import static com.example.cryptomonitor.Utilities.formatToMillion;
 public class DetailedCoin extends AppCompatActivity implements View.OnClickListener {
     public static final String EXTRA_INDEX_KEY = "INDEX";
     public static final String EXTRA_POSITION_KEY = "POSITION";
+    public static final String THEME = "theme";
     private LineChart lineChart;
     private String mIndex;
     private String mCurrency;
@@ -114,8 +117,15 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences mPreferences = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean mTheme = mPreferences.getBoolean(THEME, false);
+        if (mTheme.equals(true)) {
+            setTheme(R.style.AppThemeDarkPurple);
+        } else {
+            setTheme(R.style.AppThemeDark);
+        }
+        getTheme().applyStyle(R.style.DetailedTheme, true);
         setContentView(R.layout.activity_detailed_coin);
-
         full_name = findViewById(R.id.detailed_fullname);
         price = findViewById(R.id.detailed_price);
         change = findViewById(R.id.detailed_change);
@@ -217,7 +227,10 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
 
     private void bindViews(CoinInfo coinInfo) {
         full_name.setText(coinInfo.getFullName());
-        Picasso.get().load(coinInfo.getImageURL()).into(icon);
+        Picasso.get()
+                .load(coinInfo.getImageURL())
+                .transform(new CoinAdapterHome.PicassoCircleTransformation())
+                .into(icon);
         price.setText(coinInfo.getPriceDisplay());
         setChangeColor(coinInfo.getChangeDay());
         String changeConcat = coinInfo.getChangeDayDispaly() + " (" + coinInfo.getChangePctDay() + "%)";
@@ -236,11 +249,11 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
 
     private void setChangeColor(Double d) {
         if (d > 0)
-            change.setTextColor(ContextCompat.getColor(this, R.color.greenColor));
+            change.setTextColor(ContextCompat.getColor(this, R.color.green1_dark_theme));
         else if (d < 0)
-            change.setTextColor(ContextCompat.getColor(this, R.color.redColor));
+            change.setTextColor(ContextCompat.getColor(this, R.color.red1));
         else if (d == 0)
-            change.setTextColor(ContextCompat.getColor(this, R.color.textColorDark));
+            change.setTextColor(R.attr.custom_text_color);
     }
 
     @NonNull

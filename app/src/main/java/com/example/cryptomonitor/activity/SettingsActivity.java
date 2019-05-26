@@ -44,7 +44,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         String mLang = mPreferences.getString(LANG, DEFAULT);
         assert mLang != null;
-        if (mLang.equals("default")) {
+        if (mLang.equals(DEFAULT)) {
             mLang = getResources().getConfiguration().locale.getCountry();
         }
         Locale mLocale = new Locale(mLang);

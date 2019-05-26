@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.App;
 import com.example.cryptomonitor.database.coins.CoinInfo;
+import com.example.cryptomonitor.home.CoinAdapterHome;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -74,7 +75,10 @@ public class AutoCompleteAdapter extends BaseAdapter implements Filterable {
 
         if (coinInfo != null) {
             textView.setText(coinInfo.getFullName());
-            Picasso.get().load(coinInfo.getImageURL()).into(imageView);
+            Picasso.get()
+                    .load(coinInfo.getImageURL())
+                    .transform(new CoinAdapterHome.PicassoCircleTransformation())
+                    .into(imageView);
         }
 
         return convertView;

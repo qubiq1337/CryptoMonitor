@@ -4,13 +4,6 @@
     <string name="favorites">Избранное</string>
     <string name="home">Главная</string>
     <string name="exit_phrase">Нажмите Назад еще раз, чтобы выйти</string>
-    <string-array name="spinner">
-        <item>USD</item>
-        <item>EUR</item>
-        <item>RUB</item>
-        <item>CNY</item>
-        <item>GBP</item>
-    </string-array>
     <string name="briefcase">Портфель</string>
     <string name="find">Найти</string>
     <string name="action_bar_spinner">Action Bar Spinner</string>
@@ -39,7 +32,7 @@
     <string name="currency_title">Валюта</string>
     <string name="currency_header">Настройки валюты</string>
     <string name="theme_header">Темы</string>
-    <string name="theme_title">Темная тема</string>
+    <string name="theme_title">Фиолетовая тема</string>
     <string name="portfolio">Портфель</string>
     <string name="save">Сохранить</string>
     <string name="cancel">Отмена</string>

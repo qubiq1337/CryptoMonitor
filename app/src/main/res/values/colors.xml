@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorLigthPrimary">#F7FBFF</color>
-    <color name="colorLigthPrimaryDark">#6495ED</color>
-    <color name="colorLigthAccent">#1E90FF</color>
-    <color name="colorDarkPrimary">#2C2D2F</color>
-    <color name="colorDarkPrimaryDark">#2C2D2F</color>
-    <color name="colorDarkAccent">#1E90FF</color>
-    <color name="darkPurple1">#1A0044</color>
-    <color name="darkPurple2">#3F118D</color>
-    <color name="darkPurple3">#543088</color>
+    <color name="DarkPrimary">#2C2D2F</color>
+    <color name="DarkPrimaryDark">#2C2D2F</color>
+    <color name="DarkAccent">#04D25D</color>
+    <color name="DarkBackground">#000000</color>
+    <color name="DarkItemBackground">#191919</color>
+
+    <color name="colorDarkPrimaryPurple">#2a2f47</color>
+    <color name="colorDarkPrimaryDarkPurple">#2a2f47</color>
+    <color name="colorDarkAccentPurple">#1E90FF</color>
+
+    <color name="black_dark_theme">#03030A</color>
+    <color name="purple1_dark_theme">#303549</color>
+    <color name="purple2_dark_theme">#2a2f47</color>
+    <color name="green1_dark_theme">#04D25D</color>
+    <color name="green2_dark_theme">#079E57</color>
+    <color name="green3_dark_theme">#0A6656</color>
+    <color name="grey_dark_theme">#8E9A94</color>
+
     <color name="dark1">#000000</color>
     <color name="dark2">#191919</color>
     <color name="dark3">#2C2D2F</color>
+
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_black">#000000</color>
+
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="orange">#F67C01</color>
     <color name="grey">#C7C7C7</color>
-    <color name="green_ok">#64DD17</color>
-    <color name="red_close">#DD2C00</color>
-    <color name="textColorPrimary">#ffffff</color>
-    <color name="textColorDark">#c7c7c7</color>
-    <color name="redColor">#d50000</color>
-    <color name="greenColor">#087f23</color>
-    <color name="backgroundChartColor">#18142E</color>
-    <color name="blue_color_selected">#007ff2</color>
-    <color name="background_nav_bar_color">#110c22</color>
-    <color name="yellow_color_button">#E4CA00</color>
+    <color name="green5">#64DD17</color>
+    <color name="red1">#DD2C00</color>
+    <color name="red2">#d50000</color>
+    <color name="green6">#087f23</color>
+    <color name="blue">#007ff2</color>
+    <color name="yellow">#E4CA00</color>
 </resources>

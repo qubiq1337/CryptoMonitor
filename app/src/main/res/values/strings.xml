@@ -4,10 +4,6 @@
     <string name="favorites">Favorites</string>
     <string name="home">Home</string>
     <string name="exit_phrase">Press Back once again to exit</string>
-    <string-array name="settings_spinner">
-        <item>Sort </item>
-        <item>Settings  </item>
-    </string-array>
     <string name="briefcase">Briefcase</string>
     <string name="find">Find</string>
     <string name="currency_spinner">Currency Spinner</string>
@@ -45,9 +41,8 @@
     <string name="currency_title">Currency</string>
     <string name="currency_header">Currency settings</string>
     <string name="theme_header">Themes</string>
-    <string name="theme_title">Dark theme</string>
+    <string name="theme_title">Purple theme</string>
     <string name="settings">Settings</string>
-
     <string name="action_bar_spinner">Action Bar Spinner</string>
     <string name="sort">Sort</string>
 </resources>

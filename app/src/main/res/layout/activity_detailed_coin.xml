@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".detailed_coin.DetailedCoin">
@@ -9,7 +10,7 @@
     <LinearLayout
         android:id="@+id/linear1"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="64dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -18,7 +19,7 @@
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
-            android:src="@drawable/arrow_left_29172"
+            android:src="@drawable/arrow_left"
             android:tint="#ffffff" />
 
         <TextView
@@ -74,12 +75,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="7dp"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/redColor"
+                android:textColor="@color/red1"
                 android:textSize="16sp"
                 tools:text="- 1 310,36 (20,21%)" />
         </LinearLayout>
 
         <TableLayout
+            android:id="@+id/tableLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/linear2"
@@ -92,7 +94,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="MKT"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="?attr/custom_text_unfocused_color"
                     android:textSize="@dimen/table_text_size" />
 
                 <TextView
@@ -109,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
                     android:text="RANK"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="?attr/custom_text_unfocused_color"
                     android:textSize="@dimen/table_text_size" />
 
                 <TextView
@@ -129,7 +131,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
                     android:text="SUPPLY"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="?attr/custom_text_unfocused_color"
                     android:textSize="@dimen/table_text_size" />
 
                 <TextView
@@ -148,7 +150,7 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="25dp"
                     android:text="HIGH"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="?attr/custom_text_unfocused_color"
                     android:textSize="@dimen/table_text_size" />
 
                 <TextView
@@ -169,7 +171,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
                     android:text="VOL"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="?attr/custom_text_unfocused_color"
                     android:textSize="@dimen/table_text_size" />
 
                 <TextView
@@ -188,7 +190,7 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="25dp"
                     android:text="LOW"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="?attr/custom_text_unfocused_color"
                     android:textSize="@dimen/table_text_size" />
 
                 <TextView
@@ -209,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
                     android:text="TOTAL VOL"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="?attr/custom_text_unfocused_color"
                     android:textSize="@dimen/table_text_size" />
 
                 <TextView
@@ -229,92 +231,104 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="25dp"
                     android:text="WEB"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="?attr/custom_text_unfocused_color"
                     android:textSize="@dimen/table_text_size" />
 
                 <ImageView
                     android:id="@+id/detailed_infoURL"
                     android:layout_width="@dimen/table_text_size"
-                    android:layout_height="@dimen/table_text_size"
+                    android:layout_height="12dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="25dp"
                     android:rotation="180"
-                    android:src="@drawable/arrow_left_29172"
-                    android:tint="@color/textColorPrimary" />
+                    android:src="@drawable/arrow_left"
+                    android:tint="?attr/custom_text_color" />
             </TableRow>
         </TableLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linear3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tableLayout"
+            android:layout_marginTop="8dp"
+            android:background="?attr/custom_background_color"
+            android:orientation="horizontal"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp">
+
+            <TextView
+                android:id="@+id/detailed_1D"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="1D"
+                android:textColor="?attr/custom_text_color"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/detailed_1W"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/detailed_1W"
+                android:layout_width="64dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/rounded_text_view"
+                android:gravity="center"
+                android:text="1W"
+                android:textColor="?attr/custom_text_color"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/detailed_1M"
+                app:layout_constraintStart_toEndOf="@+id/detailed_1D"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/detailed_1M"
+                android:layout_width="64dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/rounded_text_view_selected"
+                android:gravity="center"
+                android:text="1M"
+                android:textColor="?attr/custom_text_color"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/detailed_3M"
+                app:layout_constraintStart_toEndOf="@+id/detailed_1W"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/detailed_3M"
+                android:layout_width="64dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/rounded_text_view"
+                android:gravity="center"
+                android:text="3M"
+                android:textColor="?attr/custom_text_color"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/detailed_1M"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/linear3"
+            android:background="?attr/custom_background_color" />
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/linear3"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_above="@id/chart"
-        android:background="@color/dark2"
-        android:orientation="horizontal"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp">
-
-        <TextView
-            android:id="@+id/detailed_1D"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:text="1D"
-            android:textColor="@color/textColorPrimary"
-
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/detailed_1W"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/rounded_text_view"
-            android:gravity="center"
-            android:text="1W"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/detailed_1M"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/rounded_text_view_selected"
-            android:gravity="center"
-            android:text="1M"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/detailed_3M"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/rounded_text_view"
-            android:gravity="center"
-            android:text="3M"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="20sp" />
-
-    </LinearLayout>
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart"
-        android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:layout_above="@+id/view"
-        android:background="@color/dark2" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:background="@color/dark2" />
-
 </RelativeLayout>

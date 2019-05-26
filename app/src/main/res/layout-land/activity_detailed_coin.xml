@@ -22,7 +22,7 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
-                android:src="@drawable/arrow_left_29172"
+                android:src="@drawable/arrow_left"
                 android:tint="#ffffff" />
 
             <TextView
@@ -82,7 +82,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="7dp"
                         android:layout_marginTop="5dp"
-                        android:textColor="@color/redColor"
+                        android:textColor="@color/red1"
                         android:textSize="16sp"
                         tools:text="- 1 310,36 (20,21%)" />
                 </LinearLayout>
@@ -101,7 +101,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="MKT"
-                            android:textColor="@color/textColorDark"
+                            android:textColor="?attr/custom_text_unfocused_color"
                             android:textSize="@dimen/table_text_size" />
 
                         <TextView
@@ -118,7 +118,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="30dp"
                             android:text="RANK"
-                            android:textColor="@color/textColorDark"
+                            android:textColor="?attr/custom_text_unfocused_color"
                             android:textSize="@dimen/table_text_size" />
 
                         <TextView
@@ -138,7 +138,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="25dp"
                             android:text="SUPPLY"
-                            android:textColor="@color/textColorDark"
+                            android:textColor="?attr/custom_text_unfocused_color"
                             android:textSize="@dimen/table_text_size" />
 
                         <TextView
@@ -157,7 +157,7 @@
                             android:layout_marginStart="30dp"
                             android:layout_marginTop="25dp"
                             android:text="HIGH"
-                            android:textColor="@color/textColorDark"
+                            android:textColor="?attr/custom_text_unfocused_color"
                             android:textSize="@dimen/table_text_size" />
 
                         <TextView
@@ -178,7 +178,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="25dp"
                             android:text="VOL"
-                            android:textColor="@color/textColorDark"
+                            android:textColor="?attr/custom_text_unfocused_color"
                             android:textSize="@dimen/table_text_size" />
 
                         <TextView
@@ -197,7 +197,7 @@
                             android:layout_marginStart="30dp"
                             android:layout_marginTop="25dp"
                             android:text="LOW"
-                            android:textColor="@color/textColorDark"
+                            android:textColor="?attr/custom_text_unfocused_color"
                             android:textSize="@dimen/table_text_size" />
 
                         <TextView
@@ -218,7 +218,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="25dp"
                             android:text="TOTAL VOL"
-                            android:textColor="@color/textColorDark"
+                            android:textColor="?attr/custom_text_unfocused_color"
                             android:textSize="@dimen/table_text_size" />
 
                         <TextView
@@ -238,7 +238,7 @@
                             android:layout_marginStart="30dp"
                             android:layout_marginTop="25dp"
                             android:text="WEB"
-                            android:textColor="@color/textColorDark"
+                            android:textColor="?attr/custom_text_unfocused_color"
                             android:textSize="@dimen/table_text_size" />
 
                         <ImageView
@@ -248,8 +248,8 @@
                             android:layout_marginStart="20dp"
                             android:layout_marginTop="25dp"
                             android:rotation="180"
-                            android:src="@drawable/arrow_left_29172"
-                            android:tint="@color/textColorPrimary" />
+                            android:src="@drawable/arrow_left"
+                            android:tint="?attr/custom_text_color" />
                     </TableRow>
                 </TableLayout>
 
@@ -259,11 +259,12 @@
                     android:layout_height="30dp"
                     android:layout_below="@id/detailed_table"
                     android:layout_marginTop="8dp"
-                    android:background="@color/backgroundChartColor"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp">
+                    <!--android:background="@color/backgroundChartColor"-->
+
 
                     <TextView
                         android:id="@+id/detailed_1D"
@@ -273,7 +274,7 @@
                         android:focusable="true"
                         android:gravity="center"
                         android:text="1D"
-                        android:textColor="@color/textColorPrimary"
+                        android:textColor="?attr/custom_text_color"
 
                         android:textSize="20sp" />
 
@@ -285,7 +286,7 @@
                         android:background="@drawable/rounded_text_view"
                         android:gravity="center"
                         android:text="1W"
-                        android:textColor="@color/textColorPrimary"
+                        android:textColor="?attr/custom_text_color"
                         android:textSize="20sp" />
 
                     <TextView
@@ -296,7 +297,7 @@
                         android:background="@drawable/rounded_text_view_selected"
                         android:gravity="center"
                         android:text="1M"
-                        android:textColor="@color/textColorPrimary"
+                        android:textColor="?attr/custom_text_color"
                         android:textSize="20sp" />
 
                     <TextView
@@ -307,7 +308,7 @@
                         android:background="@drawable/rounded_text_view"
                         android:gravity="center"
                         android:text="3M"
-                        android:textColor="@color/textColorPrimary"
+                        android:textColor="?attr/custom_text_color"
                         android:textSize="20sp" />
 
                 </LinearLayout>
@@ -316,8 +317,9 @@
                     android:id="@+id/chart"
                     android:layout_width="match_parent"
                     android:layout_height="280dp"
-                    android:layout_below="@+id/linear3"
-                    android:background="@color/backgroundChartColor" />
+                    android:layout_below="@+id/linear3" />
+                <!--android:background="@color/backgroundChartColor"-->
+
 
                 <View
                     android:id="@+id/view"
@@ -325,8 +327,9 @@
                     android:layout_height="15dp"
                     android:layout_below="@id/chart"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/backgroundChartColor" />
+                    android:layout_alignParentBottom="true" />
+                <!--android:background="@color/backgroundChartColor"-->
+
             </RelativeLayout>
         </ScrollView>
     </RelativeLayout>
