@@ -15,9 +15,11 @@ import java.util.List;
 import java.util.concurrent.Executor;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.schedulers.Schedulers;
 
 public class CoinRepo implements CoinDataSource {
@@ -45,24 +47,24 @@ public class CoinRepo implements CoinDataSource {
 
     @Override
     public void updateAll(List<CoinInfo> coinInfoList) {
-        dbExecutor.execute(() -> {
-            List<CoinInfo> insertList = new ArrayList<>();
-            List<CoinInfo> updateList = new ArrayList<>();
-            for (CoinInfo coinInfo : coinInfoList) {
-                List<CoinInfo> dbInfoList = mCoinInfoDao.getByFullName(coinInfo.getFullName());
-                if (dbInfoList.isEmpty()) {
-                    insertList.add(coinInfo);
-                } else {
-                    CoinInfo dbCoinInfo = dbInfoList.get(0);
-                    coinInfo.setId(dbCoinInfo.getId());
-                    coinInfo.setFavorite(dbCoinInfo.isFavorite());
-                    updateList.add(coinInfo);
-                }
+
+        List<CoinInfo> insertList = new ArrayList<>();
+        List<CoinInfo> updateList = new ArrayList<>();
+        for (CoinInfo coinInfo : coinInfoList) {
+            List<CoinInfo> dbInfoList = mCoinInfoDao.getByFullName(coinInfo.getFullName());
+            if (dbInfoList.isEmpty()) {
+                insertList.add(coinInfo);
+            } else {
+                CoinInfo dbCoinInfo = dbInfoList.get(0);
+                coinInfo.setId(dbCoinInfo.getId());
+                coinInfo.setFavorite(dbCoinInfo.isFavorite());
+                updateList.add(coinInfo);
             }
-            mCoinInfoDao.insert(insertList);
-            mCoinInfoDao.update(updateList);
-            Log.e("DbHelper", "isLoaded ");
-        });
+        }
+        mCoinInfoDao.insert(insertList);
+        mCoinInfoDao.update(updateList);
+        Log.e("DbHelper", "isLoaded ");
+
     }
 
     @Override
@@ -102,7 +104,7 @@ public class CoinRepo implements CoinDataSource {
 
     private void testRxLoadCoins(String currency, RefreshCallback callback) {
 
-        compositeDisposable.add(concatObservable(currency)
+       /* compositeDisposable.add(concatObservable(currency)
                 .subscribeOn(Schedulers.io()) // "work" on io thread
                 .map(CoinCryptoCompare::getData)
                 .flatMap(Observable::fromIterable)
@@ -125,46 +127,41 @@ public class CoinRepo implements CoinDataSource {
                 .getAllCurrencies(currency)
                 .subscribeOn(Schedulers.io())
                 .subscribe(this::updateCurrencies, e -> Log.e("aDDADDSDADAD", "testRxLoadCoins: ", e))
-        );
-           /* Single<List<CoinInfo>> test1 = concatObservable(currency)
-                    .subscribeOn(Schedulers.io()) // "work" on io thread
-                    .map(CoinCryptoCompare::getData)
-                    .flatMap(Observable::fromIterable)
-                    .filter(coinsData -> coinsData.getRAW() != null && coinsData.getDISPLAY() != null)
-                    .map(this::toCoinInfo)
-                    .toList();
+        );*/
+        Single<List<CoinInfo>> test1 = mergeObservable(currency)
+                .subscribeOn(Schedulers.io()) // "work" on io thread
+                .map(CoinCryptoCompare::getData)
+                .flatMap(Observable::fromIterable)
+                .filter(coinsData -> coinsData.getRAW() != null && coinsData.getDISPLAY() != null)
+                .map(this::toCoinInfo)
+                .toList();
 
-            Single<CurrenciesData> test2 = mCoinInfoApi
-                    .getAllCurrencies(currency)
-                    .subscribeOn(Schedulers.io())
-                    .doOnError(e-> Log.e("sdFFFDFADFDBA", "testRxLoadCoins: ", e));
+        Single<CurrenciesData> test2 = mCoinInfoApi.getAllCurrencies(currency);
 
 
-
-            compositeDisposable.add(Observable
-                    .combineLatest(test1.toObservable(), test2.toObservable(), (coinInfoList, currenciesData) -> {
-                        updateCurrencies(currenciesData);
-                        return coinInfoList;
-                    })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(coinInfoList -> {
-                                Log.e("testRxLoadCoins", "coinInfoList size:" + coinInfoList.size());
-                                callback.onSuccess();
-                                updateAll(coinInfoList);
-                            }, e -> {
-                                Log.e("testRxLoadCoins", "FAILED DOWNLOAD: ", e);
-                                callback.onFailed();
-                            }
-                    ));*/
+        compositeDisposable.add(Observable
+                .zip(test1.toObservable(), test2.toObservable(), (coinInfoList, currenciesData) -> {
+                    updateAll(coinInfoList);
+                    updateCurrencies(currenciesData);
+                    return coinInfoList;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(coinInfoList -> {
+                            Log.e("testRxLoadCoins", "coinInfoList size:" + coinInfoList.size());
+                            callback.onSuccess();
+                        }, e -> {
+                            Log.e("testRxLoadCoins", "FAILED DOWNLOAD: ", e);
+                            callback.onFailed();
+                        }
+                ));
     }
 
-    //Rename concatObs to merge
-    private Observable<CoinCryptoCompare> concatObservable(String currency) {
-        Observable<CoinCryptoCompare> concatObs = mCoinInfoApi.getAllCoins(0, currency);
+    private Observable<CoinCryptoCompare> mergeObservable(String currency) {
+        Observable<CoinCryptoCompare> mergeObs = mCoinInfoApi.getAllCoins(0, currency);
         for (int i = 0; i < 19; i++)
-            concatObs = Observable.merge(concatObs, mCoinInfoApi.getAllCoins(i + 1, currency));
-        return concatObs;
+            mergeObs = Observable.merge(mergeObs, mCoinInfoApi.getAllCoins(i + 1, currency));
+        return mergeObs;
     }
 
     private CoinInfo toCoinInfo(CoinsData coinsData) {

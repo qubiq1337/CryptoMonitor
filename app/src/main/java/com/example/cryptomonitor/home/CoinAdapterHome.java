@@ -29,7 +29,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CoinAdapterHome extends RecyclerView.Adapter<CoinAdapterHome.CoinViewHolder> {
 
-
     private final static int initialSize = 60;
     private final static int loadSize = 20;
     private Context mContext;
