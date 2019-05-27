@@ -1,9 +1,13 @@
 package com.example.cryptomonitor.briefcase;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,7 +119,7 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
             mPieChart.setExtraOffsets(35, 15, 35, 15);
         mPieChart.setDrawHoleEnabled(true);
         //TODO refactor
-        mPieChart.setHoleColor(ContextCompat.getColor(Objects.requireNonNull(this.getContext()), R.color.dark1));
+        mPieChart.setHoleColor(getAttributeColor(Objects.requireNonNull(getActivity()),R.attr.custom_background_color));
         mPieChart.animateY(800);
         mPieChart.getDescription().setEnabled(false);
         mPieChart.setTouchEnabled(true);
@@ -126,6 +130,20 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         legend.setDrawInside(false);
         legend.setTextColor(Color.WHITE);
+    }
+    private static int getAttributeColor(
+            Context context,
+            int attributeId) {
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(attributeId, typedValue, true);
+        int colorRes = typedValue.resourceId;
+        int color = -1;
+        try {
+            color = context.getResources().getColor(colorRes);
+        } catch (Resources.NotFoundException e) {
+            Log.e("ERROR", "Not found color resource by id: " + colorRes);
+        }
+        return color;
     }
 
     private void setPieDataSet(List<PieEntry> yValues) {
