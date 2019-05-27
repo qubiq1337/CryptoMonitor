@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/widget_layout"
     android:layout_width="match_parent"
     android:layout_height="50dp"
+    android:background="@color/dark1"
     android:orientation="horizontal">
-    <!--android:background="@color/backgroundChartColor"-->
 
     <ImageView
         android:id="@+id/coin_icon"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center_vertical"
-        android:padding="4dp"
-        app:srcCompat="?attr/colorAccent" />
+        android:padding="4dp" />
 
     <TextView
         android:id="@+id/name_tv"
@@ -22,7 +20,7 @@
         android:layout_gravity="center_vertical"
         android:layout_weight="5"
         android:padding="4dp"
-        android:textColor="?attr/custom_text_color"
+        android:textColor="@color/white"
         android:textSize="14sp" />
 
     <TextView
@@ -33,6 +31,6 @@
         android:layout_weight="0.5"
         android:gravity="end"
         android:padding="4dp"
-        android:textColor="?attr/custom_text_color"
+        android:textColor="@color/white"
         android:textSize="14sp" />
 </LinearLayout>

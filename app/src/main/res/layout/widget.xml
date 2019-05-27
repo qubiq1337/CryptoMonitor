@@ -2,11 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark2"
     android:orientation="vertical">
-    <!--android:background="@color/backgroundChartColor"-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/dark2"
         android:orientation="horizontal">
 
         <TextView
@@ -16,7 +18,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:padding="4dp"
-            android:textColor="?attr/custom_text_unfocused_color"
+            android:textColor="@color/white"
             android:textSize="12sp" />
 
         <ImageButton
@@ -24,21 +26,21 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="end"
+            android:background="@color/dark2"
             android:src="@drawable/widget_home" />
-        <!--android:background="@color/backgroundChartColor"-->
 
         <ImageButton
             android:id="@+id/refresh_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="end"
+            android:background="@color/dark2"
             android:src="@drawable/ic_autorenew_black_24dp" />
     </LinearLayout>
-    <!--android:background="@color/backgroundChartColor"-->
 
     <ListView
         android:id="@+id/widget_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    <!--android:background="@color/backgroundChartColor"-->
+        android:layout_height="match_parent"
+        android:background="@color/dark2" />
 </LinearLayout>
