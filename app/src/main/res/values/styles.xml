@@ -1,20 +1,20 @@
 <resources>
 
-    <style name="AppThemeDark" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="AppThemeDark" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/DarkPrimary</item>
-        <item name="colorPrimaryDark">@color/DarkPrimary</item>
+        <item name="colorPrimaryDark">@color/DarkPrimaryDark</item>
         <item name="colorAccent">@color/green1_dark_theme</item>
 
         <!--this change the background of main window (activity and) AND all the components (dialogs) -->
         <item name="android:colorBackground">@color/DarkBackground</item>
-
         <item name="android:actionMenuTextColor">@color/text_white</item>
-
+        <!--Custom colors-->
         <item name="custom_background_color">@color/DarkBackground</item>
         <item name="custom_text_color">@color/text_white</item>
         <item name="custom_text_unfocused_color">@color/grey</item>
         <item name="custom_icon_color">@color/text_white</item>
         <item name="custom_background_tint">@color/DarkPrimary</item>
+
 
         <item name="android:textColor">@color/white</item>
         <item name="itemIconTint">@color/white</item>
@@ -91,7 +91,7 @@
         <item name="contentPaddingTop">10dp</item>
         <item name="contentPaddingLeft">10dp</item>
         <item name="contentPaddingRight">10dp</item>
-        <item name="cardBackgroundColor">@color/dark1</item>
+        <item name="cardBackgroundColor">?attr/colorPrimary</item>
     </style>
 
     <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem" />

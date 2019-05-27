@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/dark1"
+    android:background="?attr/custom_background_color"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:layout_marginTop="8dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
 
     <androidx.cardview.widget.CardView
         style="@style/MyCardViewStyle"
@@ -44,6 +46,7 @@
                 android:textSize="14sp"
                 tools:text="10 BTC" />
 
+
             <LinearLayout
                 android:id="@+id/history_linear1"
                 android:layout_width="wrap_content"
@@ -76,7 +79,6 @@
                     android:textSize="14sp"
                     tools:text="$ 7500" />
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/history_linear2"

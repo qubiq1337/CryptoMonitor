@@ -253,7 +253,7 @@ public class DetailedCoin extends AppCompatActivity implements View.OnClickListe
         else if (d < 0)
             change.setTextColor(ContextCompat.getColor(this, R.color.red1));
         else if (d == 0)
-            change.setTextColor(R.attr.custom_text_color);
+            change.setTextColor(Color.GRAY);
     }
 
     @NonNull

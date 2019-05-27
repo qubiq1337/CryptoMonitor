@@ -128,7 +128,6 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
             return (ContextCompat.getColor(mContext, R.color.green5));
         else if (d < 0)
             return (ContextCompat.getColor(mContext, R.color.red1));
-
         return (R.attr.custom_text_color);
     }
 
