@@ -6,9 +6,10 @@
     <color name="DarkBackground">#000000</color>
     <color name="DarkItemBackground">#191919</color>
 
-    <color name="colorDarkPrimaryPurple">#2a2f47</color>
-    <color name="colorDarkPrimaryDarkPurple">#2a2f47</color>
-    <color name="colorDarkAccentPurple">#1E90FF</color>
+    <color name="DarkPrimaryPurple">#201C37 </color>
+    <color name="DarkPrimaryDarkPurple">#141120</color>
+    <color name="DarkAccentPurple">	#0075E6</color>
+    <color name="DarkBackgroundPurple">#18142E</color>
 
     <color name="black_dark_theme">#03030A</color>
     <color name="purple1_dark_theme">#303549</color>
@@ -17,6 +18,7 @@
     <color name="green2_dark_theme">#079E57</color>
     <color name="green3_dark_theme">#0A6656</color>
     <color name="grey_dark_theme">#8E9A94</color>
+
 
     <color name="dark1">#000000</color>
     <color name="dark2">#191919</color>
@@ -28,7 +30,7 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="orange">#F67C01</color>
-    <color name="grey">#C7C7C7</color>
+    <color name="grey">#919191</color>
     <color name="green5">#64DD17</color>
     <color name="red1">#DD2C00</color>
     <color name="red2">#d50000</color>

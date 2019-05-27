@@ -2,6 +2,7 @@ package com.example.cryptomonitor.transaction;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.preference.PreferenceManager;
 
 import com.example.cryptomonitor.R;
 import com.example.cryptomonitor.database.coins.CoinInfo;
@@ -40,6 +42,7 @@ public class TransactionActivity extends AppCompatActivity implements View.OnCli
 
     public static final String EDIT_MODE = "EDIT MODE";
     public static final String SELL_MODE = "SELL MODE";
+    private static final String THEME = "theme";
     private AutoCompleteAdapter autoCompleteAdapter;
     private EditText mEditPrice;
     private EditText mEditAmount;
@@ -122,6 +125,13 @@ public class TransactionActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean mTheme = mPreferences.getBoolean(THEME, false);
+        if (mTheme.equals(true)) {
+            setTheme(R.style.AppThemeDarkPurple);
+        } else {
+            setTheme(R.style.AppThemeDark);
+        }
         setContentView(R.layout.activity_transaction);
 
         mEditPrice = findViewById(R.id.transaction_edit_price);
