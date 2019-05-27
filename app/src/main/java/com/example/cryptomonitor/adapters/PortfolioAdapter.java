@@ -1,6 +1,7 @@
 package com.example.cryptomonitor.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,7 +129,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
             return (ContextCompat.getColor(mContext, R.color.green5));
         else if (d < 0)
             return (ContextCompat.getColor(mContext, R.color.red1));
-        return (R.attr.custom_text_color);
+        return (Color.GRAY);
     }
 
     private int changeTextSize(Double change) {
