@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
         mSwipeRefresh = view.findViewById(R.id.swipe_refresh);
 
         mSwipeRefresh.setOnRefreshListener(this);
-        mSwipeRefresh.setColorSchemeResources(R.color.dark1, R.color.dark2, R.color.dark3);
+        mSwipeRefresh.setColorSchemeResources(R.color.red1, R.color.green1_dark_theme, R.color.blue);
 
         mCoinAdapterHome = new CoinAdapterHome(getContext());
         mCoinAdapterHome.setup(this);

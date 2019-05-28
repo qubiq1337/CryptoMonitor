@@ -58,9 +58,9 @@ public class FavoritesFragment extends Fragment implements FavoriteCoinAdapter.O
         mCoinAdapterHome = new FavoriteCoinAdapter(getContext());
         mCoinAdapterHome.setup(this);
         mRecyclerView.setAdapter(mCoinAdapterHome);
-
         mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.red1, R.color.green1_dark_theme, R.color.blue);
         mViewModel = ViewModelProviders.of(this).get(FavoriteViewModel.class);
         mViewModel.getFavoriteCoinsLiveData().observe(this, coinInfoList -> mCoinAdapterHome.setData(coinInfoList));
         mViewModel.getEventLiveData().observe(this, eventObserver);
