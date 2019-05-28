@@ -17,7 +17,6 @@ import java.util.concurrent.Executor;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.schedulers.Schedulers;
@@ -46,29 +45,34 @@ public class CoinRepo implements CoinDataSource {
 
     @Override
     public void updateAll(List<CoinInfo> coinInfoList) {
-
-        List<CoinInfo> insertList = new ArrayList<>();
-        List<CoinInfo> updateList = new ArrayList<>();
-        for (CoinInfo coinInfo : coinInfoList) {
-            List<CoinInfo> dbInfoList = mCoinInfoDao.getByFullName(coinInfo.getFullName());
-            if (dbInfoList.isEmpty()) {
-                insertList.add(coinInfo);
-            } else {
-                CoinInfo dbCoinInfo = dbInfoList.get(0);
-                coinInfo.setId(dbCoinInfo.getId());
-                coinInfo.setFavorite(dbCoinInfo.isFavorite());
-                updateList.add(coinInfo);
+        dbExecutor.execute(() -> {
+            List<CoinInfo> insertList = new ArrayList<>();
+            List<CoinInfo> updateList = new ArrayList<>();
+            for (CoinInfo coinInfo : coinInfoList) {
+                List<CoinInfo> dbInfoList = mCoinInfoDao.getByFullName(coinInfo.getFullName());
+                if (dbInfoList.isEmpty()) {
+                    insertList.add(coinInfo);
+                } else {
+                    CoinInfo dbCoinInfo = dbInfoList.get(0);
+                    coinInfo.setId(dbCoinInfo.getId());
+                    coinInfo.setFavorite(dbCoinInfo.isFavorite());
+                    updateList.add(coinInfo);
+                }
             }
-        }
-        mCoinInfoDao.insert(insertList);
-        mCoinInfoDao.update(updateList);
-        Log.e("DbHelper", "isLoaded ");
+            mCoinInfoDao.insert(insertList);
+            mCoinInfoDao.update(updateList);
+            Log.e("DbHelper", "isLoaded ");
+        });
 
     }
 
     @Override
-    public void updateCoin(CoinInfo coinInfo) {
-        dbExecutor.execute(() -> mCoinInfoDao.update(coinInfo));
+    public void updateCoin(CoinInfo oldCoin) {
+        dbExecutor.execute(() -> {
+            CoinInfo newCoin = mCoinInfoDao.getById(oldCoin.getId());
+            newCoin.setFavorite(oldCoin.isFavorite());
+            mCoinInfoDao.update(newCoin);
+        });
     }
 
     @Override
