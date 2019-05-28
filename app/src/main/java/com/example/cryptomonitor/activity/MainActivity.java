@@ -1,5 +1,6 @@
 package com.example.cryptomonitor.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
     private FrameLayout fragmentContainer;
     private ViewPropertyAnimator animator;
     private boolean isSearchViewExpanded;
+    private MenuItem settingsItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false); // Dont put app name on bar
         mSearchView = (SearchView) menu.findItem(R.id.search).getActionView();
         ImageView searchIcon = mSearchView.findViewById(R.id.search_button);
+        settingsItem = menu.findItem(R.id.settings);
         searchIcon.setColorFilter(R.attr.custom_icon_color, PorterDuff.Mode.DST);// Replace color of search icon
         mSearchView.setOnQueryTextListener(this);
         mSearchView.setOnSearchClickListener(this);
@@ -212,11 +215,13 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
 
     private void onExpandSearch() {
         setGuidelinePercentage(1f);
+        settingsItem.setVisible(false);
         isSearchViewExpanded = true;
     }
 
     private void onClosedSearch() {
         setGuidelinePercentage(0.92f);
+        settingsItem.setVisible(true);
         isSearchViewExpanded = false;
     }
 
