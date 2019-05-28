@@ -54,8 +54,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         holder.change.setText(changeInPercent);
         holder.change.setTextSize(TypedValue.COMPLEX_UNIT_SP, changeTextSize(change));
         holder.change.setTextColor(changeColor(change));
-        String sellPriceFormatted = bill.getBuy_currency_symbol()+" "+cashFormatting(sellPrice);
-        String buyPriceFormatted = bill.getBuy_currency_symbol()+" "+cashFormatting(buyPrice);
+        String sellPriceFormatted = bill.getBuy_currency_symbol() + " " + cashFormatting(sellPrice);
+        String buyPriceFormatted = bill.getBuy_currency_symbol() + " " + cashFormatting(buyPrice);
         holder.sellPrice.setText(sellPriceFormatted);
         holder.buyPrice.setText(buyPriceFormatted);
         String amountStr = cashFormatting(bill.getAmount()) + " " + bill.getShort_name();
@@ -90,6 +90,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         return (Color.GRAY);
     }
 
+    private int changeTextSize(Double change) {
+        if (change < 0) change = change * (-1);
+        if (change < 10) return 26;
+        else if (change >= 10 && change < 1000) return 22;
+        else if (change >= 1000 && change < 10000) return 16;
+        return 14;
+    }
+
     class HistoryViewHolder extends RecyclerView.ViewHolder {
         private TextView buyPrice;
         private TextView sellPrice;
@@ -111,13 +119,5 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             icon = itemView.findViewById(R.id.history_item_icon);
             change = itemView.findViewById(R.id.history_change);
         }
-    }
-
-    private int changeTextSize(Double change) {
-        if (change < 0) change = change * (-1);
-        if (change < 10) return 26;
-        else if (change >= 10 && change < 1000) return 22;
-        else if (change >= 1000 && change < 10000) return 16;
-        return 14;
     }
 }

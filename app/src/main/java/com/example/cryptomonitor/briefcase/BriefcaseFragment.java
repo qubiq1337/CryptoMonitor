@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -32,9 +31,7 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -61,6 +58,21 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
     };
     private Observer<CurrenciesData> currenciesDataObserver = currenciesData ->
             portfolioAdapter.setCurrencies(currenciesData);
+
+    private static int getAttributeColor(
+            Context context,
+            int attributeId) {
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(attributeId, typedValue, true);
+        int colorRes = typedValue.resourceId;
+        int color = -1;
+        try {
+            color = context.getResources().getColor(colorRes);
+        } catch (Resources.NotFoundException e) {
+            Log.e("ERROR", "Not found color resource by id: " + colorRes);
+        }
+        return color;
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -125,8 +137,7 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
             legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
             legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
             legend.setWordWrapEnabled(true);
-        }
-        else {
+        } else {
             mPieChart.setExtraOffsets(35, 18, 35, 18);
             legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
             legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
@@ -134,27 +145,13 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
         }
         mPieChart.setDrawHoleEnabled(true);
         //TODO refactor
-        mPieChart.setHoleColor(getAttributeColor(Objects.requireNonNull(getActivity()),R.attr.custom_background_color));
+        mPieChart.setHoleColor(getAttributeColor(Objects.requireNonNull(getActivity()), R.attr.custom_background_color));
         mPieChart.animateY(800);
         mPieChart.getDescription().setEnabled(false);
         mPieChart.setTouchEnabled(true);
         mPieChart.setDragDecelerationFrictionCoef(0.1f);
         legend.setDrawInside(false);
         legend.setTextColor(Color.WHITE);
-    }
-    private static int getAttributeColor(
-            Context context,
-            int attributeId) {
-        TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(attributeId, typedValue, true);
-        int colorRes = typedValue.resourceId;
-        int color = -1;
-        try {
-            color = context.getResources().getColor(colorRes);
-        } catch (Resources.NotFoundException e) {
-            Log.e("ERROR", "Not found color resource by id: " + colorRes);
-        }
-        return color;
     }
 
     private void setPieDataSet(List<PieEntry> yValues) {
@@ -164,7 +161,7 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
         pieDataSet.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return cashFormatting((double) value)+"%";
+                return cashFormatting((double) value) + "%";
             }
         });
         pieDataSet.setValueTextSize(12f);
@@ -179,11 +176,11 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             pieDataSet.setValueLinePart1Length(0.6f); // When valuePosition is OutsideSlice, indicates length of first half of the line
             pieDataSet.setValueLinePart2Length(0.2f); // When valuePosition is OutsideSlice, indicates length of second half of the line
-        }else {
+        } else {
             pieDataSet.setValueLinePart1Length(0.8f); // When valuePosition is OutsideSlice, indicates length of first half of the line
             pieDataSet.setValueLinePart2Length(0.2f); // When valuePosition is OutsideSlice, indicates length of second half of the line
         }
-       /* pieDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);*/
+        /* pieDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);*/
         pieDataSet.setColors(PIE_CHART_COLORS);
         PieData pieData = new PieData(pieDataSet);
         mPieChart.setDrawEntryLabels(false);

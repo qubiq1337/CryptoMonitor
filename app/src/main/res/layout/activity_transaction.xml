@@ -64,8 +64,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/transaction_radio_group"
-            android:padding="15dp"
             android:layout_marginEnd="64dp"
+            android:padding="15dp"
             android:text="@string/edit"
             android:textColor="?attr/custom_text_unfocused_color"
             android:textSize="@dimen/transaction_text_size" />

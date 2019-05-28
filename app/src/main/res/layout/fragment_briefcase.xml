@@ -11,8 +11,6 @@
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
             android:id="@+id/layoutHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,6 +18,8 @@
             android:clipToPadding="false"
             android:fitsSystemWindows="true"
             android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:visibility="visible"
             app:contentScrim="?attr/custom_background_color"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">

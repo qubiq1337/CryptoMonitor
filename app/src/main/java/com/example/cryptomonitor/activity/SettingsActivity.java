@@ -40,15 +40,8 @@ public class SettingsActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-
         String mLang = mPreferences.getString(LANG, DEFAULT);
-        assert mLang != null;
-        if (mLang.equals(DEFAULT)) {
-            mLang = getResources().getConfiguration().locale.getCountry();
-        }
         Locale mLocale = new Locale(mLang);
-        Locale.setDefault(mLocale);
         Configuration configuration = new Configuration();
         configuration.locale = mLocale;
         getBaseContext().getResources().updateConfiguration(configuration, null);

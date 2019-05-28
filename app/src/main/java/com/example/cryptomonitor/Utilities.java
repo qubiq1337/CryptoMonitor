@@ -21,6 +21,15 @@ import java.util.Locale;
 public class Utilities {
     //<<<< some stuff deleted >>>>
 
+    public static final int[] PIE_CHART_COLORS = {
+            Color.rgb(46, 204, 113), Color.rgb(231, 76, 60), Color.rgb(241, 196, 15), Color.rgb(52, 152, 219),
+            Color.rgb(244, 67, 54), Color.rgb(233, 30, 99), Color.rgb(156, 39, 176),
+            Color.rgb(33, 150, 243), Color.rgb(0, 188, 212), Color.rgb(76, 175, 80),
+            Color.rgb(205, 220, 57), Color.rgb(255, 235, 59), Color.rgb(255, 152, 0),
+            Color.rgb(255, 87, 34), Color.rgb(123, 31, 162), Color.rgb(81, 45, 168),
+            Color.rgb(56, 142, 60), Color.rgb(230, 74, 25), Color.rgb(211, 47, 47),
+            Color.rgb(194, 24, 91), Color.rgb(183, 28, 28), Color.rgb(27, 94, 32)
+    };
     private static long back_pressed = 0;
 
     public static void onBackPressed(Activity activity) {
@@ -30,7 +39,6 @@ public class Utilities {
             Toast.makeText(activity.getBaseContext(), activity.getString(R.string.exit_phrase), Toast.LENGTH_SHORT).show();
         back_pressed = System.currentTimeMillis();
     }
-
 
     public static String formatToMillion(String s) {
         String symbol = String.valueOf(s.charAt(0));
@@ -75,6 +83,7 @@ public class Utilities {
         }
         return result;
     }
+
     //TODO обернуть все форматы в блок static (new DecimalFormatSymbols...)
     public static Double simplePercentFormatting(Double d) {
         String result;
@@ -131,7 +140,6 @@ public class Utilities {
         String strRoundedX = roundStr(x, n, 0);
         return strRoundedX;
     }
-
 
     /**
      * This method is recursive; it rounds down a double number
@@ -241,14 +249,4 @@ public class Utilities {
             strRoundedX = strRoundedX.substring(0, strRoundedX.length() - 1);
         return strRoundedX;
     }
-
-    public static final int[] PIE_CHART_COLORS = {
-            Color.rgb(46, 204, 113), Color.rgb(231, 76, 60), Color.rgb(241, 196, 15), Color.rgb(52, 152, 219),
-            Color.rgb(244, 67, 54), Color.rgb(233, 30, 99), Color.rgb(156, 39, 176),
-            Color.rgb(33, 150, 243), Color.rgb(0, 188, 212), Color.rgb(76, 175, 80),
-            Color.rgb(205, 220, 57), Color.rgb(255, 235, 59), Color.rgb(255, 152, 0),
-            Color.rgb(255, 87, 34), Color.rgb(123, 31, 162), Color.rgb(81, 45, 168),
-            Color.rgb(56, 142, 60), Color.rgb(230, 74, 25), Color.rgb(211, 47, 47),
-            Color.rgb(194, 24, 91), Color.rgb(183, 28, 28), Color.rgb(27, 94, 32)
-    };
 }

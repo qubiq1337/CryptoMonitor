@@ -55,10 +55,10 @@
                 android:layout_gravity="bottom"
                 android:layout_marginEnd="6dp"
                 android:gravity="end"
-                tools:text="+20%"
                 android:textColor="@color/green5"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="+20%" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>
