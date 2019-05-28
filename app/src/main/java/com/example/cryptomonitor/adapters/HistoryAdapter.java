@@ -2,6 +2,7 @@ package com.example.cryptomonitor.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,9 +52,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         double change = changePercent(buyPrice, sellPrice);
         String changeInPercent = simpleNumberFormatting(change) + "%";
         holder.change.setText(changeInPercent);
+        holder.change.setTextSize(TypedValue.COMPLEX_UNIT_SP, changeTextSize(change));
         holder.change.setTextColor(changeColor(change));
-        holder.sellPrice.setText(cashFormatting(sellPrice));
-        holder.buyPrice.setText(cashFormatting(buyPrice));
+        String sellPriceFormatted = bill.getBuy_currency_symbol()+" "+cashFormatting(sellPrice);
+        String buyPriceFormatted = bill.getBuy_currency_symbol()+" "+cashFormatting(buyPrice);
+        holder.sellPrice.setText(sellPriceFormatted);
+        holder.buyPrice.setText(buyPriceFormatted);
         String amountStr = cashFormatting(bill.getAmount()) + " " + bill.getShort_name();
         holder.amount.setText(amountStr);
         Picasso.get()
@@ -107,5 +111,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             icon = itemView.findViewById(R.id.history_item_icon);
             change = itemView.findViewById(R.id.history_change);
         }
+    }
+
+    private int changeTextSize(Double change) {
+        if (change < 0) change = change * (-1);
+        if (change < 10) return 36;
+        else if (change >= 10 && change < 1000) return 32;
+        else if (change >= 1000 && change < 10000) return 26;
+        return 22;
     }
 }
