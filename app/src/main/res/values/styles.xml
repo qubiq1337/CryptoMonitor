@@ -22,7 +22,7 @@
     </style>
 
 
-    <style name="AppThemeDarkPurple" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="AppThemeDarkPurple" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/DarkPrimaryPurple</item>
         <item name="colorPrimaryDark">@color/DarkPrimaryDarkPurple</item>
         <item name="colorAccent">@color/DarkAccentPurple</item>

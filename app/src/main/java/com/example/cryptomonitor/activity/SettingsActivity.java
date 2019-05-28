@@ -8,16 +8,15 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import com.example.cryptomonitor.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Locale;
 
 public class SettingsActivity extends AppCompatActivity {
-
     public static final String THEME = "theme";
     public static final String LANG = "lang";
     public static final String DEFAULT = "default";
@@ -42,6 +41,7 @@ public class SettingsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+
         String mLang = mPreferences.getString(LANG, DEFAULT);
         assert mLang != null;
         if (mLang.equals(DEFAULT)) {
@@ -52,12 +52,6 @@ public class SettingsActivity extends AppCompatActivity {
         Configuration configuration = new Configuration();
         configuration.locale = mLocale;
         getBaseContext().getResources().updateConfiguration(configuration, null);
-        FloatingActionButton button = findViewById(R.id.buttonApply);
-        button.setOnClickListener(v -> {
-            Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
-            SettingsActivity.this.startActivity(intent);
-            SettingsActivity.this.finishAffinity();
-        });
     }
 
     @Override
@@ -84,6 +78,28 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
+            Preference themePreference = findPreference("theme");
+
+            themePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                    getActivity().startActivity(intent);
+                    getActivity().finishAffinity();
+                    return true;
+                }
+            });
+            Preference langPreference = findPreference("lang");
+
+            langPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                    getActivity().startActivity(intent);
+                    getActivity().finishAffinity();
+                    return true;
+                }
+            });
         }
     }
 

@@ -1,5 +1,4 @@
 <androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <PreferenceCategory app:title="@string/language_header">
         <ListPreference
             app:entries="@array/language_entries"
@@ -8,7 +7,6 @@
             app:title="@string/language_title"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
-
     <PreferenceCategory app:title="@string/currency_header">
         <ListPreference
             app:entries="@array/currency_entries"
@@ -16,7 +14,6 @@
             app:key="currency"
             app:title="@string/currency_title"
             app:useSimpleSummaryProvider="true" />
-
     </PreferenceCategory>
     <PreferenceCategory app:title="@string/theme_header">
         <SwitchPreferenceCompat
@@ -24,6 +21,4 @@
             app:key="theme"
             app:title="@string/theme_title" />
     </PreferenceCategory>
-
-
 </androidx.preference.PreferenceScreen>

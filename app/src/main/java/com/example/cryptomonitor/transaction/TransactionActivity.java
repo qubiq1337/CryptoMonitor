@@ -133,7 +133,6 @@ public class TransactionActivity extends AppCompatActivity implements View.OnCli
             setTheme(R.style.AppThemeDark);
         }
         setContentView(R.layout.activity_transaction);
-
         mEditPrice = findViewById(R.id.transaction_edit_price);
         mEditAmount = findViewById(R.id.transaction_edit_amount);
         mTotalCost = findViewById(R.id.transaction_total_cost);
