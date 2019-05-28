@@ -1,6 +1,5 @@
 package com.example.cryptomonitor.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
@@ -215,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
 
     private void onClosedSearch() {
         setGuidelinePercentage(0.92f);
-        settingsItem.setVisible(true);
+        invalidateOptionsMenu();
         isSearchViewExpanded = false;
     }
 
