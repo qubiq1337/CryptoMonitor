@@ -1,11 +1,14 @@
 package com.example.cryptomonitor.history;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -32,8 +35,8 @@ public class HistoryFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         View view = inflater.inflate(R.layout.fragment_history, container, false);
-
         RecyclerView mRecyclerView = view.findViewById(R.id.history_recycler);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mHistoryAdapter = new HistoryAdapter(getActivity());

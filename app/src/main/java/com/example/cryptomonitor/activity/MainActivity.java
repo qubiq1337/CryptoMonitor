@@ -39,8 +39,6 @@ import static com.example.cryptomonitor.detailed_coin.DetailedCoin.EXTRA_POSITIO
 
 public class MainActivity extends AppCompatActivity implements NavigationBarFragment.NavigationBarListener,
         ToolbarInteractor {
-
-
     public static final String THEME = "theme";
     private static final String SEARCH_TEXT_KEY = "searchKey";
     private static final long ANIM_DURATION = 200;
@@ -94,16 +92,12 @@ public class MainActivity extends AppCompatActivity implements NavigationBarFrag
                 .withEndAction(() -> {
                     Fragment fragment;
                     if (fragmentName.equals(HomeFragment.class.getName())) {
-                        Objects.requireNonNull(getSupportActionBar()).show();
                         fragment = new HomeFragment();
                     } else if (fragmentName.equals(FavoritesFragment.class.getName())) {
-                        Objects.requireNonNull(getSupportActionBar()).show();
                         fragment = new FavoritesFragment();
                     } else if (fragmentName.equals(HistoryFragment.class.getName())) {
-                        Objects.requireNonNull(getSupportActionBar()).hide();
                         fragment = new HistoryFragment();
                     } else if (fragmentName.equals(BriefcaseFragment.class.getName())) {
-                        Objects.requireNonNull(getSupportActionBar()).hide();
                         fragment = new BriefcaseFragment();
                     } else {
                         Log.e("ERROR", "No such fragment: " + fragmentName);

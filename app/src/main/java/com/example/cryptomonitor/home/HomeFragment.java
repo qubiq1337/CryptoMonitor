@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -62,6 +63,7 @@ public class HomeFragment extends Fragment implements CoinAdapterHome.OnStarClic
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup
             container, @Nullable Bundle savedInstanceState) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         mRecyclerView = view.findViewById(R.id.rv_coin_itemlist);
         mSwipeRefresh = view.findViewById(R.id.swipe_refresh);

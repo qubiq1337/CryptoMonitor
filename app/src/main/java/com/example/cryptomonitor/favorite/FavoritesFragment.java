@@ -9,6 +9,7 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -51,6 +52,7 @@ public class FavoritesFragment extends Fragment implements FavoriteCoinAdapter.O
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         mRecyclerView = view.findViewById(R.id.rv_favorite_coins);
         LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_anim_fall_down);
