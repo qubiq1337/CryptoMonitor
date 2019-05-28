@@ -19,7 +19,7 @@ import com.example.cryptomonitor.events.Message;
 import java.util.ArrayList;
 import java.util.List;
 
-class HomeViewModel extends AndroidViewModel {
+public class HomeViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<CoinInfo>> mSearchModeLiveData = new MutableLiveData<>();
     private MutableLiveData<Event> mEventMutableLiveData = new MutableLiveData<>();

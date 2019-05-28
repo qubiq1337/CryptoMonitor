@@ -19,7 +19,7 @@ import com.example.cryptomonitor.events.Message;
 import java.util.ArrayList;
 import java.util.List;
 
-class FavoriteViewModel extends AndroidViewModel {
+public class FavoriteViewModel extends AndroidViewModel {
     private CoinDataSource mCoinDataSource = new CoinRepo();
     private MutableLiveData<List<CoinInfo>> mFavoriteCoinsLiveData = new MutableLiveData<>();
     private MutableLiveData<Event> mEventMutableLiveData = new MutableLiveData<>();
@@ -27,7 +27,7 @@ class FavoriteViewModel extends AndroidViewModel {
 
     private boolean isRefreshing;
 
-    FavoriteViewModel(@NonNull Application application) {
+    public FavoriteViewModel(@NonNull Application application) {
         super(application);
         mCoinDataSource.getFavoriteCoins(new CoinDataSource.GetCoinCallback() {
             @Override

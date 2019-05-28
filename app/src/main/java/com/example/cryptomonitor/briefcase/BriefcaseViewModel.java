@@ -18,14 +18,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-class BriefcaseViewModel extends ViewModel {
+public class BriefcaseViewModel extends ViewModel {
     private MutableLiveData<List<PurchaseAndCoin>> mPurchaseAndCoinLive = new MutableLiveData<>();
     private MutableLiveData<List<PieEntry>> mPieLiveData = new MutableLiveData<>();
     private PurchaseDataSource mPurchaseRepo = new PurchaseRepo();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private MutableLiveData<CurrenciesData> currenciesLiveData = new MutableLiveData<>();
 
-    BriefcaseViewModel() {
+    public BriefcaseViewModel() {
         mPurchaseRepo.getAllPurchase(new PurchaseDataSource.GetPurchaseCallback() {
             @Override
             public void onLoaded(List<PurchaseAndCoin> purchaseList) {
