@@ -115,9 +115,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     private int changeTextSize(Double change) {
         if (change < 0) change = change * (-1);
-        if (change < 10) return 36;
-        else if (change >= 10 && change < 1000) return 32;
-        else if (change >= 1000 && change < 10000) return 26;
-        return 22;
+        if (change < 10) return 26;
+        else if (change >= 10 && change < 1000) return 22;
+        else if (change >= 1000 && change < 10000) return 16;
+        return 14;
     }
 }

@@ -137,7 +137,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
         if (change < 10) return 24;
         else if (change >= 10 && change < 1000) return 20;
         else if (change >= 1000 && change < 10000) return 18;
-        return 16;
+        return 12;
     }
 
     public interface OnItemClickListener {

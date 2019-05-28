@@ -120,7 +120,6 @@
                 android:layout_alignBottom="@id/history_linear2"
                 android:layout_alignParentEnd="true"
                 android:textColor="@color/green5"
-                android:textSize="26sp"
                 tools:text="20%" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
