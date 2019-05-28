@@ -33,6 +33,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -40,6 +41,9 @@ import java.util.List;
 import java.util.Objects;
 
 import io.reactivex.disposables.CompositeDisposable;
+
+import static com.example.cryptomonitor.Utilities.PIE_CHART_COLORS;
+import static com.example.cryptomonitor.Utilities.cashFormatting;
 
 
 public class BriefcaseFragment extends Fragment implements View.OnClickListener, PortfolioAdapter.OnItemClickListener {
@@ -113,10 +117,21 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
 
     private void initPieChart() {
         mPieChart.setUsePercentValues(true);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-            mPieChart.setExtraOffsets(35, 5, 35, 5);
-        else
-            mPieChart.setExtraOffsets(35, 15, 35, 15);
+        mPieChart.setMinAngleForSlices(18f);
+        Legend legend = mPieChart.getLegend();
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            mPieChart.setExtraOffsets(35, 10, 35, 5);
+            legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+            legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+            legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+            legend.setWordWrapEnabled(true);
+        }
+        else {
+            mPieChart.setExtraOffsets(35, 18, 35, 18);
+            legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
+            legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+            legend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        }
         mPieChart.setDrawHoleEnabled(true);
         //TODO refactor
         mPieChart.setHoleColor(getAttributeColor(Objects.requireNonNull(getActivity()),R.attr.custom_background_color));
@@ -124,10 +139,6 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
         mPieChart.getDescription().setEnabled(false);
         mPieChart.setTouchEnabled(true);
         mPieChart.setDragDecelerationFrictionCoef(0.1f);
-        Legend legend = mPieChart.getLegend();
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
         legend.setDrawInside(false);
         legend.setTextColor(Color.WHITE);
     }
@@ -150,7 +161,12 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
         if (yValues.isEmpty()) mPieChart.setDrawHoleEnabled(false);
         else mPieChart.setDrawHoleEnabled(true);
         PieDataSet pieDataSet = new PieDataSet(yValues, "");
-        pieDataSet.setValueFormatter(new PercentFormatter(mPieChart));
+        pieDataSet.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return cashFormatting((double) value)+"%";
+            }
+        });
         pieDataSet.setValueTextSize(12f);
         pieDataSet.setValueTextColor(Color.WHITE);
         pieDataSet.setSliceSpace(3f);
@@ -159,9 +175,16 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
         pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         pieDataSet.setValueLineColor(Color.GRAY);
         pieDataSet.setValueLinePart1OffsetPercentage(100f); // When valuePosition is OutsideSlice, indicates offset as percentage out of the slice size
-        pieDataSet.setValueLinePart1Length(0.6f); // When valuePosition is OutsideSlice, indicates length of first half of the line
-        pieDataSet.setValueLinePart2Length(0.4f); // When valuePosition is OutsideSlice, indicates length of second half of the line
-        pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            pieDataSet.setValueLinePart1Length(0.6f); // When valuePosition is OutsideSlice, indicates length of first half of the line
+            pieDataSet.setValueLinePart2Length(0.2f); // When valuePosition is OutsideSlice, indicates length of second half of the line
+        }else {
+            pieDataSet.setValueLinePart1Length(0.8f); // When valuePosition is OutsideSlice, indicates length of first half of the line
+            pieDataSet.setValueLinePart2Length(0.2f); // When valuePosition is OutsideSlice, indicates length of second half of the line
+        }
+       /* pieDataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);*/
+        pieDataSet.setColors(PIE_CHART_COLORS);
         PieData pieData = new PieData(pieDataSet);
         mPieChart.setDrawEntryLabels(false);
         mPieChart.animateY(800);
@@ -181,4 +204,6 @@ public class BriefcaseFragment extends Fragment implements View.OnClickListener,
         intent.putExtra(COIN_INDEX, purchaseAndCoin.getPurchase().getPurchase_id());
         startActivity(intent);
     }
+
+
 }
