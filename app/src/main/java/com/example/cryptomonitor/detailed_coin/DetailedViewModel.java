@@ -36,28 +36,36 @@ public class DetailedViewModel extends ViewModel {
                 if (disposable != null) disposable.dispose();
                 disposable = chartRepo
                         .getChartData1D(symbol, currency)
-                        .subscribe(modelChart -> mChartLiveData.setValue(modelChart));
+                        .subscribe(modelChart -> mChartLiveData.setValue(modelChart),
+                                throwable -> Log.e("chartRepo", "Error", throwable)
+                        );
                 break;
 
             case R.id.detailed_1W:
                 if (disposable != null) disposable.dispose();
                 disposable = chartRepo
                         .getChartData1W(symbol, currency)
-                        .subscribe(modelChart -> mChartLiveData.setValue(modelChart));
+                        .subscribe(modelChart -> mChartLiveData.setValue(modelChart),
+                                throwable -> Log.e("chartRepo", "Error", throwable)
+                        );
                 break;
 
             case R.id.detailed_1M:
                 if (disposable != null) disposable.dispose();
                 disposable = chartRepo
                         .getChartData1M(symbol, currency)
-                        .subscribe(modelChart -> mChartLiveData.setValue(modelChart));
+                        .subscribe(modelChart -> mChartLiveData.setValue(modelChart),
+                                throwable -> Log.e("chartRepo", "Error", throwable)
+                        );
                 break;
 
             case R.id.detailed_3M:
                 if (disposable != null) disposable.dispose();
                 disposable = chartRepo
                         .getChartData3M(symbol, currency)
-                        .subscribe(modelChart -> mChartLiveData.setValue(modelChart));
+                        .subscribe(modelChart -> mChartLiveData.setValue(modelChart),
+                                throwable -> Log.e("chartRepo", "Error", throwable)
+                        );
                 break;
         }
         mCoinSelectedLiveData.setValue(id);
