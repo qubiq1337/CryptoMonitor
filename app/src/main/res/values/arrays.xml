@@ -1,6 +1,6 @@
 <resources>
     <string-array name="language_entries">
-        <item>Russian</item>
+        <item>Русский</item>
         <item>English</item>
     </string-array>
     <string-array name="language_entries_values">
